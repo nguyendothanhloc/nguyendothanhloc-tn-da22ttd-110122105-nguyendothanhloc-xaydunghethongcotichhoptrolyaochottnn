@@ -17,3 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Test files that may contain API keys or secrets
+test_gemini_api_key.php
+*_api_key.php
