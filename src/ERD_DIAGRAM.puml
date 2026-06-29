@@ -1,0 +1,330 @@
+@startuml Language Center ERD
+!define Table(name,desc) class name as "desc" << (T,#FFAAAA) >>
+!define primary_key(x) <b><color:red>PK:</color> x</b>
+!define foreign_key(x) <color:blue>FK:</color> x
+!define unique(x) <color:green>UK:</color> x
+
+skinparam linetype ortho
+skinparam backgroundColor #FFFFFF
+skinparam class {
+    BackgroundColor<<Core>> LightBlue
+    BackgroundColor<<Academic>> LightGreen
+    BackgroundColor<<Assessment>> LightYellow
+    BackgroundColor<<System>> LightGray
+}
+
+' ============================================
+' CORE USER MANAGEMENT
+' ============================================
+
+class users <<Core>> {
+    primary_key(id: BIGINT)
+    unique(email: VARCHAR)
+    name: VARCHAR
+    password: VARCHAR
+    role: ENUM
+    phone: VARCHAR
+    avatar: VARCHAR
+    is_active: BOOLEAN
+    email_verified_at: TIMESTAMP
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class students <<Core>> {
+    primary_key(id: BIGINT)
+    foreign_key(user_id: BIGINT)
+    level: VARCHAR
+    interests: TEXT
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class teachers <<Core>> {
+    primary_key(id: BIGINT)
+    foreign_key(user_id: BIGINT)
+    specialization: VARCHAR
+    qualifications: TEXT
+    bio: TEXT
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' ACADEMIC MANAGEMENT
+' ============================================
+
+class courses <<Academic>> {
+    primary_key(id: BIGINT)
+    name: VARCHAR
+    description: TEXT
+    language: VARCHAR
+    level: ENUM
+    duration_weeks: INT
+    price: DECIMAL
+    is_active: BOOLEAN
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class classes <<Academic>> {
+    primary_key(id: BIGINT)
+    foreign_key(course_id: BIGINT)
+    foreign_key(teacher_id: BIGINT)
+    name: VARCHAR
+    start_date: DATE
+    end_date: DATE
+    max_capacity: INT
+    current_enrollment: INT
+    status: ENUM
+    shift: VARCHAR
+    weekdays: VARCHAR
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class enrollments <<Academic>> {
+    primary_key(id: BIGINT)
+    foreign_key(student_id: BIGINT)
+    foreign_key(class_id: BIGINT)
+    enrollment_date: DATE
+    status: ENUM
+    completion_percentage: DECIMAL
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class schedules <<Academic>> {
+    primary_key(id: BIGINT)
+    foreign_key(class_id: BIGINT)
+    date: DATE
+    start_time: TIME
+    end_time: TIME
+    location: VARCHAR
+    topic: TEXT
+    status: ENUM
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' ASSESSMENT SYSTEM
+' ============================================
+
+class assessments <<Assessment>> {
+    primary_key(id: BIGINT)
+    foreign_key(class_id: BIGINT)
+    name: VARCHAR
+    type: ENUM
+    max_score: DECIMAL
+    assessment_date: DATE
+    description: TEXT
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class assessment_scores <<Assessment>> {
+    primary_key(id: BIGINT)
+    foreign_key(assessment_id: BIGINT)
+    foreign_key(student_id: BIGINT)
+    score: DECIMAL
+    feedback: TEXT
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class certificates <<Assessment>> {
+    primary_key(id: BIGINT)
+    foreign_key(student_id: BIGINT)
+    foreign_key(course_id: BIGINT)
+    unique(certificate_number: VARCHAR)
+    issue_date: DATE
+    pdf_path: VARCHAR
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' ATTENDANCE SYSTEM
+' ============================================
+
+class attendances <<Academic>> {
+    primary_key(id: BIGINT)
+    foreign_key(schedule_id: BIGINT)
+    foreign_key(student_id: BIGINT)
+    status: ENUM
+    note: TEXT
+    recorded_at: TIMESTAMP
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' PAYMENT SYSTEM
+' ============================================
+
+class payments <<System>> {
+    primary_key(id: BIGINT)
+    foreign_key(enrollment_id: BIGINT)
+    amount: DECIMAL
+    payment_method: VARCHAR
+    status: ENUM
+    due_date: DATE
+    paid_date: DATE
+    proof_image: VARCHAR
+    note: TEXT
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' FEEDBACK SYSTEM
+' ============================================
+
+class feedbacks <<System>> {
+    primary_key(id: BIGINT)
+    foreign_key(student_id: BIGINT)
+    foreign_key(class_id: BIGINT)
+    course_rating: INT
+    teacher_rating: INT
+    comment: TEXT
+    is_anonymous: BOOLEAN
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' NOTIFICATION SYSTEM
+' ============================================
+
+class notifications <<System>> {
+    primary_key(id: BIGINT)
+    foreign_key(user_id: BIGINT)
+    type: VARCHAR
+    title: VARCHAR
+    message: TEXT
+    is_read: BOOLEAN
+    sent_at: TIMESTAMP
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' CHATBOT SYSTEM
+' ============================================
+
+class conversations <<System>> {
+    primary_key(id: BIGINT)
+    foreign_key(student_id: BIGINT)
+    started_at: TIMESTAMP
+    last_message_at: TIMESTAMP
+    message_count: INT
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class messages <<System>> {
+    primary_key(id: BIGINT)
+    foreign_key(conversation_id: BIGINT)
+    sender_type: ENUM
+    content: TEXT
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+class chatbot_knowledge <<System>> {
+    primary_key(id: BIGINT)
+    category: VARCHAR
+    question: TEXT
+    answer: TEXT
+    keywords: TEXT
+    priority: INT
+    is_active: BOOLEAN
+    --
+    created_at: TIMESTAMP
+    updated_at: TIMESTAMP
+}
+
+' ============================================
+' RELATIONSHIPS
+' ============================================
+
+' User Management (1:1)
+users ||--o| students : "1:1"
+users ||--o| teachers : "1:1"
+users ||--o{ notifications : "1:N"
+
+' Course & Class Structure
+courses ||--o{ classes : "1:N"
+teachers ||--o{ classes : "1:N"
+
+' Enrollment System (M:N through pivot)
+students ||--o{ enrollments : "1:N"
+classes ||--o{ enrollments : "1:N"
+enrollments ||--|| payments : "1:1"
+
+' Schedule & Attendance
+classes ||--o{ schedules : "1:N"
+schedules ||--o{ attendances : "1:N"
+students ||--o{ attendances : "1:N"
+
+' Assessment System
+classes ||--o{ assessments : "1:N"
+assessments ||--o{ assessment_scores : "1:N"
+students ||--o{ assessment_scores : "1:N"
+
+' Certificate System
+students ||--o{ certificates : "1:N"
+courses ||--o{ certificates : "1:N"
+
+' Feedback System
+students ||--o{ feedbacks : "1:N"
+classes ||--o{ feedbacks : "1:N"
+
+' Chatbot System
+students ||--o{ conversations : "1:N"
+conversations ||--o{ messages : "1:N"
+
+note right of users
+  Core authentication table
+  Roles: admin, teacher, student
+  Each user has ONE role
+end note
+
+note right of enrollments
+  Pivot table connecting
+  students ↔ classes
+  Manages enrollment status
+  and completion tracking
+end note
+
+note right of schedules
+  Individual class sessions
+  Each class has multiple
+  scheduled meetings
+end note
+
+note right of chatbot_knowledge
+  FAQ knowledge base
+  Standalone table
+  No foreign key relationships
+  Used by chatbot service
+end note
+
+@enduml

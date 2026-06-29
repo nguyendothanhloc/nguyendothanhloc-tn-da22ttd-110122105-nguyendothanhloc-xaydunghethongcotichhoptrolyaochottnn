@@ -1,0 +1,97 @@
+// ERD 2: LEARNING - Sơ đồ ERD học tập
+// Hệ thống Quản lý Trung tâm Ngoại ngữ
+// Nhóm: Lịch học, Điểm danh, Đánh giá, Điểm số
+
+Project language_center_learning {
+  Note: 'Sơ đồ ERD - Học tập & Đánh giá'
+}
+
+// ===== BẢNG LIÊN QUAN (Reference) =====
+
+Table students {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+Table classes {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+// ===== LỊCH HỌC =====
+
+Table schedules {
+  id bigint [pk, increment]
+  class_id bigint [ref: > classes.id, not null]
+  date date [not null]
+  start_time time [not null]
+  end_time time [not null]
+  location varchar(255) [note: 'Phòng 301, Tầng 3']
+  topic text [note: 'Unit 1: Greetings']
+  status enum('scheduled', 'completed', 'cancelled') [default: 'scheduled']
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Lịch học - Từng buổi học'
+}
+
+Table attendances {
+  id bigint [pk, increment]
+  schedule_id bigint [ref: > schedules.id, not null]
+  student_id bigint [ref: > students.id, not null]
+  status enum('present', 'absent', 'late', 'excused') [not null]
+  note text
+  recorded_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (schedule_id, student_id) [unique]
+  }
+  
+  Note: 'Điểm danh - Tình trạng tham gia'
+}
+
+// ===== ĐÁNH GIÁ =====
+
+Table assessments {
+  id bigint [pk, increment]
+  class_id bigint [ref: > classes.id, not null]
+  name varchar(255) [not null]
+  type enum('quiz', 'midterm', 'final', 'assignment', 'speaking', 'listening') [not null]
+  max_score decimal(5,2) [not null]
+  assessment_date date [not null]
+  description text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Bài kiểm tra'
+}
+
+Table assessment_scores {
+  id bigint [pk, increment]
+  assessment_id bigint [ref: > assessments.id, not null]
+  student_id bigint [ref: > students.id, not null]
+  score decimal(5,2) [not null]
+  feedback text
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (assessment_id, student_id) [unique]
+  }
+  
+  Note: 'Điểm kiểm tra'
+}
+
+// ===== NHÓM BẢNG =====
+
+TableGroup "Lịch học & Điểm danh" {
+  schedules
+  attendances
+}
+
+TableGroup "Đánh giá & Điểm số" {
+  assessments
+  assessment_scores
+}

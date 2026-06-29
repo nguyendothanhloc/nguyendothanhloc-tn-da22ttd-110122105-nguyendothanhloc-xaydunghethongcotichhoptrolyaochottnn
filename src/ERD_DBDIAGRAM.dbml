@@ -1,0 +1,311 @@
+// Sơ đồ ERD - Hệ thống Quản lý Trung tâm Ngoại ngữ
+// Database: language_center
+// Tổng số bảng: 17 bảng
+
+// Hướng dẫn sử dụng:
+// 1. Truy cập https://dbdiagram.io/
+// 2. Copy toàn bộ nội dung file này
+// 3. Paste vào editor bên trái
+// 4. Sơ đồ ERD đẹp sẽ hiện ra bên phải
+// 5. Export ra PNG/PDF/SQL từ menu Export
+
+// ===== NHÓM 1: NGƯỜI DÙNG =====
+
+Table users {
+  id bigint [pk, increment]
+  name varchar(255)
+  email varchar(255) [unique, not null]
+  password varchar(255) [not null]
+  role enum('admin', 'teacher', 'student') [not null]
+  phone varchar(20)
+  avatar varchar(255)
+  is_active boolean [default: true]
+  email_verified_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Bảng người dùng - Lưu thông tin đăng nhập và thông tin cơ bản'
+}
+
+Table students {
+  id bigint [pk, increment]
+  user_id bigint [ref: > users.id, not null, unique]
+  level varchar(50)
+  interests text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Hồ sơ học viên - Thông tin bổ sung cho học viên'
+}
+
+Table teachers {
+  id bigint [pk, increment]
+  user_id bigint [ref: > users.id, not null, unique]
+  specialization varchar(255)
+  qualifications text
+  bio text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Hồ sơ giáo viên - Thông tin bổ sung cho giáo viên'
+}
+
+// ===== NHÓM 2: KHÓA HỌC & LỚP HỌC =====
+
+Table courses {
+  id bigint [pk, increment]
+  name varchar(255) [not null]
+  description text
+  language varchar(50) [not null]
+  level enum('beginner', 'elementary', 'intermediate', 'advanced') [not null]
+  duration_weeks int [not null]
+  price decimal(10,2) [not null]
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Khóa học - Các khóa học mà trung tâm cung cấp'
+}
+
+Table classes {
+  id bigint [pk, increment]
+  course_id bigint [ref: > courses.id, not null]
+  teacher_id bigint [ref: > teachers.id, not null]
+  name varchar(255) [not null]
+  start_date date [not null]
+  end_date date [not null]
+  max_capacity int [not null]
+  current_enrollment int [default: 0]
+  status enum('upcoming', 'ongoing', 'completed', 'cancelled') [default: 'upcoming']
+  shift varchar(20)
+  weekdays varchar(100)
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Lớp học - Lớp học cụ thể được mở từ khóa học'
+}
+
+// ===== NHÓM 3: ĐĂNG KÝ & THANH TOÁN =====
+
+Table enrollments {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  class_id bigint [ref: > classes.id, not null]
+  enrollment_date date [not null]
+  status enum('pending', 'approved', 'rejected', 'cancelled') [default: 'pending']
+  completion_percentage decimal(5,2) [default: 0]
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (student_id, class_id) [unique]
+  }
+  
+  Note: 'Đăng ký học - Bảng trung gian giữa học viên và lớp học'
+}
+
+Table payments {
+  id bigint [pk, increment]
+  enrollment_id bigint [ref: - enrollments.id, not null, unique]
+  amount decimal(10,2) [not null]
+  payment_method varchar(50) [not null]
+  status enum('pending', 'paid', 'overdue', 'cancelled') [default: 'pending']
+  due_date date [not null]
+  paid_date date
+  proof_image varchar(255)
+  note text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Thanh toán - Quản lý thanh toán học phí'
+}
+
+// ===== NHÓM 4: LỊCH HỌC & ĐIỂM DANH =====
+
+Table schedules {
+  id bigint [pk, increment]
+  class_id bigint [ref: > classes.id, not null]
+  date date [not null]
+  start_time time [not null]
+  end_time time [not null]
+  location varchar(255)
+  topic text
+  status enum('scheduled', 'completed', 'cancelled') [default: 'scheduled']
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Lịch học - Từng buổi học cụ thể của lớp'
+}
+
+Table attendances {
+  id bigint [pk, increment]
+  schedule_id bigint [ref: > schedules.id, not null]
+  student_id bigint [ref: > students.id, not null]
+  status enum('present', 'absent', 'late', 'excused') [not null]
+  note text
+  recorded_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (schedule_id, student_id) [unique]
+  }
+  
+  Note: 'Điểm danh - Ghi lại tình trạng tham gia của học viên'
+}
+
+// ===== NHÓM 5: ĐÁNH GIÁ & KIỂM TRA =====
+
+Table assessments {
+  id bigint [pk, increment]
+  class_id bigint [ref: > classes.id, not null]
+  name varchar(255) [not null]
+  type enum('quiz', 'midterm', 'final', 'assignment', 'speaking', 'listening') [not null]
+  max_score decimal(5,2) [not null]
+  assessment_date date [not null]
+  description text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Bài kiểm tra - Các bài kiểm tra/đánh giá của lớp'
+}
+
+Table assessment_scores {
+  id bigint [pk, increment]
+  assessment_id bigint [ref: > assessments.id, not null]
+  student_id bigint [ref: > students.id, not null]
+  score decimal(5,2) [not null]
+  feedback text
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (assessment_id, student_id) [unique]
+  }
+  
+  Note: 'Điểm kiểm tra - Điểm số của học viên cho từng bài kiểm tra'
+}
+
+// ===== NHÓM 6: CHỨNG CHỈ & PHẢN HỒI =====
+
+Table certificates {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  course_id bigint [ref: > courses.id, not null]
+  certificate_number varchar(50) [unique, not null]
+  issue_date date [not null]
+  pdf_path varchar(255)
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Chứng chỉ - Chứng chỉ được cấp sau khi hoàn thành khóa học'
+}
+
+Table feedbacks {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  class_id bigint [ref: > classes.id, not null]
+  course_rating int [note: '1-5 stars']
+  teacher_rating int [note: '1-5 stars']
+  comment text
+  is_anonymous boolean [default: false]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Đánh giá - Phản hồi của học viên về khóa học và giáo viên'
+}
+
+// ===== NHÓM 7: THÔNG BÁO =====
+
+Table notifications {
+  id bigint [pk, increment]
+  user_id bigint [ref: > users.id, not null]
+  type varchar(50) [not null]
+  title varchar(255) [not null]
+  message text [not null]
+  is_read boolean [default: false]
+  sent_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Thông báo - Gửi thông báo cho người dùng'
+}
+
+// ===== NHÓM 8: CHATBOT =====
+
+Table conversations {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  started_at timestamp [not null]
+  last_message_at timestamp
+  message_count int [default: 0]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Cuộc trò chuyện - Phiên trò chuyện giữa học viên và chatbot'
+}
+
+Table messages {
+  id bigint [pk, increment]
+  conversation_id bigint [ref: > conversations.id, not null]
+  sender_type enum('student', 'bot') [not null]
+  content text [not null]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Tin nhắn - Từng tin nhắn trong cuộc trò chuyện'
+}
+
+Table chatbot_knowledge {
+  id bigint [pk, increment]
+  category varchar(100)
+  question text [not null]
+  answer text [not null]
+  keywords varchar(255)
+  priority int [default: 50, note: '1-100']
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Kiến thức chatbot - Cơ sở tri thức FAQ cho chatbot'
+}
+
+// ===== NHÓM BẢNG THEO CHỨC NĂNG =====
+
+TableGroup "Quản lý Người dùng" {
+  users
+  students
+  teachers
+}
+
+TableGroup "Khóa học & Lớp học" {
+  courses
+  classes
+  enrollments
+}
+
+TableGroup "Lịch học & Điểm danh" {
+  schedules
+  attendances
+}
+
+TableGroup "Đánh giá & Kiểm tra" {
+  assessments
+  assessment_scores
+  certificates
+}
+
+TableGroup "Thanh toán & Phản hồi" {
+  payments
+  feedbacks
+}
+
+TableGroup "Thông báo" {
+  notifications
+}
+
+TableGroup "Chatbot" {
+  conversations
+  messages
+  chatbot_knowledge
+}

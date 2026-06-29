@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Câu Hỏi Test Gemini AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 32px;
+            border-bottom: 4px solid #667eea;
+            padding-bottom: 15px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        .section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+        .section h2 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        .section h3 {
+            color: #5a67d8;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        .question {
+            background: white;
+            padding: 15px 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #e1e8ed;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .question:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        .question-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        .question-text {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .question-details {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #e1e8ed;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 8px;
+            margin-top: 5px;
+        }
+        .badge-fast {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .badge-slow {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .badge-recommended {
+            background: #667eea;
+            color: white;
+        }
+        .copy-btn {
+            float: right;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s;
+        }
+        .copy-btn:hover {
+            background: #5a67d8;
+            transform: scale(1.05);
+        }
+        .copy-btn:active {
+            background: #4c51bf;
+        }
+        .login-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .login-box h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        .login-info {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .btn-login {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s;
+        }
+        .btn-login:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            border-left: 5px solid #0c5460;
+            color: #0c5460;
+        }
+        .alert-success {
+            background: #d4edda;
+            border-left: 5px solid #155724;
+            color: #155724;
+        }
+        .emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .copy-btn {
+                float: none;
+                display: block;
+                margin-top: 10px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><span class="emoji">🤖</span> Câu Hỏi Test Gemini AI Chatbot</h1>
+        <p class="subtitle">API Key format mới (AQ.Ab...) | Model: gemini-2.5-flash</p>
+
+        <!-- Login Box -->
+        <div class="login-box">
+            <h3><span class="emoji">🔐</span> Đăng Nhập Trước Khi Test</h3>
+            <div class="login-info">
+                <strong>Email:</strong> hocvien1@gmail.com<br>
+                <strong>Password:</strong> password
+            </div>
+            <a href="http://127.0.0.1:8000/login" class="btn-login" target="_blank">
+                Đăng Nhập Ngay →
+            </a>
+        </div>
+
+        <!-- Instructions -->
+        <div class="alert alert-info">
+            <strong>📝 Hướng dẫn:</strong>
+            <ol style="margin-left: 20px; margin-top: 10px;">
+                <li>Đăng nhập bằng tài khoản học viên ở trên</li>
+                <li>Click vào icon <strong>💬 chatbot</strong> ở góc dưới bên phải</li>
+                <li>Click vào câu hỏi bên dưới để copy</li>
+                <li>Paste vào chatbot và gửi</li>
+                <li>Quan sát response time và nội dung trả lời</li>
+            </ol>
+        </div>
+
+        <!-- Gemini AI Questions -->
+        <div class="section">
+            <h2><span class="emoji">🤖</span> Layer 3: Gemini AI (3-8 giây)</h2>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">Những câu hỏi này sẽ được xử lý bởi <strong>Gemini AI</strong> với API key mới</p>
+
+            <h3>⭐⭐⭐ TOP PICKS - Khuyến nghị test đầu tiên:</h3>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">1</span>
+                <span class="question-text">Viết cho tôi một bài thơ về mùa xuân</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-slow">3-5 giây</span>
+                    <span class="badge badge-recommended">⭐ Recommended</span>
+                    <br>
+                    <strong>Mong đợi:</strong> AI từ chối lịch sự + giải thích chuyên môn về học tập
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">2</span>
+                <span class="question-text">Tôi muốn học tiếng Anh nhưng chưa biết bắt đầu từ đâu, bạn tư vấn cho tôi</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-slow">5-8 giây</span>
+                    <span class="badge badge-recommended">⭐⭐ Recommended</span>
+                    <br>
+                    <strong>Mong đợi:</strong> AI phân tích + đưa ra lộ trình học chi tiết
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">3</span>
+                <span class="question-text">So sánh khóa học tiếng Anh Beginner và Intermediate</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-slow">5-8 giây</span>
+                    <span class="badge badge-recommended">⭐⭐ Recommended</span>
+                    <br>
+                    <strong>Mong đợi:</strong> AI so sánh chi tiết với bullet points
+                </div>
+            </div>
+
+            <h3>💡 Câu hỏi phức tạp khác:</h3>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">4</span>
+                <span class="question-text">Tokyo là thủ đô của nước nào?</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-slow">3-5 giây</span>
+                    <br>
+                    <strong>Mong đợi:</strong> AI từ chối + hướng dẫn liên hệ
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">5</span>
+                <span class="question-text">Tôi đang stress vì học không hiểu, bạn có thể động viên tôi không?</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-slow">4-7 giây</span>
+                    <br>
+                    <strong>Mong đợi:</strong> AI đồng cảm + động viên + tư vấn
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">6</span>
+                <span class="question-text">Đưa ra 5 tips để học tiếng Anh hiệu quả</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-slow">5-8 giây</span>
+                    <br>
+                    <strong>Mong đợi:</strong> AI liệt kê tips với numbered list
+                </div>
+            </div>
+        </div>
+
+        <!-- Layer 1: Rule-Based -->
+        <div class="section">
+            <h2><span class="emoji">⚡</span> Layer 1: Rule-Based (&lt; 100ms)</h2>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">Câu hỏi được trả lời bởi <strong>Pattern matching</strong> (Không dùng AI)</p>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">7</span>
+                <span class="question-text">Xin chào</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-fast">&lt; 50ms</span>
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">8</span>
+                <span class="question-text">Thông tin của tôi</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-fast">&lt; 50ms</span>
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">9</span>
+                <span class="question-text">Lớp học của tôi</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-fast">&lt; 100ms</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Layer 2: FAQ -->
+        <div class="section">
+            <h2><span class="emoji">📚</span> Layer 2: FAQ Database (100-300ms)</h2>
+            <p style="margin-bottom: 20px; color: #7f8c8d;">Câu hỏi được trả lời từ <strong>Cơ sở dữ liệu FAQ</strong></p>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">10</span>
+                <span class="question-text">Học phí là bao nhiêu?</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-medium">100-300ms</span>
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">11</span>
+                <span class="question-text">Làm thế nào để đăng ký khóa học?</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-medium">100-300ms</span>
+                </div>
+            </div>
+
+            <div class="question" onclick="copyQuestion(this)">
+                <span class="question-number">12</span>
+                <span class="question-text">Trung tâm ở đâu?</span>
+                <button class="copy-btn" onclick="event.stopPropagation(); copyQuestion(this.parentElement)">📋 Copy</button>
+                <div class="question-details">
+                    <span class="badge badge-medium">100-300ms</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Indicators -->
+        <div class="alert alert-success">
+            <strong>✅ Dấu hiệu Gemini đang hoạt động:</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li><strong>Response time: 3-8 giây</strong> (loading spinner quay lâu)</li>
+                <li><strong>Format:</strong> Có emoji 👋 📚 💡, có bullet points</li>
+                <li><strong>Tone:</strong> Friendly, warm, có empathy</li>
+                <li><strong>Nội dung:</strong> Context về trung tâm ngoại ngữ</li>
+                <li><strong>Kết thúc:</strong> Có câu hỏi gợi ý follow-up</li>
+            </ul>
+        </div>
+
+        <!-- Footer -->
+        <div style="text-align: center; margin-top: 40px; padding-top: 20px; border-top: 2px solid #e1e8ed; color: #7f8c8d;">
+            <p><strong>🚀 Backend đang chạy:</strong> http://127.0.0.1:8000</p>
+            <p><strong>📊 Model:</strong> gemini-2.5-flash (June 2025)</p>
+            <p><strong>🔑 API Key:</strong> AQ.Ab8... (format mới)</p>
+            <p style="margin-top: 15px; font-size: 14px;">
+                Xem chi tiết: <a href="/GEMINI_API_UPDATE_REPORT.md" style="color: #667eea;">GEMINI_API_UPDATE_REPORT.md</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function copyQuestion(element) {
+            const questionText = element.querySelector('.question-text').textContent;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(questionText).then(() => {
+                // Visual feedback
+                const originalBg = element.style.background;
+                element.style.background = '#d4edda';
+                element.style.borderColor = '#28a745';
+                
+                // Show copied message
+                const copyBtn = element.querySelector('.copy-btn');
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = '✅ Đã copy!';
+                copyBtn.style.background = '#28a745';
+                
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    element.style.background = originalBg;
+                    element.style.borderColor = '#e1e8ed';
+                    copyBtn.textContent = originalText;
+                    copyBtn.style.background = '#667eea';
+                }, 2000);
+            }).catch(err => {
+                alert('Không thể copy: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>

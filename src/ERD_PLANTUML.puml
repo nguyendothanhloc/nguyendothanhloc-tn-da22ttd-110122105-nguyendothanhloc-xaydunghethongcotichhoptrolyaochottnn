@@ -1,0 +1,312 @@
+@startuml ERD_Language_Center
+' Sơ đồ ERD - Hệ thống Quản lý Trung tâm Ngoại ngữ
+' Database: language_center
+' Tổng số bảng: 17 bảng
+
+' Hướng dẫn sử dụng:
+' 1. Cài PlantUML extension cho VSCode
+' 2. Hoặc truy cập http://www.plantuml.com/plantuml/
+' 3. Copy/paste nội dung file này
+' 4. Export ra PNG/SVG
+
+!define table(x) class x << (T,#FFAAAA) >>
+!define primary_key(x) <u>x</u>
+!define foreign_key(x) <i>x</i>
+
+skinparam linetype ortho
+skinparam class {
+    BackgroundColor LightYellow
+    BorderColor Black
+    ArrowColor Black
+}
+
+' ===== NHÓM 1: NGƯỜI DÙNG =====
+
+table(users) {
+  primary_key(id): BIGINT
+  --
+  name: VARCHAR(255)
+  email: VARCHAR(255) [UNIQUE]
+  password: VARCHAR(255)
+  role: ENUM
+  phone: VARCHAR(20)
+  avatar: VARCHAR(255)
+  is_active: BOOLEAN
+  email_verified_at: TIMESTAMP
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(students) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(user_id): BIGINT
+  level: VARCHAR(50)
+  interests: TEXT
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(teachers) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(user_id): BIGINT
+  specialization: VARCHAR(255)
+  qualifications: TEXT
+  bio: TEXT
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== NHÓM 2: KHÓA HỌC & LỚP HỌC =====
+
+table(courses) {
+  primary_key(id): BIGINT
+  --
+  name: VARCHAR(255)
+  description: TEXT
+  language: VARCHAR(50)
+  level: ENUM
+  duration_weeks: INT
+  price: DECIMAL(10,2)
+  is_active: BOOLEAN
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(classes) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(course_id): BIGINT
+  foreign_key(teacher_id): BIGINT
+  name: VARCHAR(255)
+  start_date: DATE
+  end_date: DATE
+  max_capacity: INT
+  current_enrollment: INT
+  status: ENUM
+  shift: VARCHAR(20)
+  weekdays: VARCHAR(100)
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== NHÓM 3: ĐĂNG KÝ & THANH TOÁN =====
+
+table(enrollments) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(student_id): BIGINT
+  foreign_key(class_id): BIGINT
+  enrollment_date: DATE
+  status: ENUM
+  completion_percentage: DECIMAL(5,2)
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(payments) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(enrollment_id): BIGINT
+  amount: DECIMAL(10,2)
+  payment_method: VARCHAR(50)
+  status: ENUM
+  due_date: DATE
+  paid_date: DATE
+  proof_image: VARCHAR(255)
+  note: TEXT
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== NHÓM 4: LỊCH HỌC & ĐIỂM DANH =====
+
+table(schedules) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(class_id): BIGINT
+  date: DATE
+  start_time: TIME
+  end_time: TIME
+  location: VARCHAR(255)
+  topic: TEXT
+  status: ENUM
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(attendances) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(schedule_id): BIGINT
+  foreign_key(student_id): BIGINT
+  status: ENUM
+  note: TEXT
+  recorded_at: TIMESTAMP
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== NHÓM 5: ĐÁNH GIÁ & KIỂM TRA =====
+
+table(assessments) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(class_id): BIGINT
+  name: VARCHAR(255)
+  type: ENUM
+  max_score: DECIMAL(5,2)
+  assessment_date: DATE
+  description: TEXT
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(assessment_scores) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(assessment_id): BIGINT
+  foreign_key(student_id): BIGINT
+  score: DECIMAL(5,2)
+  feedback: TEXT
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== NHÓM 6: CHỨNG CHỈ & PHẢN HỒI =====
+
+table(certificates) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(student_id): BIGINT
+  foreign_key(course_id): BIGINT
+  certificate_number: VARCHAR(50) [UNIQUE]
+  issue_date: DATE
+  pdf_path: VARCHAR(255)
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(feedbacks) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(student_id): BIGINT
+  foreign_key(class_id): BIGINT
+  course_rating: INT
+  teacher_rating: INT
+  comment: TEXT
+  is_anonymous: BOOLEAN
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== NHÓM 7: THÔNG BÁO =====
+
+table(notifications) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(user_id): BIGINT
+  type: VARCHAR(50)
+  title: VARCHAR(255)
+  message: TEXT
+  is_read: BOOLEAN
+  sent_at: TIMESTAMP
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== NHÓM 8: CHATBOT =====
+
+table(conversations) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(student_id): BIGINT
+  started_at: TIMESTAMP
+  last_message_at: TIMESTAMP
+  message_count: INT
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(messages) {
+  primary_key(id): BIGINT
+  --
+  foreign_key(conversation_id): BIGINT
+  sender_type: ENUM
+  content: TEXT
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+table(chatbot_knowledge) {
+  primary_key(id): BIGINT
+  --
+  category: VARCHAR(100)
+  question: TEXT
+  answer: TEXT
+  keywords: VARCHAR(255)
+  priority: INT
+  is_active: BOOLEAN
+  created_at: TIMESTAMP
+  updated_at: TIMESTAMP
+}
+
+' ===== MỐI QUAN HỆ =====
+
+' Người dùng
+users ||--o| students : "has profile"
+users ||--o| teachers : "has profile"
+users ||--o{ notifications : "receives"
+
+' Khóa học & Lớp học
+courses ||--o{ classes : "has"
+teachers ||--o{ classes : "teaches"
+courses ||--o{ certificates : "issues"
+
+' Đăng ký & Thanh toán
+students ||--o{ enrollments : "enrolls in"
+classes ||--o{ enrollments : "has"
+enrollments ||--o| payments : "pays"
+
+' Lịch học & Điểm danh
+classes ||--o{ schedules : "has"
+schedules ||--o{ attendances : "records"
+students ||--o{ attendances : "attends"
+
+' Đánh giá & Kiểm tra
+classes ||--o{ assessments : "has"
+assessments ||--o{ assessment_scores : "scores"
+students ||--o{ assessment_scores : "receives"
+
+' Chứng chỉ & Phản hồi
+students ||--o{ certificates : "earns"
+students ||--o{ feedbacks : "gives"
+classes ||--o{ feedbacks : "receives"
+
+' Chatbot
+students ||--o{ conversations : "chats"
+conversations ||--o{ messages : "contains"
+
+' Ghi chú
+note right of users
+  <b>Bảng trung tâm</b>
+  Quản lý tất cả người dùng:
+  - admin
+  - teacher
+  - student
+end note
+
+note right of chatbot_knowledge
+  <b>Bảng độc lập</b>
+  Không có FK, lưu
+  kiến thức cho chatbot
+end note
+
+note bottom of enrollments
+  <b>Bảng trung gian</b>
+  Kết nối students và classes
+  Unique: (student_id, class_id)
+end note
+
+@enduml

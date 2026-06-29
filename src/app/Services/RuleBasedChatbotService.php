@@ -1,0 +1,2336 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Course;
+use App\Models\Schedule;
+use App\Models\AssessmentScore;
+use App\Models\Enrollment;
+use App\Models\Student;
+use App\Models\Teacher;
+use App\Models\Payment;
+use App\Models\Attendance;
+use App\Models\ChatbotKnowledge;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
+class RuleBasedChatbotService
+{
+    /**
+     * Normalize Vietnamese text (remove accents)
+     */
+    private function removeVietnameseAccents(string $str): string
+    {
+        $str = mb_strtolower($str, 'UTF-8');
+        
+        $vietnameseMap = [
+            'à' => 'a', 'á' => 'a', 'ạ' => 'a', 'ả' => 'a', 'ã' => 'a',
+            'â' => 'a', 'ầ' => 'a', 'ấ' => 'a', 'ậ' => 'a', 'ẩ' => 'a', 'ẫ' => 'a',
+            'ă' => 'a', 'ằ' => 'a', 'ắ' => 'a', 'ặ' => 'a', 'ẳ' => 'a', 'ẵ' => 'a',
+            'è' => 'e', 'é' => 'e', 'ẹ' => 'e', 'ẻ' => 'e', 'ẽ' => 'e',
+            'ê' => 'e', 'ề' => 'e', 'ế' => 'e', 'ệ' => 'e', 'ể' => 'e', 'ễ' => 'e',
+            'ì' => 'i', 'í' => 'i', 'ị' => 'i', 'ỉ' => 'i', 'ĩ' => 'i',
+            'ò' => 'o', 'ó' => 'o', 'ọ' => 'o', 'ỏ' => 'o', 'õ' => 'o',
+            'ô' => 'o', 'ồ' => 'o', 'ố' => 'o', 'ộ' => 'o', 'ổ' => 'o', 'ỗ' => 'o',
+            'ơ' => 'o', 'ờ' => 'o', 'ớ' => 'o', 'ợ' => 'o', 'ở' => 'o', 'ỡ' => 'o',
+            'ù' => 'u', 'ú' => 'u', 'ụ' => 'u', 'ủ' => 'u', 'ũ' => 'u',
+            'ư' => 'u', 'ừ' => 'u', 'ứ' => 'u', 'ự' => 'u', 'ử' => 'u', 'ữ' => 'u',
+            'ỳ' => 'y', 'ý' => 'y', 'ỵ' => 'y', 'ỷ' => 'y', 'ỹ' => 'y',
+            'đ' => 'd'
+        ];
+        
+        return strtr($str, $vietnameseMap);
+    }
+
+    /**
+     * Search FAQ knowledge base for matching entries (DEPRECATED - use searchKnowledgeBase instead)
+     * 
+     * @param string $message User message to search for
+     * @return array|null Response array if FAQ match found, null otherwise
+     */
+    private function searchFAQ(string $message): ?array
+    {
+        // Normalize the search message
+        $normalizedMessage = $this->removeVietnameseAccents(trim($message));
+        
+        // Get all active FAQ entries
+        $activeFAQs = ChatbotKnowledge::active()->get();
+        
+        // Filter FAQs by normalized text matching
+        $matchingFaqs = $activeFAQs->filter(function ($faq) use ($normalizedMessage) {
+            // Normalize the FAQ question and keywords
+            $normalizedQuestion = $this->removeVietnameseAccents($faq->question);
+            $normalizedKeywords = $this->removeVietnameseAccents($faq->keywords ?? '');
+            
+            // Check if the normalized search message is contained in question or keywords
+            return str_contains($normalizedQuestion, $normalizedMessage) ||
+                   str_contains($normalizedKeywords, $normalizedMessage);
+        });
+        
+        // If no matches found, return null
+        if ($matchingFaqs->isEmpty()) {
+            return null;
+        }
+        
+        // Get the highest priority match
+        $faqEntry = $matchingFaqs->sortByDesc('priority')->first();
+        
+        // Format the response with prefix, question, and answer
+        $response = "📚 Từ cơ sở tri thức:\n\n";
+        $response .= "**{$faqEntry->question}**\n\n";
+        $response .= $faqEntry->answer;
+        
+        // Return the response structure
+        return [
+            'response' => $response,
+            'type' => 'faq',
+            'data' => $faqEntry
+        ];
+    }
+
+    /**
+     * Search knowledge base for matching entries
+     * 
+     * @param string $message User message to search for
+     * @return array|null Response array if knowledge base match found, null otherwise
+     */
+    private function searchKnowledgeBase(string $message): ?array
+    {
+        // Normalize the search message
+        $normalizedMessage = $this->removeVietnameseAccents(trim($message));
+        
+        // Get all active knowledge base entries, ordered by priority DESC
+        $activeEntries = ChatbotKnowledge::active()
+            ->orderBy('priority', 'desc')
+            ->get();
+        
+        // Filter entries by normalized text matching
+        $matchingEntries = $activeEntries->filter(function ($entry) use ($normalizedMessage) {
+            // Normalize the question
+            $normalizedQuestion = $this->removeVietnameseAccents($entry->question);
+            
+            // Check if normalized message matches the question (LIKE %normalized%)
+            if (str_contains($normalizedQuestion, $normalizedMessage) || 
+                str_contains($normalizedMessage, $normalizedQuestion)) {
+                return true;
+            }
+            
+            // Check keywords if present
+            if (!empty($entry->keywords)) {
+                // Split keywords by comma and check each keyword
+                $keywords = array_map('trim', explode(',', $entry->keywords));
+                
+                foreach ($keywords as $keyword) {
+                    $normalizedKeyword = $this->removeVietnameseAccents($keyword);
+                    
+                    // Check if the keyword matches the message or vice versa
+                    if (str_contains($normalizedMessage, $normalizedKeyword) || 
+                        str_contains($normalizedKeyword, $normalizedMessage)) {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        });
+        
+        // If no matches found, return null
+        if ($matchingEntries->isEmpty()) {
+            return null;
+        }
+        
+        // Get the first match (already sorted by priority DESC)
+        $knowledgeEntry = $matchingEntries->first();
+        
+        // Log knowledge base match
+        \Illuminate\Support\Facades\Log::info('Chatbot: Knowledge Base match', [
+            'message_preview' => substr($message, 0, 50),
+            'entry_id' => $knowledgeEntry->id,
+            'entry_category' => $knowledgeEntry->category,
+            'entry_priority' => $knowledgeEntry->priority
+        ]);
+        
+        // Format the response with prefix, question, and answer
+        $response = "📚 Từ cơ sở tri thức:\n\n";
+        $response .= "**{$knowledgeEntry->question}**\n\n";
+        $response .= $knowledgeEntry->answer;
+        
+        // Return the response structure
+        return [
+            'response' => $response,
+            'type' => 'knowledge_base',
+            'data' => $knowledgeEntry
+        ];
+    }
+
+    /**
+     * Try rule-based pattern matching
+     * 
+     * @param string $message User message
+     * @return array|null Response array if pattern matched, null otherwise
+     */
+    public function tryRuleBasedMatch(string $message): ?array
+    {
+        $message = $this->removeVietnameseAccents(trim($message));
+
+        // === SPECIFIC PATTERNS FIRST (must come before general patterns) ===
+        
+        // MY TEACHER inquiry - DISABLED TO LET GEMINI HANDLE
+        // Reason: Thesis requirement - must rely heavily on Gemini AI
+        // if (($this->matchesPattern($message, ['giao vien cua toi', 'thay cua toi', 'co cua toi', 'my teacher']) 
+        //     || $this->matchesPattern($message, ['giao vien']) && $this->matchesPattern($message, ['cua toi']))
+        //     && !$this->matchesPattern($message, ['so dien thoai', 'sdt', 'phone', 'email', 'lien he', 'contact'])) {
+        //     return $this->getMyTeacherInfo();
+        // }
+        
+        // STUDENT PERSONAL INFO inquiry (check if student asking about themselves)
+        // IMPORTANT: Must NOT contain teacher keywords OR 'giao vien' pattern in normalized form
+        if (!$this->matchesPattern($message, ['giao vien', 'thay', 'co', 'giang vien', 'teacher', 'giaovien']) 
+            && ($this->matchesPattern($message, ['thong tin cua toi', 'ten toi', 'toi ten', 'email cua toi', 'my info', 'my name', 'my email']) 
+                || $this->matchesPattern($message, ['so dien thoai cua toi', 'sdt cua toi', 'my phone']) 
+                || $this->matchesPattern($message, ['dia chi cua toi', 'toi o dau', 'my address']))) {
+            return $this->getStudentPersonalInfo($message);
+        }
+        // MY TEACHER CONTACT inquiry - DISABLED TO LET GEMINI HANDLE
+        // Reason: Thesis requirement - must rely heavily on Gemini AI
+        // if (($this->matchesPattern($message, ['so dien thoai', 'sdt', 'phone', 'email', 'lien he', 'lien lac', 'contact']) 
+        //     && $this->matchesPattern($message, ['giao vien cua toi', 'thay cua toi', 'co cua toi'])) 
+        //     || $this->matchesPattern($message, ['lien he giao vien'])) {
+        //     return $this->getMyTeacherContact();
+        // }
+        
+        // TEACHER CONTACT/PHONE inquiry - DISABLED TO LET GEMINI HANDLE
+        // Reason: Thesis requirement - must rely heavily on Gemini AI
+        /*
+        if ($this->matchesPattern($message, ['so dien thoai', 'phone', 'lien he', 'lien lac', 'contact', 'sdt'])) {
+            
+            // PRIORITY 1: Try to find specific teacher by name FIRST
+            // This will check if there's a teacher name match in the message
+            $nameMatchResult = $this->getTeacherContactByName($message);
+            
+            // If we found a specific teacher (not general teacher list), return it
+            if ($nameMatchResult && isset($nameMatchResult['data']) && $nameMatchResult['data'] !== null) {
+                // Check if it's a single teacher (not a collection)
+                if (!is_array($nameMatchResult['data']) || !isset($nameMatchResult['data'][0])) {
+                    return $nameMatchResult;
+                }
+            }
+            
+            // PRIORITY 2: Check if asking about teachers by language
+            if ($this->matchesPattern($message, ['giao vien', 'thay', 'co', 'giang vien'])) {
+                if ($this->matchesPattern($message, ['tieng anh', 'english'])) {
+                    return $this->getTeacherContact('English');
+                }
+                if ($this->matchesPattern($message, ['tieng nhat', 'japanese', 'nhat ban'])) {
+                    return $this->getTeacherContact('Japanese');
+                }
+                if ($this->matchesPattern($message, ['tieng trung', 'chinese', 'trung quoc'])) {
+                    return $this->getTeacherContact('Chinese');
+                }
+                if ($this->matchesPattern($message, ['tieng han', 'korean', 'han quoc'])) {
+                    return $this->getTeacherContact('Korean');
+                }
+                // General teacher contact (all teachers)
+                return $this->getTeacherContact();
+            }
+            
+            // PRIORITY 3: Return the name match result (even if it's general list)
+            return $nameMatchResult;
+        }
+        */
+        
+        // Specific TEACHER inquiry by language - DISABLED TO LET GEMINI HANDLE
+        // Reason: Thesis requirement - must rely heavily on Gemini AI
+        /*
+        if ($this->matchesPattern($message, ['giao vien', 'thay', 'co', 'giang vien']) 
+            && !$this->matchesPattern($message, ['co day', 'day', 'khoa hoc', 'hoc'])) {
+            // Check for specific languages
+            if ($this->matchesPattern($message, ['tieng anh', 'english'])) {
+                return $this->getTeacherByLanguage('English');
+            }
+            if ($this->matchesPattern($message, ['tieng nhat', 'japanese', 'nhat ban'])) {
+                return $this->getTeacherByLanguage('Japanese');
+            }
+            if ($this->matchesPattern($message, ['tieng trung', 'chinese', 'trung quoc'])) {
+                return $this->getTeacherByLanguage('Chinese');
+            }
+            if ($this->matchesPattern($message, ['tieng han', 'korean', 'han quoc'])) {
+                return $this->getTeacherByLanguage('Korean');
+            }
+            // If no specific language, return general teacher info
+            return $this->getTeacherInfo();
+        }
+        */
+
+        // Specific FEE inquiry by language (check AFTER teacher patterns)
+        // DISABLED TO LET GEMINI HANDLE - Pattern 'gia' is too short and matches 'giao' in 'giao vien'
+        // This was intercepting teacher questions like "giáo viên của tôi"
+        /*
+        if ($this->matchesPattern($message, ['hoc phi', 'phi', 'gia'])) {
+            if ($this->matchesPattern($message, ['tieng anh', 'english'])) {
+                return $this->getSpecificCourseFee('English');
+            }
+            if ($this->matchesPattern($message, ['tieng nhat', 'japanese', 'nhat ban'])) {
+                return $this->getSpecificCourseFee('Japanese');
+            }
+            if ($this->matchesPattern($message, ['tieng trung', 'chinese', 'trung quoc'])) {
+                return $this->getSpecificCourseFee('Chinese');
+            }
+            if ($this->matchesPattern($message, ['tieng han', 'korean', 'han quoc'])) {
+                return $this->getSpecificCourseFee('Korean');
+            }
+            // If no specific language, return general fee info
+            return $this->getFeeInformation();
+        }
+        */
+
+        // Remaining sessions inquiry (SPECIFIC: "còn bao nhiêu buổi")
+        if ($this->matchesPattern($message, ['con bao nhieu buoi', 'con lai', 'buoi con lai', 'remaining'])) {
+            return $this->getRemainingSessions();
+        }
+
+        // Class info inquiry (SPECIFIC: "lớp học" + "bao nhiêu người")
+        if ($this->matchesPattern($message, ['lop hoc']) && $this->matchesPattern($message, ['bao nhieu nguoi', 'si so'])) {
+            return $this->getClassInfo();
+        }
+
+        // Study duration inquiry (SPECIFIC: "đã học bao lâu")
+        if ($this->matchesPattern($message, ['hoc duoc bao lau', 'da hoc', 'thoi gian hoc', 'hoc bao lau'])) {
+            return $this->getStudyDuration();
+        }
+
+        // Course duration inquiry (SPECIFIC: "khóa học kéo dài")
+        if ($this->matchesPattern($message, ['khoa hoc keo dai', 'thoi luong khoa hoc', 'hoc mat bao lau', 'duration'])) {
+            return $this->getCourseDuration();
+        }
+
+        // Payment deadline inquiry (SPECIFIC: "hạn thanh toán")
+        if ($this->matchesPattern($message, ['han thanh toan', 'deadline', 'han dong', 'phai dong'])) {
+            return $this->getPaymentDeadline();
+        }
+
+        // Payment status inquiry (SPECIFIC: "đã thanh toán")
+        if ($this->matchesPattern($message, ['da thanh toan', 'thanh toan chua', 'dong tien', 'payment status'])) {
+            return $this->getPaymentStatus();
+        }
+
+        // Weekly schedule inquiry - DISABLED: Let Gemini AI handle schedule questions
+        // if ($this->matchesPattern($message, ['lich tuan', 'lich hoc tuan', 'tuan nay', 'this week', 'schedule week'])) {
+        //     return $this->getWeeklySchedule();
+        // }
+
+        // Monthly schedule inquiry - DISABLED: Let Gemini AI handle schedule questions
+        // if ($this->matchesPattern($message, ['lich thang', 'lich hoc thang', 'thang nay', 'this month'])) {
+        //     return $this->getMonthlySchedule();
+        // }
+
+        // Tomorrow schedule inquiry - DISABLED: Let Gemini AI handle schedule questions
+        // if ($this->matchesPattern($message, ['ngay mai', 'tomorrow', 'mai hoc'])) {
+        //     return $this->getTomorrowSchedule();
+        // }
+
+        // Next class inquiry
+        if ($this->matchesPattern($message, ['buoi tiep theo', 'hoc tiep', 'next class', 'buoi ke'])) {
+            return $this->getNextClass();
+        }
+
+        // Class schedule days inquiry
+        if ($this->matchesPattern($message, ['lop hoc vao', 'hoc thu may', 'ngay nao', 'which day'])) {
+            return $this->getClassScheduleDays();
+        }
+
+        // Average score inquiry
+        if ($this->matchesPattern($message, ['diem trung binh', 'average', 'gpa', 'trung binh'])) {
+            return $this->getAverageScore();
+        }
+
+        // Certificate eligibility inquiry
+        if ($this->matchesPattern($message, ['chung chi', 'certificate', 'dieu kien', 'nhan chung chi', 'lay chung chi'])) {
+            return $this->getCertificateEligibility();
+        }
+
+        // Completion rate inquiry
+        if ($this->matchesPattern($message, ['hoan thanh', 'completion', 'ty le', 'phan tram'])) {
+            return $this->getCompletionRate();
+        }
+
+        // Graduation date inquiry (SPECIFIC: "khi nào tốt nghiệp")
+        if ($this->matchesPattern($message, ['khi nao', 'tot nghiep', 'graduation', 'hoc xong'])) {
+            return $this->getGraduationDate();
+        }
+
+        // Classmates inquiry (SPECIFIC: "bạn cùng lớp của tôi")
+        if ($this->matchesPattern($message, ['ban cung lop', 'classmate', 'hoc cung', 'hoc vien'])) {
+            return $this->getClassmates();
+        }
+
+        // Absent count inquiry (SPECIFIC: "vắng bao nhiêu buổi")
+        if ($this->matchesPattern($message, ['vang bao nhieu', 'nghi bao nhieu', 'absent', 'so buoi vang'])) {
+            return $this->getAbsentCount();
+        }
+
+        // Late count inquiry (SPECIFIC: "đi muộn bao nhiêu lần")
+        if ($this->matchesPattern($message, ['di muon', 'den tre', 'late', 'so lan muon'])) {
+            return $this->getLateCount();
+        }
+
+        // Today subjects inquiry - DISABLED: Let Gemini AI handle schedule questions
+        // Pattern "hoc gi" is too broad and intercepts specific date questions like "Ngày 22/06/2026 tôi học gì?"
+        // if ($this->matchesPattern($message, ['hoc mon gi', 'mon hoc', 'subject', 'hoc gi hom nay'])) {
+        //     return $this->getTodaySubjects();
+        // }
+
+        // Unpaid amount inquiry (SPECIFIC: "còn nợ bao nhiêu tiền")
+        if ($this->matchesPattern($message, ['con no', 'chua dong', 'phai dong', 'unpaid', 'debt'])) {
+            return $this->getUnpaidAmount();
+        }
+
+        // Office hours inquiry (SPECIFIC: "giờ làm việc của trung tâm")
+        if ($this->matchesPattern($message, ['gio lam viec', 'gio mo cua', 'working hours', 'office hours'])) {
+            return $this->getOfficeHours();
+        }
+
+        // === GENERAL PATTERNS (after specific patterns) ===
+
+        // Greeting patterns
+        if ($this->matchesPattern($message, ['xin chao', 'hello', 'hi'])) {
+            return $this->getGreeting();
+        }
+
+        // Help patterns
+        if ($this->matchesPattern($message, ['help', 'giup', 'ho tro', 'tro giup'])) {
+            return $this->getHelpMessage();
+        }
+
+        // Course inquiry patterns
+        // REMOVED 'hoc gi' from pattern because it intercepts specific date questions like "Ngày 22/06 tôi học gì?"
+        if ($this->matchesPattern($message, ['khoa hoc', 'course', 'co khoa nao'])) {
+            return $this->getCourseRecommendations();
+        }
+
+        // Schedule inquiry patterns (general: "lịch học hôm nay") - DISABLED: Let Gemini AI handle
+        // if ($this->matchesPattern($message, ['lich hoc', 'schedule', 'hoc hom nay', 'lich hom nay'])) {
+        //     return $this->getTodaySchedule();
+        // }
+
+        // Grades inquiry patterns
+        if ($this->matchesPattern($message, ['diem', 'grade', 'score', 'ket qua', 'bai kiem tra'])) {
+            return $this->getGrades();
+        }
+
+        // Contact inquiry patterns (GENERAL: about the center/office)
+        // IMPORTANT: Must NOT contain teacher keywords (to let Gemini handle teacher contact questions)
+        if (!$this->matchesPattern($message, ['giao vien', 'thay', 'co', 'giang vien', 'teacher']) 
+            && $this->matchesPattern($message, ['lien he', 'contact', 'dia chi', 'email', 'phone', 'so dien thoai'])) {
+            return $this->getContactInformation();
+        }
+
+        // Attendance inquiry patterns
+        if ($this->matchesPattern($message, ['diem danh', 'attendance', 'vang', 'nghi'])) {
+            return $this->getAttendanceInfo();
+        }
+
+        // No pattern matched - return null
+        return null;
+    }
+
+    /**
+     * Fall back to AI for complex questions
+     * 
+     * @param string $message User message
+     * @param int $studentId Student ID for context
+     * @return array Response array with AI-generated content
+     */
+    public function askAI(string $message, int $studentId): array
+    {
+        try {
+            // Create or get Gemini service instance
+            $geminiService = new GeminiChatbotService();
+            
+            // Generate AI response with student context
+            $aiResponse = $geminiService->generateResponse($message, $studentId);
+            
+            return [
+                'response' => $aiResponse,
+                'type' => 'ai_powered',
+                'data' => null
+            ];
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('AI fallback failed', [
+                'student_id' => $studentId,
+                'message' => $message,
+                'error' => $e->getMessage()
+            ]);
+            
+            // Return helpful fallback message
+            return [
+                'response' => "Xin lỗi, tôi chưa thể trả lời câu hỏi này. \n\nBạn có thể:\n" .
+                             "📚 Hỏi về lịch học, điểm số, học phí\n" .
+                             "📞 Liên hệ văn phòng: 0123-456-789\n" .
+                             "✉️ Email: info@languagecenter.edu.vn\n\n" .
+                             "Hoặc thử hỏi admin để được hỗ trợ chi tiết hơn!",
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+    }
+
+    /**
+     * Process user message and return appropriate response (with AI fallback)
+     */
+    public function processMessage(string $message): array
+    {
+        // Step 1: Try rule-based matching first
+        $ruleResponse = $this->tryRuleBasedMatch($message);
+        
+        if ($ruleResponse !== null) {
+            // Log: rule-based match
+            \Illuminate\Support\Facades\Log::info('Chatbot: Rule-based match', [
+                'message_preview' => substr($message, 0, 50)
+            ]);
+            return $ruleResponse;
+        }
+        
+        // Step 2: Try Knowledge Base search
+        $knowledgeBaseResponse = $this->searchKnowledgeBase($message);
+        
+        if ($knowledgeBaseResponse !== null) {
+            // Log: Knowledge Base match (already logged in searchKnowledgeBase method)
+            return $knowledgeBaseResponse;
+        }
+        
+        // Step 3: No pattern match or Knowledge Base match - fall back to AI
+        $user = Auth::user();
+        
+        if (!$user) {
+            return [
+                'response' => 'Vui lòng đăng nhập để sử dụng chatbot.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+        
+        $student = Student::where('user_id', $user->id)->first();
+        
+        if (!$student) {
+            return [
+                'response' => 'Không tìm thấy thông tin học viên.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+        
+        // Log: AI fallback
+        \Illuminate\Support\Facades\Log::info('Chatbot: AI fallback', [
+            'message_preview' => substr($message, 0, 50),
+            'student_id' => $student->id
+        ]);
+        
+        return $this->askAI($message, $student->id);
+    }
+
+    /**
+     * Check if message matches any of the patterns
+     */
+    private function matchesPattern(string $message, array $patterns): bool
+    {
+        foreach ($patterns as $pattern) {
+            $normalizedPattern = $this->removeVietnameseAccents(mb_strtolower($pattern));
+            if (str_contains($message, $normalizedPattern)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get greeting message
+     */
+    private function getGreeting(): array
+    {
+        $user = Auth::user();
+        $hour = Carbon::now()->hour;
+        $greeting = '';
+        
+        if ($hour < 12) {
+            $greeting = 'Chao buoi sang';
+        } elseif ($hour < 18) {
+            $greeting = 'Chao buoi chieu';
+        } else {
+            $greeting = 'Chao buoi toi';
+        }
+        
+        $response = "{$greeting}, {$user->name}!\n\n";
+        $response .= "Toi la tro ly ao cua Trung tam Ngoai ngu. Toi co the giup ban:\n\n";
+        $response .= "- Xem lich hoc va thoi khoa bieu\n";
+        $response .= "- Kiem tra diem so va ket qua hoc tap\n";
+        $response .= "- Tim hieu ve cac khoa hoc va hoc phi\n";
+        $response .= "- Xem thong tin giao vien\n";
+        $response .= "- Kiem tra trang thai thanh toan\n";
+        $response .= "- Thong tin lien he\n\n";
+        $response .= "Ban can toi giup gi khong?";
+        
+        return [
+            'response' => $response,
+            'type' => 'greeting',
+            'data' => null
+        ];
+    }
+
+    /**
+     * Get student personal information
+     */
+    private function getStudentPersonalInfo(string $message): array
+    {
+        $user = Auth::user();
+        
+        if (!$user || !$user->student) {
+            return [
+                'response' => "Xin loi, toi khong the tim thay thong tin hoc vien. Ban co the dang nhap lai khong?",
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+        
+        $student = $user->student;
+        $normalizedMessage = $this->removeVietnameseAccents($message);
+        
+        // Check what specific info they're asking for
+        $response = "THONG TIN CA NHAN CUA BAN\n\n";
+        
+        // Full name
+        if ($this->matchesPattern($normalizedMessage, ['ten', 'ho ten', 'name'])) {
+            $response .= "👤 Ho va ten: {$user->name}\n\n";
+        }
+        
+        // Email
+        if ($this->matchesPattern($normalizedMessage, ['email', 'mail'])) {
+            $response .= "📧 Email: {$user->email}\n\n";
+        }
+        
+        // Phone
+        if ($this->matchesPattern($normalizedMessage, ['so dien thoai', 'sdt', 'phone', 'dien thoai'])) {
+            $phone = $user->phone ?? 'Chua cap nhat';
+            $response .= "📱 So dien thoai: {$phone}\n\n";
+        }
+        
+        // Address - not in database yet, show message
+        if ($this->matchesPattern($normalizedMessage, ['dia chi', 'address', 'o dau'])) {
+            $response .= "🏠 Dia chi: Chua cap nhat\n";
+            $response .= "   (Ban co the cap nhat thong tin nay trong trang 'Thong tin ca nhan')\n\n";
+        }
+        
+        // Date of birth - not in database yet, show message
+        if ($this->matchesPattern($normalizedMessage, ['ngay sinh', 'sinh nhat', 'birthday', 'birth'])) {
+            $response .= "🎂 Ngay sinh: Chua cap nhat\n";
+            $response .= "   (Ban co the cap nhat thong tin nay trong trang 'Thong tin ca nhan')\n\n";
+        }
+        
+        // If asking for general info (thông tin của tôi), show everything available
+        if ($this->matchesPattern($normalizedMessage, ['thong tin', 'info']) && 
+            !$this->matchesPattern($normalizedMessage, ['ten', 'email', 'phone', 'dia chi', 'ngay sinh'])) {
+            
+            $response = "THONG TIN CA NHAN CUA BAN\n\n";
+            $response .= "👤 Ho va ten: {$user->name}\n";
+            $response .= "📧 Email: {$user->email}\n";
+            
+            $phone = $user->phone ?? 'Chua cap nhat';
+            $response .= "📱 So dien thoai: {$phone}\n";
+            
+            // Student specific info
+            if ($student->level) {
+                $response .= "📚 Trinh do: {$student->level}\n";
+            }
+            
+            if ($student->interests) {
+                $response .= "🎯 So thich: {$student->interests}\n";
+            }
+            
+            $response .= "\n---\n";
+            $response .= "Ban co the hoi chi tiet hon nhu:\n";
+            $response .= '- "Email cua toi la gi?"' . "\n";
+            $response .= '- "So dien thoai cua toi?"' . "\n";
+            $response .= '- "Ten toi la gi?"' . "\n";
+        }
+        
+        return [
+            'response' => $response,
+            'type' => 'student_info',
+            'data' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'level' => $student->level,
+                'interests' => $student->interests
+            ]
+        ];
+    }
+
+    /**
+     * Get help message
+     */
+    private function getHelpMessage(): array
+    {
+        $response = "DANH SACH CAU HOI BAN CO THE HỎI:\n\n";
+        
+        $response .= "VE KHOA HOC:\n";
+        $response .= '- "Co khoa hoc nao phu hop voi toi?"' . "\n";
+        $response .= '- "Hoc phi tieng Anh bao nhieu?"' . "\n";
+        $response .= '- "Hoc phi tieng Nhat bao nhieu?"' . "\n";
+        $response .= '- "Hoc phi tieng Han bao nhieu?"' . "\n";
+        $response .= '- "Hoc phi tieng Trung bao nhieu?"' . "\n";
+        $response .= '- "Khi nao toi tot nghiep?"' . "\n\n";
+        
+        $response .= "VE GIAO VIEN:\n";
+        $response .= '- "Giao vien cua toi la ai?"' . "\n";
+        $response .= '- "Giao vien day tieng Anh la ai?"' . "\n";
+        $response .= '- "Giao vien day tieng Nhat la ai?"' . "\n";
+        $response .= '- "Giao vien day tieng Han la ai?"' . "\n";
+        $response .= '- "Giao vien day tieng Trung la ai?"' . "\n";
+        $response .= '- "So dien thoai giao vien cua toi?"' . "\n";
+        $response .= '- "Email giao vien cua toi?"' . "\n\n";
+        
+        $response .= "VE LICH HOC:\n";
+        $response .= '- "Lich hoc hom nay"' . "\n";
+        $response .= '- "Lich hoc tuan nay"' . "\n";
+        $response .= '- "Lich hoc thang nay"' . "\n";
+        $response .= '- "Buoi hoc tiep theo khi nao?"' . "\n";
+        $response .= '- "Ngay mai toi co hoc khong?"' . "\n";
+        $response .= '- "Hom nay toi hoc mon gi?"' . "\n\n";
+        
+        $response .= "VE LOP HOC:\n";
+        $response .= '- "Lop hoc cua toi co bao nhieu nguoi?"' . "\n";
+        $response .= '- "Toi con bao nhieu buoi hoc?"' . "\n";
+        $response .= '- "Lop hoc vao thu may?"' . "\n";
+        $response .= '- "Ban cung lop cua toi la ai?"' . "\n\n";
+        
+        $response .= "VE DIEM SO:\n";
+        $response .= '- "Diem cua toi the nao?"' . "\n";
+        $response .= '- "Diem trung binh bao nhieu?"' . "\n\n";
+        
+        $response .= "VE DIEM DANH:\n";
+        $response .= '- "Toi vang bao nhieu buoi?"' . "\n";
+        $response .= '- "Toi di muon bao nhieu lan?"' . "\n\n";
+        
+        $response .= "VE THANH TOAN:\n";
+        $response .= '- "Toi da thanh toan chua?"' . "\n";
+        $response .= '- "Han thanh toan khi nao?"' . "\n";
+        $response .= '- "Con no bao nhieu tien?"' . "\n\n";
+        
+        $response .= "VE CHUNG CHI:\n";
+        $response .= '- "Dieu kien nhan chung chi?"' . "\n\n";
+        
+        $response .= "LIEN HE:\n";
+        $response .= '- "Dia chi trung tam?"' . "\n";
+        $response .= '- "So dien thoai lien he?"' . "\n";
+        $response .= '- "Gio lam viec cua trung tam?"' . "\n\n";
+        
+        $response .= "Hay hoi toi bat cu dieu gi!";
+        
+        return [
+            'response' => $response,
+            'type' => 'help',
+            'data' => null
+        ];
+    }
+
+    /**
+     * Get course recommendations
+     */
+    private function getCourseRecommendations(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Xin loi, toi khong tim thay thong tin hoc vien cua ban.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $courses = Course::where('is_active', true)->get();
+
+        if ($courses->isEmpty()) {
+            return [
+                'response' => 'Hien tai khong co khoa hoc nao kha dung.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $courseList = $courses->map(function ($course) {
+            return "{$course->name} - {$course->language} ({$course->level})";
+        })->implode("\n");
+
+        return [
+            'response' => "Cac khoa hoc kha dung:\n{$courseList}",
+            'type' => 'course_list',
+            'data' => $courses
+        ];
+    }
+
+    /**
+     * Get today schedule
+     */
+    private function getTodaySchedule(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $today = Carbon::today();
+        $schedules = Schedule::whereIn('class_id', $classIds)
+            ->whereDate('date', $today)
+            ->with('class')
+            ->get();
+
+        if ($schedules->isEmpty()) {
+            return [
+                'response' => 'Ban khong co lich hoc nao hom nay.',
+                'type' => 'schedule',
+                'data' => null
+            ];
+        }
+
+        $scheduleText = $schedules->map(function ($schedule) {
+            return "{$schedule->class->name}: {$schedule->start_time} - {$schedule->end_time}";
+        })->implode("\n");
+
+        return [
+            'response' => "Lich hoc hom nay:\n{$scheduleText}",
+            'type' => 'schedule',
+            'data' => $schedules
+        ];
+    }
+
+    /**
+     * Get grades
+     */
+    private function getGrades(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $scores = AssessmentScore::where('student_id', $student->id)
+            ->with('assessment')
+            ->get();
+
+        if ($scores->isEmpty()) {
+            return [
+                'response' => 'Ban chua co diem nao.',
+                'type' => 'grades',
+                'data' => null
+            ];
+        }
+
+        $gradeText = $scores->map(function ($score) {
+            return "{$score->assessment->title}: {$score->score}";
+        })->implode("\n");
+
+        return [
+            'response' => "Diem so cua ban:\n{$gradeText}",
+            'type' => 'grades',
+            'data' => $scores
+        ];
+    }
+
+    /**
+     * Get contact information
+     */
+    private function getContactInformation(): array
+    {
+        return [
+            'response' => "Thong tin lien he:\nEmail: contact@languagecenter.edu.vn\nPhone: 0123-456-789\nDia chi: 123 Nguyen Hue, Q1, TP.HCM",
+            'type' => 'contact',
+            'data' => [
+                'email' => 'contact@languagecenter.edu.vn',
+                'phone' => '0123-456-789',
+                'address' => '123 Nguyen Hue, Q1, TP.HCM'
+            ]
+        ];
+    }
+
+    /**
+     * Get attendance info
+     */
+    private function getAttendanceInfo(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $attendances = Attendance::where('student_id', $student->id)->get();
+
+        if ($attendances->isEmpty()) {
+            return [
+                'response' => 'Chua co du lieu diem danh.',
+                'type' => 'attendance',
+                'data' => null
+            ];
+        }
+
+        $presentCount = $attendances->where('status', 'present')->count();
+        $totalCount = $attendances->count();
+        $rate = $totalCount > 0 ? round(($presentCount / $totalCount) * 100, 2) : 0;
+
+        return [
+            'response' => "Ty le diem danh: {$rate}% ({$presentCount}/{$totalCount})",
+            'type' => 'attendance',
+            'data' => ['rate' => $rate, 'present' => $presentCount, 'total' => $totalCount]
+        ];
+    }
+
+    /**
+     * Get teacher info
+     */
+    private function getTeacherInfo(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class.teacher.user')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky lop hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $teachers = $enrollments->map(function ($enrollment) {
+            $teacher = $enrollment->class->teacher;
+            return "{$teacher->user->name} - {$enrollment->class->name}";
+        })->implode("\n");
+
+        return [
+            'response' => "Giao vien cua ban:\n{$teachers}",
+            'type' => 'teacher',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get class info
+     */
+    private function getClassInfo(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky lop hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $classInfo = $enrollments->map(function ($enrollment) {
+            $class = $enrollment->class;
+            return "{$class->name}: {$class->current_enrollment}/{$class->max_capacity} hoc vien";
+        })->implode("\n");
+
+        return [
+            'response' => "Thong tin lop hoc:\n{$classInfo}",
+            'type' => 'class_info',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get study duration
+     */
+    private function getStudyDuration(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky lop hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $enrollment = $enrollments->first();
+        $startDate = Carbon::parse($enrollment->enrollment_date);
+        $now = Carbon::now();
+        $duration = $startDate->diffInDays($now);
+
+        return [
+            'response' => "Ban da hoc duoc {$duration} ngay kể tu ngay dang ky.",
+            'type' => 'duration',
+            'data' => ['days' => $duration]
+        ];
+    }
+
+    /**
+     * Get course duration
+     */
+    private function getCourseDuration(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class.course')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky khoa hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $courseInfo = $enrollments->map(function ($enrollment) {
+            $course = $enrollment->class->course;
+            return "{$course->name}: {$course->duration_weeks} tuan";
+        })->implode("\n");
+
+        return [
+            'response' => "Thoi luong khoa hoc:\n{$courseInfo}",
+            'type' => 'course_duration',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get remaining sessions
+     */
+    private function getRemainingSessions(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $totalSchedules = Schedule::whereIn('class_id', $classIds)->count();
+        $completedSchedules = Schedule::whereIn('class_id', $classIds)
+            ->where('date', '<', Carbon::today())
+            ->count();
+        $remaining = $totalSchedules - $completedSchedules;
+
+        return [
+            'response' => "Con lai {$remaining} buoi hoc.",
+            'type' => 'remaining',
+            'data' => ['remaining' => $remaining, 'total' => $totalSchedules, 'completed' => $completedSchedules]
+        ];
+    }
+
+    /**
+     * Get fee information
+     */
+    private function getFeeInformation(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class.course')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky khoa hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $feeInfo = $enrollments->map(function ($enrollment) {
+            $course = $enrollment->class->course;
+            return "{$course->name}: " . number_format($course->price, 0, ',', '.') . " VND";
+        })->implode("\n");
+
+        return [
+            'response' => "Hoc phi cac khoa hoc:\n{$feeInfo}",
+            'type' => 'fee',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get specific course fee by language
+     */
+    private function getSpecificCourseFee(string $language): array
+    {
+        $courses = Course::where('language', $language)
+            ->where('is_active', true)
+            ->with(['classes' => function($query) {
+                $query->where('status', '!=', 'completed');
+            }])
+            ->get();
+
+        if ($courses->isEmpty()) {
+            return [
+                'response' => "Khong tim thay khoa hoc {$language} nao dang hoat dong.",
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $response = "THONG TIN HOC PHI KHOA HOC {$language}:\n\n";
+        
+        foreach ($courses as $index => $course) {
+            $response .= ($index + 1) . ". {$course->name}\n";
+            $response .= "   - Trinh do: {$course->level}\n";
+            $response .= "   - Hoc phi: " . number_format($course->price, 0, ',', '.') . " VND\n";
+            $response .= "   - Thoi luong: {$course->duration_weeks} tuan\n";
+            
+            $activeClasses = $course->classes->where('status', '!=', 'completed')->count();
+            $response .= "   - So lop dang mo: {$activeClasses}\n";
+            
+            if ($course->description) {
+                $response .= "   - Mo ta: {$course->description}\n";
+            }
+            $response .= "\n";
+        }
+
+        $response .= "De dang ky, vui long lien he trung tam hoac truy cap trang Khoa hoc.";
+
+        return [
+            'response' => $response,
+            'type' => 'fee',
+            'data' => $courses
+        ];
+    }
+
+    /**
+     * Get teacher by language
+     */
+    private function getTeacherByLanguage(string $language): array
+    {
+        // Strategy: Find teachers by specialization keyword OR by teaching classes
+        
+        // Map language to specialization keywords
+        $specializationKeywords = [
+            'English' => ['English', 'Anh', 'tieng anh', 'tieng Anh'],
+            'Japanese' => ['Japanese', 'Nhat', 'tieng nhat', 'tieng Nhat', 'Nhật', 'tiếng Nhật'],
+            'Korean' => ['Korean', 'Han', 'tieng han', 'tieng Han', 'Hàn', 'tiếng Hàn'],
+            'Chinese' => ['Chinese', 'Trung', 'tieng trung', 'tieng Trung', 'tiếng Trung']
+        ];
+        
+        $keywords = $specializationKeywords[$language] ?? [$language];
+        
+        // Find teachers by specialization OR by teaching classes of that language
+        $courseIds = Course::where('language', $language)
+            ->where('is_active', true)
+            ->pluck('id');
+
+        // Get teachers who match specialization OR teach these courses
+        $teachers = Teacher::where(function($query) use ($keywords, $courseIds) {
+            // Match by specialization
+            $query->where(function($q) use ($keywords) {
+                foreach ($keywords as $keyword) {
+                    $q->orWhere('specialization', 'LIKE', "%{$keyword}%");
+                }
+            });
+            
+            // OR match by teaching classes
+            if ($courseIds->isNotEmpty()) {
+                $query->orWhereHas('classes', function ($q) use ($courseIds) {
+                    $q->whereIn('course_id', $courseIds);
+                });
+            }
+        })
+        ->with(['user', 'classes' => function($query) use ($courseIds) {
+            if ($courseIds->isNotEmpty()) {
+                $query->whereIn('course_id', $courseIds)
+                      ->where('status', '!=', 'completed')
+                      ->with('course');
+            }
+        }])
+        ->get();
+
+        if ($teachers->isEmpty()) {
+            return [
+                'response' => "Hien tai khong co giao vien nao chuyen ve {$language}.",
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $response = "DANH SACH GIAO VIEN CHUYEN VE {$language}:\n\n";
+        
+        foreach ($teachers as $index => $teacher) {
+            $response .= ($index + 1) . ". {$teacher->user->name}\n";
+            
+            if ($teacher->specialization) {
+                $response .= "   - Chuyen mon: {$teacher->specialization}\n";
+            }
+            
+            if ($teacher->phone) {
+                $response .= "   - Dien thoai: {$teacher->phone}\n";
+            }
+            
+            $response .= "   - Email: {$teacher->user->email}\n";
+            
+            // List courses this teacher is teaching (if any)
+            if ($teacher->classes->isNotEmpty()) {
+                $courses = $teacher->classes->pluck('course.name')->unique();
+                $response .= "   - Dang day cac lop:\n";
+                foreach ($courses as $courseName) {
+                    $response .= "     + {$courseName}\n";
+                }
+            } else {
+                $response .= "   - Chua duoc phan cong lop hoc\n";
+            }
+            
+            $response .= "\n";
+        }
+        
+        $response .= "De dang ky hoac biet them chi tiet, vui long lien he trung tam.";
+
+        return [
+            'response' => $response,
+            'type' => 'teacher',
+            'data' => $teachers
+        ];
+    }
+
+    /**
+     * Get default response
+     */
+    private function getDefaultResponse(): array
+    {
+        $response = "Xin loi, toi chua hieu cau hoi cua ban.\n\n";
+        $response .= "Ban co the hoi toi ve:\n";
+        $response .= "- Khoa hoc va hoc phi (vd: 'hoc phi tieng Anh bao nhieu?')\n";
+        $response .= "- Giao vien (vd: 'giao vien day tieng Nhat la ai?')\n";
+        $response .= "- Lich hoc (vd: 'lich hoc hom nay', 'hoc mon gi hom nay')\n";
+        $response .= "- Diem so (vd: 'diem cua toi', 'diem trung binh')\n";
+        $response .= "- Diem danh (vd: 'vang bao nhieu buoi?', 'di muon may lan?')\n";
+        $response .= "- Thanh toan (vd: 'con no bao nhieu?', 'da thanh toan chua?')\n";
+        $response .= "- Thong tin lien he (vd: 'gio lam viec?')\n\n";
+        $response .= 'Hoac go "help" de xem huong dan chi tiet.';
+        
+        return [
+            'response' => $response,
+            'type' => 'default',
+            'data' => null
+        ];
+    }
+
+    /**
+     * Get payment status
+     */
+    private function getPaymentStatus(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('payment')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua co khoan thanh toan nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $paymentInfo = $enrollments->map(function ($enrollment) {
+            $payment = $enrollment->payment;
+            if ($payment) {
+                $status = $payment->status === 'paid' ? 'Da thanh toan' : 'Chua thanh toan';
+                return "{$enrollment->class->name}: {$status}";
+            }
+            return "{$enrollment->class->name}: Chua co thong tin thanh toan";
+        })->implode("\n");
+
+        return [
+            'response' => "Trang thai thanh toan:\n{$paymentInfo}",
+            'type' => 'payment_status',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get payment deadline
+     */
+    private function getPaymentDeadline(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('payment')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua co khoan thanh toan nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $deadlineInfo = $enrollments->map(function ($enrollment) {
+            $payment = $enrollment->payment;
+            if ($payment && $payment->due_date) {
+                $dueDate = Carbon::parse($payment->due_date)->format('d/m/Y');
+                return "{$enrollment->class->name}: {$dueDate}";
+            }
+            return "{$enrollment->class->name}: Chua co han thanh toan";
+        })->implode("\n");
+
+        return [
+            'response' => "Han thanh toan:\n{$deadlineInfo}",
+            'type' => 'payment_deadline',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get weekly schedule
+     */
+    private function getWeeklySchedule(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+
+        $schedules = Schedule::whereIn('class_id', $classIds)
+            ->whereBetween('date', [$startOfWeek, $endOfWeek])
+            ->with('class')
+            ->orderBy('date')
+            ->get();
+
+        if ($schedules->isEmpty()) {
+            return [
+                'response' => 'Ban khong co lich hoc nao trong tuan nay.',
+                'type' => 'schedule',
+                'data' => null
+            ];
+        }
+
+        $scheduleText = $schedules->map(function ($schedule) {
+            $date = Carbon::parse($schedule->date)->format('d/m/Y');
+            return "{$date} - {$schedule->class->name}: {$schedule->start_time} - {$schedule->end_time}";
+        })->implode("\n");
+
+        return [
+            'response' => "Lich hoc tuan nay:\n{$scheduleText}",
+            'type' => 'schedule',
+            'data' => $schedules
+        ];
+    }
+
+    /**
+     * Get monthly schedule
+     */
+    private function getMonthlySchedule(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $startOfMonth = Carbon::now()->startOfMonth();
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        $schedules = Schedule::whereIn('class_id', $classIds)
+            ->whereBetween('date', [$startOfMonth, $endOfMonth])
+            ->with('class')
+            ->orderBy('date')
+            ->get();
+
+        if ($schedules->isEmpty()) {
+            return [
+                'response' => 'Ban khong co lich hoc nao trong thang nay.',
+                'type' => 'schedule',
+                'data' => null
+            ];
+        }
+
+        $scheduleText = $schedules->map(function ($schedule) {
+            $date = Carbon::parse($schedule->date)->format('d/m/Y');
+            return "{$date} - {$schedule->class->name}: {$schedule->start_time} - {$schedule->end_time}";
+        })->implode("\n");
+
+        return [
+            'response' => "Lich hoc thang nay:\n{$scheduleText}",
+            'type' => 'schedule',
+            'data' => $schedules
+        ];
+    }
+
+    /**
+     * Get next class
+     */
+    private function getNextClass(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $nextSchedule = Schedule::whereIn('class_id', $classIds)
+            ->where('date', '>=', Carbon::now())
+            ->with('class')
+            ->orderBy('date')
+            ->orderBy('start_time')
+            ->first();
+
+        if (!$nextSchedule) {
+            return [
+                'response' => 'Ban khong co lich hoc nao sap toi.',
+                'type' => 'schedule',
+                'data' => null
+            ];
+        }
+
+        $date = Carbon::parse($nextSchedule->date)->format('d/m/Y');
+        return [
+            'response' => "Buoi hoc tiep theo: {$date} - {$nextSchedule->class->name}: {$nextSchedule->start_time} - {$nextSchedule->end_time}",
+            'type' => 'schedule',
+            'data' => $nextSchedule
+        ];
+    }
+
+    /**
+     * Get tomorrow schedule
+     */
+    private function getTomorrowSchedule(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $tomorrow = Carbon::tomorrow();
+        $schedules = Schedule::whereIn('class_id', $classIds)
+            ->whereDate('date', $tomorrow)
+            ->with('class')
+            ->get();
+
+        if ($schedules->isEmpty()) {
+            return [
+                'response' => 'Ban khong co lich hoc nao vao ngay mai.',
+                'type' => 'schedule',
+                'data' => null
+            ];
+        }
+
+        $scheduleText = $schedules->map(function ($schedule) {
+            return "{$schedule->class->name}: {$schedule->start_time} - {$schedule->end_time}";
+        })->implode("\n");
+
+        return [
+            'response' => "Lich hoc ngay mai:\n{$scheduleText}",
+            'type' => 'schedule',
+            'data' => $schedules
+        ];
+    }
+
+    /**
+     * Get average score
+     */
+    private function getAverageScore(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $scores = AssessmentScore::where('student_id', $student->id)->get();
+
+        if ($scores->isEmpty()) {
+            return [
+                'response' => 'Ban chua co diem nao de tinh trung binh.',
+                'type' => 'grades',
+                'data' => null
+            ];
+        }
+
+        $average = $scores->avg('score');
+        $average = round($average, 2);
+
+        return [
+            'response' => "Diem trung binh cua ban: {$average}",
+            'type' => 'grades',
+            'data' => ['average' => $average]
+        ];
+    }
+
+    /**
+     * Get certificate eligibility and list of certificates
+     */
+    private function getCertificateEligibility(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Không tìm thấy thông tin học viên.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        // Get all certificates the student has earned
+        $certificates = \App\Models\Certificate::where('student_id', $student->id)
+            ->with('course')
+            ->orderBy('issue_date', 'desc')
+            ->get();
+        
+        if ($certificates->isEmpty()) {
+            // If no certificates, check eligibility
+            $enrollments = $student->enrollments()
+                ->where('status', 'paid')
+                ->where('completion_percentage', '>=', 80)
+                ->with('class.course')
+                ->get();
+            
+            if ($enrollments->isEmpty()) {
+                return [
+                    'response' => "📜 Bạn chưa có chứng chỉ nào.\n\nĐể nhận chứng chỉ, bạn cần:\n- Hoàn thành ít nhất 80% khóa học\n- Đạt điểm trung bình >= 70%\n- Hoàn thành bài kiểm tra cuối kỳ",
+                    'type' => 'info',
+                    'data' => ['certificates' => [], 'eligible_courses' => []]
+                ];
+            }
+            
+            $eligibleCourses = [];
+            foreach ($enrollments as $enrollment) {
+                $eligibleCourses[] = $enrollment->class->course->name;
+            }
+            
+            $message = "📜 **Bạn chưa có chứng chỉ, nhưng đủ điều kiện nhận chứng chỉ cho:**\n\n";
+            foreach ($eligibleCourses as $course) {
+                $message .= "✓ {$course}\n";
+            }
+            $message .= "\nHãy liên hệ trung tâm để nhận chứng chỉ!";
+            
+            return [
+                'response' => $message,
+                'type' => 'certificate',
+                'data' => ['certificates' => [], 'eligible_courses' => $eligibleCourses]
+            ];
+        }
+        
+        // Student has certificates, list them
+        $message = "📜 **Chứng chỉ của bạn:**\n\n";
+        $certData = [];
+        
+        foreach ($certificates as $cert) {
+            $message .= "✅ **{$cert->course->name}**\n";
+            $message .= "   • Mã số: {$cert->certificate_number}\n";
+            $message .= "   • Ngày cấp: {$cert->issue_date->format('d/m/Y')}\n\n";
+            
+            $certData[] = [
+                'course' => $cert->course->name,
+                'number' => $cert->certificate_number,
+                'issue_date' => $cert->issue_date->format('d/m/Y')
+            ];
+        }
+        
+        $message .= "💡 Bạn có thể xem và tải chứng chỉ tại trang cá nhân.";
+        
+        return [
+            'response' => $message,
+            'type' => 'certificate',
+            'data' => ['certificates' => $certData]
+        ];
+    }
+
+    /**
+     * Get completion rate
+     */
+    private function getCompletionRate(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky khoa hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $completionInfo = $enrollments->map(function ($enrollment) {
+            $rate = $enrollment->completion_percentage ?? 0;
+            return "{$enrollment->class->name}: {$rate}%";
+        })->implode("\n");
+
+        return [
+            'response' => "Ty le hoan thanh:\n{$completionInfo}",
+            'type' => 'completion',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get class schedule days
+     */
+    private function getClassScheduleDays(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $schedules = Schedule::whereIn('class_id', $classIds)
+            ->where('date', '>=', Carbon::now())
+            ->with('class')
+            ->orderBy('date')
+            ->get();
+
+        if ($schedules->isEmpty()) {
+            return [
+                'response' => 'Khong co thong tin lich hoc.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $days = $schedules->map(function ($schedule) {
+            return Carbon::parse($schedule->date)->locale('vi')->dayName;
+        })->unique()->implode(', ');
+
+        return [
+            'response' => "Lop hoc vao cac ngay: {$days}",
+            'type' => 'schedule_days',
+            'data' => ['days' => $days]
+        ];
+    }
+
+    /**
+     * Get graduation date (enrollment_date + duration_weeks)
+     */
+    private function getGraduationDate(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class.course')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky khoa hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $graduationInfo = $enrollments->map(function ($enrollment) {
+            $course = $enrollment->class->course;
+            $classEndDate = Carbon::parse($enrollment->class->end_date);
+            $formattedDate = $classEndDate->format('d/m/Y');
+            
+            return "{$course->name}: {$formattedDate}";
+        })->implode("\n");
+
+        return [
+            'response' => "Ngay du kien tot nghiep:\n{$graduationInfo}",
+            'type' => 'graduation',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get classmates (students in the same class)
+     */
+    private function getClassmates(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky lop hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $classmatesInfo = [];
+        foreach ($enrollments as $enrollment) {
+            $classmates = Enrollment::where('class_id', $enrollment->class_id)
+                ->where('student_id', '!=', $student->id)
+                ->whereIn('status', ['paid', 'pending'])
+                ->with('student.user')
+                ->get();
+
+            if ($classmates->isEmpty()) {
+                $classmatesInfo[] = "{$enrollment->class->name}: Chua co ban cung lop nao khac";
+            } else {
+                $classmatesList = $classmates->map(function ($classmate, $index) {
+                    return "   " . ($index + 1) . ". {$classmate->student->user->name}";
+                })->implode("\n");
+                
+                $classmatesInfo[] = "{$enrollment->class->name} ({$classmates->count()} ban cung lop):\n{$classmatesList}";
+            }
+        }
+
+        return [
+            'response' => "Ban cung lop cua ban:\n\n" . implode("\n\n", $classmatesInfo),
+            'type' => 'classmates',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get absent count (attendance status = 'absent')
+     */
+    private function getAbsentCount(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $absentCount = Attendance::where('student_id', $student->id)
+            ->where('status', 'absent')
+            ->count();
+
+        $totalCount = Attendance::where('student_id', $student->id)->count();
+
+        if ($totalCount === 0) {
+            return [
+                'response' => 'Chua co du lieu diem danh.',
+                'type' => 'attendance',
+                'data' => null
+            ];
+        }
+
+        return [
+            'response' => "Ban da vang {$absentCount} buoi trong tong so {$totalCount} buoi.",
+            'type' => 'attendance',
+            'data' => ['absent' => $absentCount, 'total' => $totalCount]
+        ];
+    }
+
+    /**
+     * Get late count (attendance status = 'late')
+     */
+    private function getLateCount(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $lateCount = Attendance::where('student_id', $student->id)
+            ->where('status', 'late')
+            ->count();
+
+        $totalCount = Attendance::where('student_id', $student->id)->count();
+
+        if ($totalCount === 0) {
+            return [
+                'response' => 'Chua co du lieu diem danh.',
+                'type' => 'attendance',
+                'data' => null
+            ];
+        }
+
+        return [
+            'response' => "Ban da di muon {$lateCount} lan trong tong so {$totalCount} buoi.",
+            'type' => 'attendance',
+            'data' => ['late' => $lateCount, 'total' => $totalCount]
+        ];
+    }
+
+    /**
+     * Get today subjects (course/class name from today's schedule)
+     */
+    private function getTodaySubjects(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending'])->with('class')->get();
+        $classIds = $enrollments->pluck('class_id')->toArray();
+
+        $today = Carbon::today();
+        $schedules = Schedule::whereIn('class_id', $classIds)
+            ->whereDate('date', $today)
+            ->with('class.course')
+            ->get();
+
+        if ($schedules->isEmpty()) {
+            return [
+                'response' => 'Ban khong co mon hoc nao hom nay.',
+                'type' => 'schedule',
+                'data' => null
+            ];
+        }
+
+        $subjectsText = $schedules->map(function ($schedule, $index) {
+            $course = $schedule->class->course;
+            return ($index + 1) . ". {$course->name} - {$course->language} ({$schedule->start_time} - {$schedule->end_time})";
+        })->implode("\n");
+
+        return [
+            'response' => "Hom nay ban hoc cac mon:\n{$subjectsText}",
+            'type' => 'schedule',
+            'data' => $schedules
+        ];
+    }
+
+    /**
+     * Get unpaid amount (payments with status != 'paid')
+     */
+    private function getUnpaidAmount(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->with('payment')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua co khoan thanh toan nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $unpaidTotal = 0;
+        $unpaidDetails = [];
+
+        foreach ($enrollments as $enrollment) {
+            $payment = $enrollment->payment;
+            if ($payment && $payment->status !== 'paid') {
+                $unpaidTotal += $payment->amount;
+                $unpaidDetails[] = "{$enrollment->class->name}: " . number_format($payment->amount, 0, ',', '.') . " VND (Han: " . Carbon::parse($payment->due_date)->format('d/m/Y') . ")";
+            }
+        }
+
+        if ($unpaidTotal === 0) {
+            return [
+                'response' => 'Ban khong con khoan no nao. Tat ca da duoc thanh toan.',
+                'type' => 'payment',
+                'data' => ['unpaid' => 0]
+            ];
+        }
+
+        $response = "Ban con no: " . number_format($unpaidTotal, 0, ',', '.') . " VND\n\nChi tiet:\n";
+        $response .= implode("\n", $unpaidDetails);
+
+        return [
+            'response' => $response,
+            'type' => 'payment',
+            'data' => ['unpaid' => $unpaidTotal, 'details' => $unpaidDetails]
+        ];
+    }
+
+    /**
+     * Get my teacher contact info (phone and email)
+     */
+    private function getMyTeacherContact(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()->whereIn('status', ['paid', 'pending', 'approved'])->with('class.teacher.user')->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky lop hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $teacherContacts = $enrollments->map(function ($enrollment, $index) {
+            $teacher = $enrollment->class->teacher;
+            $contact = ($index + 1) . ". {$teacher->user->name} ({$enrollment->class->name})\n";
+            $contact .= "   - Email: {$teacher->user->email}\n";
+            
+            if ($teacher->phone) {
+                $contact .= "   - So dien thoai: {$teacher->phone}";
+            } else {
+                $contact .= "   - So dien thoai: Chua cap nhat";
+            }
+            
+            return $contact;
+        })->implode("\n\n");
+
+        return [
+            'response' => "Thong tin lien he giao vien:\n\n{$teacherContacts}",
+            'type' => 'teacher_contact',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get my teacher information (full info: name, specialization, bio, contact)
+     */
+    private function getMyTeacherInfo(): array
+    {
+        $user = Auth::user();
+        $student = Student::where('user_id', $user->id)->first();
+
+        if (!$student) {
+            return [
+                'response' => 'Khong tim thay thong tin hoc vien.',
+                'type' => 'error',
+                'data' => null
+            ];
+        }
+
+        $enrollments = $student->enrollments()
+            ->whereIn('status', ['paid', 'pending', 'approved'])
+            ->with('class.teacher.user')
+            ->get();
+
+        if ($enrollments->isEmpty()) {
+            return [
+                'response' => 'Ban chua dang ky lop hoc nao.',
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $teacherInfo = $enrollments->map(function ($enrollment, $index) {
+            $teacher = $enrollment->class->teacher;
+            $class = $enrollment->class;
+            
+            $info = "👤 GIAO VIEN " . ($index + 1) . "\n\n";
+            $info .= "📚 Lop: {$class->name}\n";
+            $info .= "👨‍🏫 Ten: {$teacher->user->name}\n";
+            
+            if ($teacher->specialization) {
+                $info .= "🎯 Chuyen mon: {$teacher->specialization}\n";
+            }
+            
+            if ($teacher->bio) {
+                // Truncate bio to 100 characters if too long
+                $bio = strlen($teacher->bio) > 100 ? substr($teacher->bio, 0, 100) . '...' : $teacher->bio;
+                $info .= "📝 Gioi thieu: {$bio}\n";
+            }
+            
+            $info .= "\n📞 Lien he:\n";
+            $info .= "   • Email: {$teacher->user->email}\n";
+            
+            if ($teacher->phone) {
+                $info .= "   • So dien thoai: {$teacher->phone}";
+            } else {
+                $info .= "   • So dien thoai: Chua cap nhat";
+            }
+            
+            return $info;
+        })->implode("\n\n" . str_repeat("-", 40) . "\n\n");
+
+        $response = "THONG TIN GIAO VIEN CUA BAN\n\n";
+        $response .= $teacherInfo;
+        $response .= "\n\n💡 Goi y: Ban co the hoi:\n";
+        $response .= '   • "So dien thoai giao vien cua toi?"' . "\n";
+        $response .= '   • "Email giao vien cua toi?"';
+
+        return [
+            'response' => $response,
+            'type' => 'my_teacher_info',
+            'data' => $enrollments
+        ];
+    }
+
+    /**
+     * Get office hours (fixed string)
+     */
+    private function getOfficeHours(): array
+    {
+        $response = "GIO LAM VIEC CUA TRUNG TAM:\n\n";
+        $response .= "Thu 2 - Thu 6: 8:00 - 20:00\n";
+        $response .= "Thu 7: 8:00 - 17:00\n";
+        $response .= "Chu nhat: 9:00 - 16:00\n\n";
+        $response .= "Lien he hotline: 0123-456-789";
+
+        return [
+            'response' => $response,
+            'type' => 'office_hours',
+            'data' => [
+                'weekday' => '8:00 - 20:00',
+                'saturday' => '8:00 - 17:00',
+                'sunday' => '9:00 - 16:00',
+                'hotline' => '0123-456-789'
+            ]
+        ];
+    }
+
+    /**
+     * Get teacher contact by language (phone, email)
+     * 
+     * @param string|null $language Language filter (English, Japanese, Korean, Chinese) or null for all
+     * @return array Response with teacher contact information
+     */
+    private function getTeacherContact(?string $language = null): array
+    {
+        $query = Teacher::with('user');
+
+        // If language specified, filter by specialization OR teaching classes
+        if ($language) {
+            $specializationKeywords = [
+                'English' => ['English', 'Anh', 'tieng anh', 'tieng Anh'],
+                'Japanese' => ['Japanese', 'Nhat', 'tieng nhat', 'tieng Nhat', 'Nhật', 'tiếng Nhật'],
+                'Korean' => ['Korean', 'Han', 'tieng han', 'tieng Han', 'Hàn', 'tiếng Hàn'],
+                'Chinese' => ['Chinese', 'Trung', 'tieng trung', 'tieng Trung', 'tiếng Trung']
+            ];
+            
+            $keywords = $specializationKeywords[$language] ?? [$language];
+            
+            $courseIds = Course::where('language', $language)
+                ->where('is_active', true)
+                ->pluck('id');
+
+            $query->where(function($q) use ($keywords, $courseIds) {
+                // Match by specialization
+                $q->where(function($subQ) use ($keywords) {
+                    foreach ($keywords as $keyword) {
+                        $subQ->orWhere('specialization', 'LIKE', "%{$keyword}%");
+                    }
+                });
+                
+                // OR match by teaching classes
+                if ($courseIds->isNotEmpty()) {
+                    $q->orWhereHas('classes', function ($subQ) use ($courseIds) {
+                        $subQ->whereIn('course_id', $courseIds);
+                    });
+                }
+            });
+        }
+
+        $teachers = $query->get();
+
+        if ($teachers->isEmpty()) {
+            $langText = $language ? " chuyen ve {$language}" : "";
+            return [
+                'response' => "Hien tai khong co giao vien nao{$langText}.",
+                'type' => 'info',
+                'data' => null
+            ];
+        }
+
+        $langText = $language ? " {$language}" : "";
+        $response = "THONG TIN LIEN HE GIAO VIEN{$langText}:\n\n";
+        
+        foreach ($teachers as $index => $teacher) {
+            $response .= ($index + 1) . ". {$teacher->user->name}\n";
+            
+            if ($teacher->specialization) {
+                $response .= "   - Chuyen mon: {$teacher->specialization}\n";
+            }
+            
+            // Phone from user table
+            if ($teacher->user->phone) {
+                $response .= "   - So dien thoai: {$teacher->user->phone}\n";
+            } else {
+                $response .= "   - So dien thoai: Chua cap nhat\n";
+            }
+            
+            $response .= "   - Email: {$teacher->user->email}\n\n";
+        }
+        
+        $response .= "De dat lich tu van hoac lien he truc tiep, vui long goi dien hoac gui email cho giao vien.";
+
+        return [
+            'response' => $response,
+            'type' => 'teacher_contact',
+            'data' => $teachers
+        ];
+    }
+
+    /**
+     * Get teacher contact by name (phone, email)
+     * Searches for teacher name in the message
+     * 
+     * @param string $message User message containing potential teacher name
+     * @return array Response with teacher contact or fallback to general contact
+     */
+    private function getTeacherContactByName(string $message): array
+    {
+        // Get all teachers
+        $teachers = Teacher::with('user')->get();
+
+        if ($teachers->isEmpty()) {
+            return $this->getContactInformation(); // Fallback to center contact
+        }
+
+        // Remove common stop words that might interfere with name matching
+        $stopWords = ['giao vien', 'thay', 'co', 'giang vien', 'so dien thoai', 'phone', 'lien he', 'contact', 'email', 'cua', 'la', 'ai', 'nao'];
+        $cleanedMessage = $message;
+        foreach ($stopWords as $stopWord) {
+            $cleanedMessage = str_replace($this->removeVietnameseAccents($stopWord), '', $cleanedMessage);
+        }
+        $cleanedMessage = trim(preg_replace('/\s+/', ' ', $cleanedMessage)); // Remove extra spaces
+
+        // Try to find teacher by name match in message
+        $matchedTeacher = null;
+        $bestMatchScore = 0;
+        
+        foreach ($teachers as $teacher) {
+            $teacherNameOriginal = $teacher->user->name;
+            $teacherName = $this->removeVietnameseAccents(mb_strtolower($teacherNameOriginal));
+            
+            // Split teacher name into parts (ho, ten dem, ten)
+            $nameParts = explode(' ', $teacherName);
+            
+            // Count how many parts of the name appear in the cleaned message
+            $matchCount = 0;
+            foreach ($nameParts as $part) {
+                // Only match parts with at least 2 characters (avoid single letter matches)
+                if (strlen($part) >= 2 && str_contains($cleanedMessage, $part)) {
+                    $matchCount++;
+                }
+            }
+            
+            // Calculate match score (need at least 2 parts to match, or full name)
+            $matchScore = $matchCount;
+            
+            // Boost score if full name appears consecutively in cleaned message
+            if (str_contains($cleanedMessage, $teacherName)) {
+                $matchScore += 10; // Strong boost for full name match
+            }
+            
+            // Update best match if this is better
+            if ($matchScore >= 2 && $matchScore > $bestMatchScore) {
+                $bestMatchScore = $matchScore;
+                $matchedTeacher = $teacher;
+            }
+        }
+
+        // If specific teacher found, return their contact
+        if ($matchedTeacher) {
+            $response = "THONG TIN LIEN HE GIAO VIEN {$matchedTeacher->user->name}:\n\n";
+            
+            if ($matchedTeacher->specialization) {
+                $response .= "Chuyen mon: {$matchedTeacher->specialization}\n";
+            }
+            
+            if ($matchedTeacher->user->phone) {
+                $response .= "So dien thoai: {$matchedTeacher->user->phone}\n";
+            } else {
+                $response .= "So dien thoai: Chua cap nhat\n";
+            }
+            
+            $response .= "Email: {$matchedTeacher->user->email}\n\n";
+            $response .= "De lien he truc tiep, vui long goi dien hoac gui email cho giao vien.";
+
+            return [
+                'response' => $response,
+                'type' => 'teacher_contact',
+                'data' => $matchedTeacher
+            ];
+        }
+
+        // No specific teacher found, return general teacher contact info
+        return $this->getTeacherContact();
+    }
+}

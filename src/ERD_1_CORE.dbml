@@ -1,0 +1,115 @@
+// ERD 1: CORE - Sơ đồ ERD các bảng cốt lõi
+// Hệ thống Quản lý Trung tâm Ngoại ngữ
+// Nhóm: Người dùng, Khóa học, Lớp học, Đăng ký
+
+Project language_center_core {
+  Note: 'Sơ đồ ERD - Các bảng cốt lõi'
+}
+
+// ===== NGƯỜI DÙNG =====
+
+Table users {
+  id bigint [pk, increment]
+  name varchar(255)
+  email varchar(255) [unique, not null]
+  password varchar(255) [not null]
+  role enum('admin', 'teacher', 'student') [not null]
+  phone varchar(20)
+  avatar varchar(255)
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Người dùng - Tài khoản đăng nhập'
+}
+
+Table students {
+  id bigint [pk, increment]
+  user_id bigint [ref: - users.id, not null, unique]
+  level varchar(50) [note: 'beginner, intermediate, advanced']
+  interests text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Hồ sơ học viên'
+}
+
+Table teachers {
+  id bigint [pk, increment]
+  user_id bigint [ref: - users.id, not null, unique]
+  specialization varchar(255) [note: 'IELTS, TOEIC, Business English']
+  qualifications text
+  bio text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Hồ sơ giáo viên'
+}
+
+// ===== KHÓA HỌC & LỚP HỌC =====
+
+Table courses {
+  id bigint [pk, increment]
+  name varchar(255) [not null]
+  description text
+  language varchar(50) [not null, note: 'English, Japanese, Korean']
+  level enum('beginner', 'elementary', 'intermediate', 'advanced') [not null]
+  duration_weeks int [not null]
+  price decimal(10,2) [not null]
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Khóa học'
+}
+
+Table classes {
+  id bigint [pk, increment]
+  course_id bigint [ref: > courses.id, not null]
+  teacher_id bigint [ref: > teachers.id, not null]
+  name varchar(255) [not null]
+  start_date date [not null]
+  end_date date [not null]
+  max_capacity int [not null]
+  current_enrollment int [default: 0]
+  status enum('upcoming', 'ongoing', 'completed', 'cancelled') [default: 'upcoming']
+  shift varchar(20) [note: 'morning, afternoon, evening']
+  weekdays varchar(100)
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Lớp học - Mở từ khóa học'
+}
+
+// ===== ĐĂNG KÝ =====
+
+Table enrollments {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  class_id bigint [ref: > classes.id, not null]
+  enrollment_date date [not null]
+  status enum('pending', 'approved', 'rejected', 'cancelled') [default: 'pending']
+  completion_percentage decimal(5,2) [default: 0]
+  created_at timestamp
+  updated_at timestamp
+  
+  Indexes {
+    (student_id, class_id) [unique]
+  }
+  
+  Note: 'Đăng ký học - Liên kết học viên và lớp'
+}
+
+// ===== NHÓM BẢNG =====
+
+TableGroup "Người dùng" {
+  users
+  students
+  teachers
+}
+
+TableGroup "Khóa học & Lớp học" {
+  courses
+  classes
+  enrollments
+}

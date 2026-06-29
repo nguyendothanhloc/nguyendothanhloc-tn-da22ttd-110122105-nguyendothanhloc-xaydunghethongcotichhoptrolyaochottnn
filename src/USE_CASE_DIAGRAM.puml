@@ -1,0 +1,110 @@
+@startuml Language Center Management System - Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+
+' Actors
+actor "Học viên\n(Student)" as Student
+actor "Giáo viên\n(Teacher)" as Teacher
+actor "Quản trị viên\n(Admin)" as Admin
+actor "Khách\n(Guest)" as Guest
+actor "Gemini AI" as AI
+
+' System boundary
+rectangle "Hệ thống Quản lý Trung tâm Ngoại ngữ" {
+  
+  ' Guest use cases
+  package "Chức năng Khách" {
+    usecase (Xem khóa học) as UC1
+    usecase (Xem thông tin giáo viên) as UC2
+    usecase (Đăng ký tài khoản học viên) as UC3
+    usecase (Đăng ký tài khoản giáo viên) as UC4
+  }
+  
+  ' Student use cases
+  package "Chức năng Học viên" {
+    usecase (Đăng nhập) as UC5
+    usecase (Xem dashboard) as UC6
+    usecase (Đăng ký khóa học) as UC7
+    usecase (Xem lớp học của tôi) as UC8
+    usecase (Xem lịch học) as UC9
+    usecase (Xem điểm số) as UC10
+    usecase (Xem điểm danh) as UC11
+    usecase (Chat với Chatbot) as UC12
+    usecase (Xem thông tin cá nhân) as UC13
+  }
+  
+  ' Chatbot use cases
+  package "Chức năng Chatbot (3 lớp)" {
+    usecase (Trả lời câu hỏi động\n(Pattern Matching)) as UC14
+    usecase (Trả lời câu hỏi tĩnh\n(FAQ Knowledge Base)) as UC15
+    usecase (Trả lời câu hỏi phức tạp\n(Gemini AI)) as UC16
+  }
+  
+  ' Teacher use cases
+  package "Chức năng Giáo viên" {
+    usecase (Xem lớp được phân công) as UC17
+    usecase (Điểm danh học viên) as UC18
+    usecase (Nhập điểm đánh giá) as UC19
+    usecase (Xem danh sách học viên) as UC20
+    usecase (Quản lý lịch dạy) as UC21
+  }
+  
+  ' Admin use cases
+  package "Chức năng Quản trị viên" {
+    usecase (Quản lý khóa học) as UC22
+    usecase (Quản lý lớp học) as UC23
+    usecase (Quản lý học viên) as UC24
+    usecase (Quản lý giáo viên) as UC25
+    usecase (Quản lý đăng ký) as UC26
+    usecase (Quản lý FAQ Chatbot) as UC27
+    usecase (Xem báo cáo thống kê) as UC28
+  }
+}
+
+' Guest relationships
+Guest --> UC1
+Guest --> UC2
+Guest --> UC3
+Guest --> UC4
+
+' Student relationships
+Student --> UC5
+Student --> UC6
+Student --> UC7
+Student --> UC8
+Student --> UC9
+Student --> UC10
+Student --> UC11
+Student --> UC12
+Student --> UC13
+
+' Chatbot relationships
+UC12 ..> UC14 : <<include>>
+UC12 ..> UC15 : <<include>>
+UC12 ..> UC16 : <<include>>
+UC16 --> AI : uses
+
+' Teacher relationships
+Teacher --> UC5
+Teacher --> UC17
+Teacher --> UC18
+Teacher --> UC19
+Teacher --> UC20
+Teacher --> UC21
+
+' Admin relationships
+Admin --> UC5
+Admin --> UC22
+Admin --> UC23
+Admin --> UC24
+Admin --> UC25
+Admin --> UC26
+Admin --> UC27
+Admin --> UC28
+
+' Extensions
+UC8 ..> UC9 : <<include>>
+UC8 ..> UC10 : <<include>>
+
+@enduml

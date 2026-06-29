@@ -1,0 +1,111 @@
+// ERD 3: SUPPORT - Sơ đồ ERD hỗ trợ
+// Hệ thống Quản lý Trung tâm Ngoại ngữ
+// Nhóm: Thanh toán, Chứng chỉ, Đánh giá, Thông báo
+
+Project language_center_support {
+  Note: 'Sơ đồ ERD - Hỗ trợ & Quản lý'
+}
+
+// ===== BẢNG LIÊN QUAN (Reference) =====
+
+Table users {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+Table students {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+Table courses {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+Table classes {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+Table enrollments {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+// ===== THANH TOÁN =====
+
+Table payments {
+  id bigint [pk, increment]
+  enrollment_id bigint [ref: - enrollments.id, not null, unique]
+  amount decimal(10,2) [not null]
+  payment_method varchar(50) [not null, note: 'bank_transfer, cash, card']
+  status enum('pending', 'paid', 'overdue', 'cancelled') [default: 'pending']
+  due_date date [not null]
+  paid_date date
+  proof_image varchar(255)
+  note text
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Thanh toán học phí'
+}
+
+// ===== CHỨNG CHỈ =====
+
+Table certificates {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  course_id bigint [ref: > courses.id, not null]
+  certificate_number varchar(50) [unique, not null]
+  issue_date date [not null]
+  pdf_path varchar(255)
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Chứng chỉ hoàn thành khóa học'
+}
+
+// ===== ĐÁNH GIÁ =====
+
+Table feedbacks {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  class_id bigint [ref: > classes.id, not null]
+  course_rating int [note: '1-5 sao']
+  teacher_rating int [note: '1-5 sao']
+  comment text
+  is_anonymous boolean [default: false]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Đánh giá khóa học & giáo viên'
+}
+
+// ===== THÔNG BÁO =====
+
+Table notifications {
+  id bigint [pk, increment]
+  user_id bigint [ref: > users.id, not null]
+  type varchar(50) [not null, note: 'enrollment, payment, schedule']
+  title varchar(255) [not null]
+  message text [not null]
+  is_read boolean [default: false]
+  sent_at timestamp
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Thông báo hệ thống'
+}
+
+// ===== NHÓM BẢNG =====
+
+TableGroup "Thanh toán & Chứng chỉ" {
+  payments
+  certificates
+}
+
+TableGroup "Đánh giá & Thông báo" {
+  feedbacks
+  notifications
+}

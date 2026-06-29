@@ -1,0 +1,63 @@
+// ERD 4: CHATBOT - Sơ đồ ERD Chatbot
+// Hệ thống Quản lý Trung tâm Ngoại ngữ
+// Nhóm: Cuộc trò chuyện, Tin nhắn, Kiến thức
+
+Project language_center_chatbot {
+  Note: 'Sơ đồ ERD - Hệ thống Chatbot AI'
+}
+
+// ===== BẢNG LIÊN QUAN (Reference) =====
+
+Table students {
+  id bigint [pk]
+  Note: 'Tham chiếu từ ERD Core'
+}
+
+// ===== CUỘC TRÒ CHUYỆN =====
+
+Table conversations {
+  id bigint [pk, increment]
+  student_id bigint [ref: > students.id, not null]
+  started_at timestamp [not null]
+  last_message_at timestamp
+  message_count int [default: 0]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Cuộc trò chuyện chatbot'
+}
+
+Table messages {
+  id bigint [pk, increment]
+  conversation_id bigint [ref: > conversations.id, not null]
+  sender_type enum('student', 'bot') [not null]
+  content text [not null]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Tin nhắn trong cuộc trò chuyện'
+}
+
+// ===== KIẾN THỨC CHATBOT =====
+
+Table chatbot_knowledge {
+  id bigint [pk, increment]
+  category varchar(100) [note: 'Chính sách hoàn tiền, Quy định chuyển lớp']
+  question text [not null]
+  answer text [not null]
+  keywords varchar(255) [note: 'Từ khóa tìm kiếm']
+  priority int [default: 50, note: '1-100']
+  is_active boolean [default: true]
+  created_at timestamp
+  updated_at timestamp
+  
+  Note: 'Cơ sở tri thức FAQ cho chatbot'
+}
+
+// ===== NHÓM BẢNG =====
+
+TableGroup "Chatbot" {
+  conversations
+  messages
+  chatbot_knowledge
+}
