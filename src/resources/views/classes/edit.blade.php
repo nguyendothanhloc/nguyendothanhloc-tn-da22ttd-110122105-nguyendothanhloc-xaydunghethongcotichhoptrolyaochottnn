@@ -74,7 +74,7 @@
                                 @error('start_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                                <small class="text-muted">Định dạng: YYYY-MM-DD (Ví dụ: 2026-06-01)</small>
+                                <small class="text-muted">Chọn ngày bắt đầu khóa học</small>
                             </div>
 
                             <div class="col-md-6 mb-3">
@@ -88,6 +88,40 @@
                                 <small class="text-muted">Phải sau ngày bắt đầu</small>
                             </div>
                         </div>
+
+                        @push('scripts')
+                        <script>
+                        // Initialize Flatpickr with DD/MM/YYYY format
+                        document.addEventListener('DOMContentLoaded', function() {
+                            // Parse existing dates from the form values
+                            const startDateValue = document.getElementById('start_date').value;
+                            const endDateValue = document.getElementById('end_date').value;
+                            
+                            // Configure Flatpickr for start date
+                            const startDatePicker = flatpickr("#start_date", {
+                                dateFormat: "d/m/Y",  // Display format: DD/MM/YYYY
+                                altInput: true,
+                                altFormat: "d/m/Y",
+                                defaultDate: startDateValue,  // Load existing value
+                                onChange: function(selectedDates, dateStr, instance) {
+                                    // Update end date minimum when start date changes
+                                    if (selectedDates.length > 0) {
+                                        endDatePicker.set('minDate', selectedDates[0]);
+                                    }
+                                }
+                            });
+                            
+                            // Configure Flatpickr for end date
+                            const endDatePicker = flatpickr("#end_date", {
+                                dateFormat: "d/m/Y",  // Display format: DD/MM/YYYY
+                                altInput: true,
+                                altFormat: "d/m/Y",
+                                defaultDate: endDateValue,  // Load existing value
+                                minDate: startDateValue  // Set minimum to start date
+                            });
+                        });
+                        </script>
+                        @endpush
 
                         <div class="mb-3">
                             <label for="max_capacity" class="form-label">Sức chứa tối đa <span class="text-danger">*</span></label>

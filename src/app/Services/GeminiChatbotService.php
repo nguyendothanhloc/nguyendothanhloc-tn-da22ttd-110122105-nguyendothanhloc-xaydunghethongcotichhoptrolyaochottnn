@@ -140,6 +140,7 @@ class GeminiChatbotService
         $systemInstructions .= "# LƯU Ý QUAN TRỌNG\n";
         $systemInstructions .= "- Nếu HỎI về LỊCH HỌC: Phải liệt kê ĐẦY ĐỦ ngày/giờ/phòng từ [📅 LỊCH HỌC]\n";
         $systemInstructions .= "- Nếu HỎI về ĐIỂM: Phải liệt kê ĐẦY ĐỦ từng điểm từ [📊 KẾT QUẢ]\n";
+        $systemInstructions .= "- Nếu HỎI về HỌC PHÍ: Lấy giá từ [🏫 TẤT CẢ KHÓA HỌC CÓ SẴN] hoặc [📚 KHÓA HỌC HIỆN TẠI]\n";
         $systemInstructions .= "- Nếu data KHÔNG CÓ: Nói 'Chưa có thông tin' + hướng dẫn liên hệ\n";
         $systemInstructions .= "- LUÔN kết thúc bằng 1 câu hỏi gợi ý\n\n";
 
@@ -167,6 +168,7 @@ class GeminiChatbotService
                 $contextText .= ($idx + 1) . ". " . ($enrollment['course_name'] ?? 'N/A');
                 $contextText .= " (" . ($enrollment['language'] ?? 'N/A') . " - " . ($enrollment['level'] ?? 'N/A') . ")\n";
                 $contextText .= "   Lớp: " . ($enrollment['class_name'] ?? 'N/A') . "\n";
+                $contextText .= "   Học phí: " . number_format($enrollment['price'] ?? 0) . " VNĐ\n";
                 $contextText .= "   Trạng thái: " . ($enrollment['status'] ?? 'N/A') . "\n";
                 $contextText .= "   Giáo viên: " . ($enrollment['teacher_name'] ?? 'N/A') . "\n";
                 if (isset($enrollment['completion_percentage'])) {
@@ -176,6 +178,23 @@ class GeminiChatbotService
             }
         } else {
             $contextText .= "📚 KHÓA HỌC: Chưa đăng ký khóa học nào\n\n";
+        }
+
+        // Available courses (all courses in the system)
+        if (!empty($context['available_courses']) && count($context['available_courses']) > 0) {
+            $contextText .= "🏫 TẤT CẢ KHÓA HỌC CÓ SẴN:\n";
+            foreach ($context['available_courses'] as $idx => $course) {
+                $contextText .= ($idx + 1) . ". " . ($course['name'] ?? 'N/A');
+                $contextText .= " (" . ($course['language'] ?? 'N/A') . " - " . ($course['level'] ?? 'N/A') . ")\n";
+                $contextText .= "   💰 Học phí: " . number_format($course['price'] ?? 0) . " VNĐ\n";
+                if (!empty($course['duration']) && $course['duration'] > 0) {
+                    $contextText .= "   📅 Thời lượng: " . $course['duration'] . " tuần\n";
+                }
+                if (!empty($course['active_classes']) && $course['active_classes'] > 0) {
+                    $contextText .= "   👥 Lớp đang mở: " . $course['active_classes'] . " lớp\n";
+                }
+                $contextText .= "\n";
+            }
         }
 
         // Upcoming classes/schedules
@@ -529,6 +548,7 @@ class GeminiChatbotService
                 'course_name' => $enrollment->class->course->name ?? 'N/A',
                 'language' => $enrollment->class->course->language ?? 'N/A',
                 'level' => $enrollment->class->course->level ?? 'N/A',
+                'price' => $enrollment->class->course->price ?? 0,
                 'status' => $enrollment->status,
                 'enrollment_date' => $enrollment->enrollment_date ? $enrollment->enrollment_date->format('d/m/Y') : 'N/A',
                 'completion_percentage' => $enrollment->completion_percentage ?? 0,
@@ -606,6 +626,24 @@ class GeminiChatbotService
             }
         }
 
+        // Build available courses (all courses in the system)
+        $availableCourses = [];
+        $allCourses = \App\Models\Course::with('classes')->get();
+        foreach ($allCourses as $course) {
+            // Count active classes
+            $activeClassesCount = $course->classes->whereNotIn('status', ['cancelled', 'completed'])->count();
+            
+            $availableCourses[] = [
+                'name' => $course->name,
+                'language' => $course->language,
+                'level' => $course->level,
+                'price' => $course->price,
+                'duration' => $course->duration_weeks ?? 0,
+                'active_classes' => $activeClassesCount,
+                'description' => $course->description ?? 'N/A'
+            ];
+        }
+
         // Return structured context array
         $context = [
             'student' => $studentInfo,
@@ -613,7 +651,8 @@ class GeminiChatbotService
             'schedules' => $schedules,
             'attendance' => $attendance,
             'assessments' => $assessments,
-            'payments' => $payments
+            'payments' => $payments,
+            'available_courses' => $availableCourses
         ];
 
         Log::info('Student context built successfully', [
@@ -621,7 +660,8 @@ class GeminiChatbotService
             'enrollments_count' => count($enrollments),
             'schedules_count' => count($schedules),
             'assessments_count' => count($assessments),
-            'payments_count' => count($payments)
+            'payments_count' => count($payments),
+            'available_courses_count' => count($availableCourses)
         ]);
 
         return $context;

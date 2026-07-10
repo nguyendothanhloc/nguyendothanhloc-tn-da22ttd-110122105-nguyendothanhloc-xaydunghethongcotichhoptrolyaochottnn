@@ -85,7 +85,7 @@
                                         <th>Khóa học</th>
                                         <th>Giáo viên</th>
                                         <th>Ngày đăng ký</th>
-                                        <th>Trạng thái</th>
+                                        {{-- <th>Trạng thái</th> --}}
                                         <th>Thao tác</th>
                                     </tr>
                                 </thead>
@@ -106,7 +106,7 @@
                                             </td>
                                             <td>{{ $enrollment->class->teacher->user->name }}</td>
                                             <td>{{ \Carbon\Carbon::parse($enrollment->enrollment_date)->format('d/m/Y') }}</td>
-                                            <td>
+                                            {{-- <td>
                                                 @if($enrollment->status === 'pending')
                                                     <span class="badge bg-warning">Chờ thanh toán</span>
                                                 @elseif($enrollment->status === 'paid')
@@ -114,7 +114,7 @@
                                                 @else
                                                     <span class="badge bg-danger">Đã hủy</span>
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td>
                                                 <a href="{{ route('classes.show', $enrollment->class->id) }}" 
                                                    class="btn btn-sm btn-info mb-1" title="Xem lớp học">

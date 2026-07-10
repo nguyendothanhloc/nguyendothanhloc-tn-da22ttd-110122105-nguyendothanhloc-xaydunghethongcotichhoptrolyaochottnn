@@ -149,6 +149,88 @@
                             @endif
                         </div>
                     </div>
+
+                    <!-- Assessment Results Section -->
+                    <div class="card mt-4">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-clipboard-data me-2"></i>Đánh giá kết quả
+                            </h5>
+                            @if(auth()->user()->role === 'teacher')
+                                <a href="{{ route('teacher.assessments.create', ['class_id' => $class->id]) }}" 
+                                   class="btn btn-sm btn-primary">
+                                    <i class="bi bi-plus-circle me-1"></i>Tạo đánh giá mới
+                                </a>
+                            @endif
+                        </div>
+                        <div class="card-body">
+                            @if($class->assessments->isEmpty())
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>
+                                    Chưa có bài đánh giá nào cho lớp học này.
+                                </div>
+                            @else
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Tên bài đánh giá</th>
+                                                <th>Loại</th>
+                                                <th>Ngày đánh giá</th>
+                                                <th>Điểm tối đa</th>
+                                                <th>Số học viên</th>
+                                                <th>Thao tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($class->assessments as $index => $assessment)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>
+                                                        <strong>{{ $assessment->name }}</strong>
+                                                        @if($assessment->description)
+                                                            <br><small class="text-muted">{{ Str::limit($assessment->description, 50) }}</small>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if($assessment->type === 'quiz')
+                                                            <span class="badge bg-info">Kiểm tra</span>
+                                                        @elseif($assessment->type === 'midterm')
+                                                            <span class="badge bg-warning">Giữa kỳ</span>
+                                                        @elseif($assessment->type === 'final')
+                                                            <span class="badge bg-danger">Cuối kỳ</span>
+                                                        @else
+                                                            <span class="badge bg-secondary">{{ ucfirst($assessment->type) }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $assessment->assessment_date ? $assessment->assessment_date->format('d/m/Y') : 'N/A' }}</td>
+                                                    <td class="text-center">{{ $assessment->max_score }}</td>
+                                                    <td class="text-center">
+                                                        <span class="badge bg-primary">
+                                                            {{ $assessment->scores->count() }} / {{ $class->enrollments->count() }}
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('teacher.assessments.show', $assessment->id) }}" 
+                                                           class="btn btn-sm btn-outline-primary" title="Xem chi tiết">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                        @if(auth()->user()->role === 'teacher')
+                                                            <a href="{{ route('teacher.assessments.edit', $assessment->id) }}" 
+                                                               class="btn btn-sm btn-outline-warning" title="Sửa">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </a>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

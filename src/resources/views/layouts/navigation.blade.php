@@ -22,12 +22,6 @@
                         <x-nav-link :href="route('student.attendance')" :active="request()->routeIs('student.attendance')">
                             Điểm danh
                         </x-nav-link>
-                        <x-nav-link :href="route('student.assessments')" :active="request()->routeIs('student.assessments')">
-                            Kết quả đánh giá
-                        </x-nav-link>
-                        <x-nav-link :href="route('student.progress')" :active="request()->routeIs('student.progress')">
-                            Báo cáo tiến độ
-                        </x-nav-link>
                     @endif
                     
                     @if(Auth::user()->role === 'teacher')
@@ -124,12 +118,6 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('student.attendance')" :active="request()->routeIs('student.attendance')">
                     Điểm danh
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('student.assessments')" :active="request()->routeIs('student.assessments')">
-                    Kết quả đánh giá
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('student.progress')" :active="request()->routeIs('student.progress')">
-                    Báo cáo tiến độ
                 </x-responsive-nav-link>
             @endif
             

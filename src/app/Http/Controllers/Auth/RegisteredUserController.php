@@ -49,11 +49,12 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Display the default registration view (redirects to student).
+     * Display the default registration view (redirects to student registration).
      */
-    public function create(): View
+    public function create(): RedirectResponse
     {
-        return view('auth.register');
+        // Redirect directly to student registration
+        return redirect()->route('register.student');
     }
 
     /**

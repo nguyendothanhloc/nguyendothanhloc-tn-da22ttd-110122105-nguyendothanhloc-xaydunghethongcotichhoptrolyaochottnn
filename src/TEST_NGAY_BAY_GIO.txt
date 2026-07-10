@@ -1,0 +1,59 @@
+═══════════════════════════════════════════════════════════
+  🎉 CHATBOT ĐÃ SẴN SÀNG - TEST NGAY BÂY GIỜ!
+═══════════════════════════════════════════════════════════
+
+✅ BACKEND + FRONTEND ĐANG CHẠY!
+
+📍 URL: http://127.0.0.1:8000
+
+🔑 ĐĂNG NHẬP:
+   Email: hocvien1@gmail.com
+   Password: password
+
+💬 TÌM CHATBOT:
+   - Góc phải dưới màn hình
+   - Icon bong bóng chat 💬
+   - Click để mở
+
+🧪 TEST CÂU HỎI:
+
+1. "giáo viên của tôi"
+   → Phải thấy: Nguyễn Văn Giáo, Nguyễn Thị Cúc ✅
+
+2. "lịch học của tôi"
+   → Phải thấy: 10 buổi học với ngày/giờ/phòng ✅
+
+3. "tỷ lệ điểm danh của tôi"
+   → Phải thấy: 100% (1 có mặt, 0 vắng) ✅
+
+4. "tôi đang học khóa nào?"
+   → Phải thấy: Tiếng Anh + Tiếng Nhật ✅
+
+5. "ngày 22/06/2026 tôi học gì?"
+   → Phải thấy: 2 lớp trong ngày đó ✅
+
+⏱️ THỜI GIAN PHỤ HỒI:
+   - Câu hỏi chung: < 1 giây (Rule-Based)
+   - Câu hỏi về dữ liệu: 3-8 giây (Gemini AI)
+
+⚠️ NẾU CHẬM:
+   - Có thể đang bị rate limit (bình thường!)
+   - Đợi 10 giây rồi hỏi lại
+
+✅ CHẤT LƯỢNG CÂU TRẢ LỜI:
+   ✅ Dấu tiếng Việt đầy đủ
+   ✅ Emoji đẹp (📚👨‍🏫✅⏰📍)
+   ✅ Format rõ ràng
+   ✅ Thông tin chính xác
+   ✅ Có câu hỏi gợi ý
+
+🎯 MỤC TIÊU:
+   Kiểm tra câu "giáo viên của tôi" trả lời ĐÚNG!
+
+═══════════════════════════════════════════════════════════
+
+📖 Chi tiết: Đọc file HUONG_DAN_TEST_CHATBOT.md
+
+🚀 BẮT ĐẦU TEST: http://127.0.0.1:8000
+
+═══════════════════════════════════════════════════════════

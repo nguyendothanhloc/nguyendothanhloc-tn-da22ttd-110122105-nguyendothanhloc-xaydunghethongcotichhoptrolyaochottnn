@@ -17,7 +17,7 @@
 
             <!-- Statistics Cards -->
             <div class="row mb-4">
-                <!-- Pending Enrollments -->
+                {{-- Pending Enrollments - Hidden per user request
                 <div class="col-lg-3 col-md-6 mb-3">
                     <div class="card border-warning">
                         <div class="card-body">
@@ -36,6 +36,7 @@
                         </div>
                     </div>
                 </div>
+                --}}
 
                 <!-- Total Students -->
                 <div class="col-lg-3 col-md-6 mb-3">
@@ -125,6 +126,7 @@
                                         <div class="mt-2">Tạo tài khoản giáo viên</div>
                                     </a>
                                 </div>
+                                {{-- View New Enrollments - Hidden per user request
                                 <div class="col-md-3 mb-3">
                                     <a href="{{ route('enrollments.admin') }}" class="btn btn-outline-warning w-100 py-3 position-relative">
                                         <i class="bi bi-inbox" style="font-size: 2rem;"></i>
@@ -139,13 +141,14 @@
                                         @endif
                                     </a>
                                 </div>
+                                --}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Recent Enrollments -->
+            {{-- Recent Enrollments Section - Hidden per user request
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -210,6 +213,7 @@
                     </div>
                 </div>
             </div>
+            --}}
         </div>
     </div>
 </x-app-layout>

@@ -89,7 +89,12 @@ class ClassController extends Controller
      */
     public function show($id)
     {
-        $class = ClassModel::with(['course', 'teacher.user', 'enrollments.student.user'])
+        $class = ClassModel::with([
+            'course', 
+            'teacher.user', 
+            'enrollments.student.user',
+            'assessments.scores'
+        ])
             ->findOrFail($id);
 
         // Check authorization for teachers

@@ -121,7 +121,17 @@ class RuleBasedChatbotService
                 $keywords = array_map('trim', explode(',', $entry->keywords));
                 
                 foreach ($keywords as $keyword) {
+                    // Skip empty keywords (caused by trailing commas or double commas)
+                    if (empty($keyword)) {
+                        continue;
+                    }
+                    
                     $normalizedKeyword = $this->removeVietnameseAccents($keyword);
+                    
+                    // Skip if normalized keyword is empty
+                    if (empty($normalizedKeyword)) {
+                        continue;
+                    }
                     
                     // Check if the keyword matches the message or vice versa
                     if (str_contains($normalizedMessage, $normalizedKeyword) || 
@@ -402,11 +412,14 @@ class RuleBasedChatbotService
             return $this->getHelpMessage();
         }
 
-        // Course inquiry patterns
-        // REMOVED 'hoc gi' from pattern because it intercepts specific date questions like "Ngày 22/06 tôi học gì?"
+        // Course inquiry patterns - DISABLED TO LET FAQ AND GEMINI HANDLE
+        // Reason: Pattern 'khoa hoc' is too broad and intercepts FAQ questions like "có khóa học nào cho..."
+        // Let Knowledge Base (FAQ) and Gemini AI handle course-related questions for better flexibility
+        /*
         if ($this->matchesPattern($message, ['khoa hoc', 'course', 'co khoa nao'])) {
             return $this->getCourseRecommendations();
         }
+        */
 
         // Schedule inquiry patterns (general: "lịch học hôm nay") - DISABLED: Let Gemini AI handle
         // if ($this->matchesPattern($message, ['lich hoc', 'schedule', 'hoc hom nay', 'lich hom nay'])) {
@@ -530,14 +543,24 @@ class RuleBasedChatbotService
     }
 
     /**
-     * Check if message matches any of the patterns
+     * Check if message matches any of the patterns (word boundary matching)
      */
     private function matchesPattern(string $message, array $patterns): bool
     {
         foreach ($patterns as $pattern) {
             $normalizedPattern = $this->removeVietnameseAccents(mb_strtolower($pattern));
-            if (str_contains($message, $normalizedPattern)) {
-                return true;
+            
+            // Use word boundary matching for short patterns (1-2 characters)
+            if (mb_strlen($normalizedPattern) <= 2) {
+                // Match whole word only: use regex with word boundaries
+                if (preg_match('/\b' . preg_quote($normalizedPattern, '/') . '\b/', $message)) {
+                    return true;
+                }
+            } else {
+                // For longer patterns, use contains (existing behavior)
+                if (str_contains($message, $normalizedPattern)) {
+                    return true;
+                }
             }
         }
         return false;

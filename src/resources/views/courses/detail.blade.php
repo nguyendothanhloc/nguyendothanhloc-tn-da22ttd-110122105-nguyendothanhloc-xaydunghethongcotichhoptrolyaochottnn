@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="d-flex align-items-center mb-3">
-                            <i class="bi bi-currency-dollar fs-3 text-success me-3"></i>
+                            <i class="bi bi-cash fs-3 text-success me-3"></i>
                             <div>
                                 <strong>Học phí</strong><br>
                                 <span class="text-danger fw-bold">{{ number_format($course->price, 0, ',', '.') }} VNĐ</span>

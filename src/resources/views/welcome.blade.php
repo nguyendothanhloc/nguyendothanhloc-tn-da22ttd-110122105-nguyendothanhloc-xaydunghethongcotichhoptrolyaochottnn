@@ -87,7 +87,7 @@
 
                                 <ul class="list-unstyled mb-3">
                                     <li><i class="bi bi-clock"></i> {{ $course->duration_weeks }} tuần</li>
-                                    <li><i class="bi bi-currency-dollar"></i> {{ number_format($course->price, 0, ',', '.') }} VNĐ</li>
+                                    <li><i class="bi bi-cash"></i> {{ number_format($course->price, 0, ',', '.') }} VNĐ</li>
                                     <li><i class="bi bi-people"></i> {{ $course->classes_count }} lớp đang mở</li>
                                 </ul>
                             </div>
@@ -99,23 +99,6 @@
                         </div>
                     </div>
                 @endforeach
-            </div>
-
-            <div class="text-center mt-4">
-                @auth
-                    @if(auth()->user()->role === 'student')
-                        <a href="{{ route('courses.browse') }}" class="btn btn-primary btn-lg">
-                            Xem tất cả khóa học <i class="bi bi-arrow-right"></i>
-                        </a>
-                    @endif
-                @else
-                    <a href="{{ route('courses.browse') }}" class="btn btn-outline-primary btn-lg me-2">
-                        Xem tất cả khóa học <i class="bi bi-arrow-right"></i>
-                    </a>
-                    <a href="{{ route('register') }}" class="btn btn-primary btn-lg">
-                        Đăng ký ngay <i class="bi bi-person-plus"></i>
-                    </a>
-                @endauth
             </div>
         @endif
     </div>

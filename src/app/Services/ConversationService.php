@@ -10,15 +10,26 @@ use Illuminate\Support\Facades\Auth;
 class ConversationService
 {
     /**
-     * Get or create conversation for current user
+     * Get or create conversation for current user or specified user ID
+     * 
+     * @param int|null $userId Optional user ID. If null, uses Auth::user()
+     * @param bool $returnObject If true, return Conversation object. If false, return conversation ID
+     * @return Conversation|int
      */
-    public function getOrCreateConversation(): Conversation
+    public function getOrCreateConversation($userId = null, bool $returnObject = true)
     {
-        $user = Auth::user();
-        $student = Student::where('user_id', $user->id)->first();
+        if ($userId === null) {
+            $user = Auth::user();
+            if (!$user) {
+                throw new \Exception('User not authenticated');
+            }
+            $userId = $user->id;
+        }
+        
+        $student = Student::where('user_id', $userId)->first();
         
         if (!$student) {
-            throw new \Exception('Student not found');
+            throw new \Exception('Student not found for user ID: ' . $userId);
         }
         
         // Get latest conversation or create new one
@@ -35,7 +46,7 @@ class ConversationService
             ]);
         }
         
-        return $conversation;
+        return $returnObject ? $conversation : $conversation->id;
     }
     
     /**
@@ -81,10 +92,17 @@ class ConversationService
     /**
      * Get conversation context (last N messages)
      */
-    public function getConversationContext(Conversation $conversation, int $limit = 10): array
+    public function getConversationContext($conversationIdOrObject, int $limit = 10): array
     {
-        $messages = Message::where('conversation_id', $conversation->id)
-            ->orderBy('sent_at', 'desc')
+        // Support both conversation ID and Conversation object
+        if (is_numeric($conversationIdOrObject)) {
+            $conversationId = $conversationIdOrObject;
+        } else {
+            $conversationId = $conversationIdOrObject->id;
+        }
+        
+        $messages = Message::where('conversation_id', $conversationId)
+            ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get()
             ->reverse()
@@ -92,11 +110,44 @@ class ConversationService
         
         return $messages->map(function ($message) {
             return [
-                'sender' => $message->sender,
-                'message' => $message->message,
-                'sent_at' => $message->sent_at->format('d/m/Y H:i:s')
+                'sender' => $message->sender_type,
+                'message' => $message->content,
+                'sent_at' => $message->created_at ? $message->created_at->format('d/m/Y H:i:s') : 'N/A'
             ];
         })->toArray();
+    }
+    
+    /**
+     * Save message (generic method)
+     */
+    public function saveMessage($conversationIdOrObject, string $senderType, string $content): Message
+    {
+        // Support both conversation ID and Conversation object
+        if (is_numeric($conversationIdOrObject)) {
+            $conversationId = $conversationIdOrObject;
+            $conversation = Conversation::find($conversationId);
+        } else {
+            $conversation = $conversationIdOrObject;
+            $conversationId = $conversation->id;
+        }
+        
+        if (!$conversation) {
+            throw new \Exception('Conversation not found');
+        }
+        
+        $msg = Message::create([
+            'conversation_id' => $conversationId,
+            'sender_type' => $senderType,
+            'content' => $content
+        ]);
+        
+        // Update conversation
+        $conversation->update([
+            'last_message_at' => now(),
+            'message_count' => $conversation->message_count + 1
+        ]);
+        
+        return $msg;
     }
     
     /**
@@ -105,15 +156,15 @@ class ConversationService
     public function getMessages(Conversation $conversation): array
     {
         $messages = Message::where('conversation_id', $conversation->id)
-            ->orderBy('sent_at', 'asc')
+            ->orderBy('created_at', 'asc')
             ->get();
         
         return $messages->map(function ($message) {
             return [
                 'id' => $message->id,
-                'sender' => $message->sender,
-                'message' => $message->message,
-                'sent_at' => $message->sent_at->format('d/m/Y H:i:s')
+                'sender' => $message->sender_type,
+                'message' => $message->content,
+                'sent_at' => $message->created_at ? $message->created_at->format('d/m/Y H:i:s') : 'N/A'
             ];
         })->toArray();
     }

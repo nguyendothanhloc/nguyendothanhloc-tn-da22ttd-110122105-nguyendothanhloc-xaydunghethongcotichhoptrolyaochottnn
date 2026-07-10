@@ -1,0 +1,75 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║              🚀 TEST GEMINI AI NGAY BÂY GIỜ                      ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+✅ BACKEND ĐÃ CHẠY: http://127.0.0.1:8000
+
+═══════════════════════════════════════════════════════════════════
+
+📱 OPTION 1: Test qua Chatbot Widget (KHUYẾN NGHỊ)
+═══════════════════════════════════════════════════════════════════
+
+BƯỚC 1: Mở danh sách câu hỏi
+└─ http://127.0.0.1:8000/test-questions.html
+
+BƯỚC 2: Đăng nhập
+└─ Email: hocvien1@gmail.com
+└─ Password: password
+
+BƯỚC 3: Click vào icon 💬 chatbot (góc dưới bên phải)
+
+BƯỚC 4: Test 3 câu này (click để copy):
+└─ ⭐⭐⭐ "Viết cho tôi một bài thơ về mùa xuân"
+└─ ⭐⭐⭐ "Tôi muốn học tiếng Anh nhưng chưa biết bắt đầu từ đâu"
+└─ ⭐⭐⭐ "So sánh khóa học tiếng Anh Beginner và Intermediate"
+
+═══════════════════════════════════════════════════════════════════
+
+🌐 OPTION 2: Test qua Browser Script (ĐƠN GIẢN HƠN)
+═══════════════════════════════════════════════════════════════════
+
+Mở link này:
+http://127.0.0.1:8000/test_gemini_browser.php
+
+Click nút "🚀 Test Gemini API"
+
+Đợi 3-8 giây → Xem kết quả
+
+═══════════════════════════════════════════════════════════════════
+
+✅ DẤU HIỆU GEMINI ĐANG HOẠT ĐỘNG
+═══════════════════════════════════════════════════════════════════
+
+⏱️  Response time: 3-8 giây (loading spinner quay lâu)
+📝  Format: Có emoji (👋 📚 💡), có bullet points
+🎯  Tone: Friendly, warm, professional
+🏫  Context: Về trung tâm ngoại ngữ
+❓  Ending: Có câu hỏi gợi ý
+
+═══════════════════════════════════════════════════════════════════
+
+🎯 TOP 3 CÂU HỎI ĐỂ TEST (Copy & Paste vào chatbot)
+═══════════════════════════════════════════════════════════════════
+
+1. Viết cho tôi một bài thơ về mùa xuân
+
+2. Tôi muốn học tiếng Anh nhưng chưa biết bắt đầu từ đâu, bạn tư vấn cho tôi
+
+3. So sánh khóa học tiếng Anh Beginner và Intermediate
+
+═══════════════════════════════════════════════════════════════════
+
+📊 THÔNG TIN KỸ THUẬT
+═══════════════════════════════════════════════════════════════════
+
+API Key format: AQ.Ab8...
+Model: gemini-2.5-flash (Stable, June 2025)
+Authentication: HTTP Header (X-Goog-Api-Key)
+Endpoint: v1beta
+Response time: 3-8 giây
+Free tier: 15 requests/phút
+
+═══════════════════════════════════════════════════════════════════
+
+🎉 HÃY BẮT ĐẦU TEST NGAY!
+═══════════════════════════════════════════════════════════════════

@@ -140,26 +140,34 @@
                             </div>
                         </div>
 
+                        @push('scripts')
                         <script>
-                        // Set min date to today for both date inputs
+                        // Initialize Flatpickr with DD/MM/YYYY format
                         document.addEventListener('DOMContentLoaded', function() {
-                            const startDateInput = document.getElementById('start_date');
-                            const endDateInput = document.getElementById('end_date');
-                            
-                            // Set min date to today
-                            const today = new Date().toISOString().split('T')[0];
-                            startDateInput.min = today;
-                            endDateInput.min = today;
-                            
-                            // Update end date min when start date changes
-                            startDateInput.addEventListener('change', function() {
-                                endDateInput.min = this.value;
-                                if (endDateInput.value && endDateInput.value < this.value) {
-                                    endDateInput.value = '';
+                            // Configure Flatpickr for start date
+                            const startDatePicker = flatpickr("#start_date", {
+                                dateFormat: "d/m/Y",  // Display format: DD/MM/YYYY
+                                altInput: true,
+                                altFormat: "d/m/Y",
+                                minDate: "today",
+                                onChange: function(selectedDates, dateStr, instance) {
+                                    // Update end date minimum when start date changes
+                                    if (selectedDates.length > 0) {
+                                        endDatePicker.set('minDate', selectedDates[0]);
+                                    }
                                 }
+                            });
+                            
+                            // Configure Flatpickr for end date
+                            const endDatePicker = flatpickr("#end_date", {
+                                dateFormat: "d/m/Y",  // Display format: DD/MM/YYYY
+                                altInput: true,
+                                altFormat: "d/m/Y",
+                                minDate: "today"
                             });
                         });
                         </script>
+                        @endpush
 
                         <div class="mb-3">
                             <label for="max_capacity" class="form-label">Sức chứa tối đa <span class="text-danger">*</span></label>
