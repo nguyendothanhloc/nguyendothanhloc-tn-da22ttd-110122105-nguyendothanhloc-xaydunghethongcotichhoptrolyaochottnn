@@ -1,0 +1,953 @@
+
+
+
+
+
+
+
+
+
+
+
+
+CÁC PHỤ LỤC HƯỚNG DẪN LÀM ĐỒ ÁN,
+KHOÁ LUẬN TỐT NGHIỆP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ĐẠI HỌC TRÀ VINH 
+TRƯỜNG KỸ THUẬT VÀ CÔNG NGHỆ
+
+
+
+
+
+
+
+
+
+
+ĐỒ ÁN TỐT NGHIỆP
+(Bold, size 16)
+
+	 ………………………………………………………......................
+	………………………………………………………………………
+	...........................................................................................................
+          (Bold, size 18-30, tùy theo số chữ,… của tên đề tài)
+
+
+
+
+
+
+				
+
+
+
+Giảng viên hướng dẫn : ThS VÕ THÀNH C 
+Sinh viên thực hiện:    NGUYỄN ĐỖ THÀNH LỘC  
+Mã số sinh viên: 110122105
+Lớp       :    DA22TTD
+Khoá     :    2022 -  2026 
+
+
+
+
+
+
+
+
+
+Vĩnh Long, tháng … năm … 
+ĐẠI HỌC TRÀ VINH (Bold, size 16)
+TRƯỜNG KỸ THUẬT VÀ CÔNG NGHỆ
+(Bold, size 16)
+
+
+
+
+
+
+
+ĐỒ ÁN TỐT NGHIỆP
+(Bold, size 16)
+
+	 ………………………………………………………......................
+	………………………………………………………………………
+	...........................................................................................................
+          (Bold, size 18-30, tùy theo số chữ,… của tên đề tài)
+
+
+
+
+
+
+				
+
+
+
+Giảng viên hướng dẫn : ThS NGUYỄN VĂN A  (Bold, size 14, in hoa)
+Sinh viên thực hiện:    TRẦN THỊ B  (Bold, size 14, in hoa)
+Mã số sinh viên: ………………..(Bold, in hoa, size 14)
+Lớp       :    ………(Bold, in hoa, size 14)
+Khoá     :    .…........(Bold, in hoa, size 14)
+
+
+
+
+
+
+
+
+Vĩnh Long, tháng … năm … (Bold, size 13)
+
+         (Mẫu)
+MỤC LỤC 
+                                                ( Bold, size 14)
+Lời mở đầu: (size 13)								         								        Trang 
+Chương 1...................................................			
+1.1................................................................				1 
+          1.1.1
+	1.1.1.1
+	1.1.1.2
+	1.1.2
+1.1.3............................................................
+......................................................................				
+1.2 								                       7
+1.2.1		
+1.2.2….................................
+1.3........................................
+...............................................					           22	         						           				
+Chương 2.......................................................							
+2.1…..
+2.1.1….
+2.1.2…..
+
+2.2
+…..
+…..
+Chương 3		        							50   
+3.1…..
+3.1.1….
+3.1.2….
+3.2
+………………
+KẾT LUẬN 								 120
+PHỤ LỤC								      	 121
+DANH MỤC TÀI LIỆU THAM KHẢO			     	  130
+
+Ghi chú: 
+- In đậm và in hoa  tiêu đề của các chương, mục lớn
+- Chữ số thứ nhất chỉ thứ tự chương
+- Chữ số thứ 2 chỉ thứ tự mục trong chương
+- Chữ số thứ 3,…,chỉ thứ tự các tiểu mục
+- Các tiểu mục trình bày trong mục lục không quá 04 cấp
+
+
+
+
+                                    (Mẫu)
+LỜI MỞ ĐẦU
+(Bold, size 14, xếp sau trang lót,)
+
+   
+ (Mẫu)
+LỜI CẢM ƠN
+( bold, size 14, xếp sau trang lời mở đầu)
+
+
+
+
+(Mẫu)
+NHẬN XÉT
+(Của cơ quan thực tập, nếu có)
+Bold, size 14, xếp sau trang Lời cảm ơn
+Size 13, ……………………………………………………………………………..
+………………………………………………………………………………..
+………………………………………………………………………………..
+………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+…………………………………………………………………………………..
+
+
+
+
+(Mẫu)
+NHẬN XÉT 
+(Của giảng viên hướng dẫn trong đồ án, khoá luận của sinh viên)
+(Bold, size14, xếp sau trang nhận xét của cơ quan thực tập)
+ 
+
+
+
+Size13...................................................................................................................... ………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………………… 
+
+
+
+
+Giảng viên hướng dẫn
+(ký và ghi rõ họ tên)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(Mẫu) 
+
+	UBND TỈNH VĨNH LONG	CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+                    ĐẠI HỌC TRÀ VINH   	Độc lập – Tự do – Hạnh Phúc
+	
+BẢN NHẬN XÉT ĐỒ ÁN, KHÓA LUẬN TỐT NGHIỆP
+(Của giảng viên hướng dẫn)
+
+
+Họ và tên sinh viên: 	MSSV: 	
+Ngành:	Khóa: 	
+Tên đề tài:	
+	
+	
+Họ và tên Giáo viên hướng dẫn:	
+Chức danh:  	Học vị: 	
+NHẬN XÉT
+1.Nội dung đề tài:
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+2.Ưu điểm:
+	
+	
+	
+	
+3.Khuyết điểm:
+	
+	
+	
+	
+	
+4.Điểm mới đề tài:
+	
+	
+	
+	
+	
+5.Giá trị thực trên đề tài:
+	
+	
+	
+	
+	
+	
+	
+7. Đề nghị sửa chữa bổ sung:
+	
+	
+	
+	
+	
+	
+	
+8. Đánh giá:
+	
+	
+	
+	
+	Vĩnh Long, ngày        tháng      năm 20…
+	Giảng viên hướng dẫn 
+	(Ký & ghi rõ họ tên)
+          
+
+
+
+
+
+
+
+
+
+  (Mẫu )
+NHẬN XÉT
+(Của giảng viên chấm trong đồ án, khoá luận của sinh viên)
+(Bold, size 14, xếp sau trang Nhận xét của giảng viên hướng dẫn)
+
+
+	size 13, …………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+	…………………………………………………………………………….
+
+
+
+
+
+Giảng viên chấm
+(ký và ghi rõ họ tên)
+
+
+
+
+       (Mẫu )
+	UBND TỈNH VĨNH LONG 	CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM
+                       ĐẠI HỌC TRÀ VINH 	Độc lập - Tự do - Hạnh phúc
+	
+BẢN NHẬN XÉT ĐỒ ÁN, KHÓA LUẬN TỐT NGHIỆP
+(Của cán bộ chấm đồ án, khóa luận)
+Họ và tên người nhận xét: 	
+Chức danh: 	 Học vị: 	  
+Chuyên ngành: 	
+Cơ quan công tác: 	 
+Tên sinh viên: 	
+Tên đề tài đồ án, khóa luận tốt nghiệp: 	
+	
+	
+I. Ý KIẾN NHẬN XÉT
+1. Nội dung: 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+2. Điểm mới các kết quả của đồ án, khóa luận:
+	
+	
+	
+3. Ứng dụng thực tế:
+	
+	
+	
+	
+	
+		
+II. CÁC VẤN ĐỀ CẦN LÀM RÕ
+(Các câu hỏi của giáo viên phản biện)
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+III. KẾT LUẬN
+(Ghi rõ đồng ý hay không đồng ý cho bảo vệ đồ án khóa luận tốt nghiệp)
+	
+	
+	
+	
+	
+……………, ngày …… tháng …… năm 20…
+	Người nhận xét
+	(Ký & ghi rõ họ tên)
+
+
+
+
+
+
+
+(Mẫu)
+DANH MỤC CÁC BẢNG, SƠ ĐỒ, HÌNH
+(In đậm, in hoa, size14)
+
+BÁNG 1.1 (size 13)................................................
+BẢNG 1.2.................................................................
+……...........................................................................
+……...........................................................................
+……...........................................................................
+SƠ ĐỒ 1.1  
+……........................................................................
+……........................................................................
+……........................................................................
+HÌNH 1.1 
+…….....................................................................
+……......................................................................
+
+
+Ghi chú:
+-     Xếp sau trang Mục lục
+-Chữ số thứ nhất chỉ tên chương
+-Chữ số thứ hai chỉ thứ tự bảng biểu, sơ đồ, hình,…trong mỗi chương
+-Ở cuối mỗi bảng biểu, sơ đồ, hình,…trong mỗi chương phải có ghi chú, giải thích, nêu rõ nguồn trích hoặc sao chụp,…
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(Mẫu)
+KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT (size 14)
+(Được xếp sau trang Danh mục Các bảng, sơ đồ, hình)
+
+
+SXKD: (size 13)				Sản xuất kinh doanh	
+CTM	:					Chế tạo máy
+QTKD……….				Quản trị kinh doanh
+……….
+
+
+
+Ghi chú:
+	Cụm từ viết viết tắt là các chữ cái và các ký hiệu thay chữ được viết liền nhau, để thay cho một cụm từ có nghĩa thường được lặp nhiều lần trong văn bản hoặc được mọi người mặc nhiên chấp nhận.
+
+
+(Mẫu)
+Trình bày mỗi trang của đồ án, khoá luận 
+Bắt đầu đánh số trang từ chương 1, in đậm tiêu đề các chương, các mục
+
+Chương 1: Cơ sở lý thuyết ( bold, size 13)...................................... 
+1.1Tổng quan về hoạt động đào tạo tại các trung tâm ngoại ngữ
+1.1.1Vai trò của trung tâm ngoại ngữ trong giáo dục hiện nay
+Trong bối cảnh hội nhập quốc tế, ngoại ngữ trở thành một trong những kỹ năng quan trọng dối với học sinh, sinh viên và người lao động. Việc thành thạo ngoại ngữ không chỉ giúp nâng cao khả năng giao tiếp mà còn mở rộng cơ hội học tập, làm việc và phá triển nghề nghiệp. Chính vì vậy, nhu cầu học ngoại ngữ ngày càng gia tăng, kéo theo sự phát triển mạnh mẽ của các trung tâm ngoại ngữ.
+Không chỉ thực hiện nhiệm vụ giảng dạy, các trung tâm ngoại ngữ còn đóng vai trò kết nối giữa người học và môi trường sử dụng ngoại ngữ thông qua các hoạt động ngoại khóa, giao tiếp trực tiếp với người nước ngoài, chương trình giao lưu văn hóa. Điều này góp phần nâng cao chất lượng đào tạo và tạo điều kiện cho học viên phát triển kỹ năng ngọai ngữ.
+Sự gia tăng về số lượng học viên, khóa học và chương trình đào tạo đã đặt ra yêu cầu ngày càng cao đối với công tác quản lý và vận hành tại các trung tâm ngoại ngữ. Đây là một trong những nguyên nhân thúc đẩy việc ứng dụng công nghệ thông tin vào trung tâm ngoại ngữ nhằm nâng cao hiệu quả và chất lượng đào tạo. 
+1.1.2Các hoạt động quản lý đào tạo tại trung tâm ngoại ngữ
+Để đảm bảo quá trình đào tạo diễn ra hiệu quả, các trung tâm ngoại ngữ phải thực hiện nhiều hoạt động quản lý khác nhau. Các hoạt động này liên quan đến nhiều đối tượng như học viên, giảng viên, nhân viên tư vấn và ban quản lý trung tâm.
+Những hoạt động quan trọng nhất là quản lý thông tin học viên. Trung tâm cần lưu trữ và theo dõi các thông tin cá nhân, quá trình đăng ký khóa học, kết quả học tập và tình trạng học phí của từng học viên. Việc quản lý chính xác các dữ liệu này giúp trung tâm nâng cao chất lượng phục vụ và hỗ trợ học viên tốt hơn trong quá trình học tập.
+Quản lý giảng viên cũng đóng vai trò quan trọng, trung tâm cần quản lý thông tin, lịch giảng dạy, các lớp được phân công cho từng giảng viên. Điều này giúp đảm bảo việc phẩn bổ nguồn lực giảng dạy và đáp ứng nhu cầu đào tạo của học viên.
+Ngoài ra, trung tâm còn phải quản lý các khóa học, lớp học, lịch học,... và các chương trình đào tạo khác nhau. Các dữ liệu này thường thay đổi sau một thời gian, đòi hỏi quá trình cập nhật và theo dõi.
+Khi số lượng học viên và khóa học ngày càng tăng, khối lượng dữ liệu cần xử lý cũng tăng theo làm cho công tác quản lý trở nên phức tạp hơn.
+1.1.3Những khó khăn trong công tác quản lý truyền thống
+Tại một số trung tâm ngoại ngữ quy mô nhỏ hoặc mới thành lập, công tác quản lý vẫn được thực hiện thông qua hồ sơ giấy. Mặc dù các phương pháp này có ưu điểm là đơn giản và dễ triển khai, tuy nhiên vẫn còn nhiều hạn chế khi quy mô hoạt động của trung tâm ngày càng mở rộng.
+Dữ liệu thường được phân tán ở nhiều nguồn khác nhau gây khó khăn cho việc tìm kiếm, cập nhật và đồng bộ thông tin. Khi cần tìm kiếm thông tin học viên hoặc thống kê kết quả đào tạo, nhân viên phải mất nhiều thời gian tổng hợp dữ liệu.
+Việc xử lý dữ liệu thủ công dễ dẫn đến sai sót trong quá trình nhập hay cập nhật thông tin. Những sai sót này có thể ảnh hưởng trực tiếp đến chất lượng quản lý cũng như trải nghiệm của học viên.
+Các công việc như thống kê học phí, theo dõi kết quả học tập hoặc quản lý học viên tốn rất nhiều thời gian và công sức. khi số lượng học viên tăng lên, khối lượng công việc của nhân viên quản lý cũng tăng lên đáng kể.
+Ngoài những khó khăn trong quản lý dữ liệu, việc hỗ trợ học viên cũng là một thách thức đối với nhiều trung tâm. Học viên thường xuyên đặt ra các câu hỏi liên quan đến khóa học, lịch học, học phí hoặc chương trình đào tạo. Việc giải đáp các câu hỏi này chủ yếu được thực hiện bởi nhân viên tư vấn, dẫn đến tình trạng quá tải vào các giai đoạn tuyển sinh hoặc khai giảng khóa học mới.
+Những hạn chế trên cho thấy phương pháp quản lý truyền thống không còn đáp ứng tốt yêu cầu vận hành của các trung tâm ngoại ngữ trong giai đoạn hiện nay.
+
+1.1.4Nhu cầu ứng dụng công nghệ thông tin trong quản lý đào tạo
+Dưới tác động mạnh mẽ của làn sóng công nghệ, quản lý giáo dục không còn là xu hướng mà đã trở thành yêu cầu tất yếu. Việc thay thế các mô hình thủ công bằng hệ thống phần mềm hiện đại chính là chìa khóa giúp các cơ sở đào tạo tự động hóa quy trình, đồng thời nâng cao năng lực quản trị.
+Trong môi trường trung tâm ngoại ngữ, một hệ thống quản lý chuyên biệt chính là giải pháp tối ưu. Mọi quy trình nghiệp vụ bao gồm kiểm soát thông tin học viên, tổ chức lớp học, đo lường tiến độ học tập giờ đây được vận hành một cách chính xác và nhanh chóng. Điều này giúp giải phóng nhân sự quản lý khỏi các công việc hành chính sự vụ, cho phép họ tập trung vào việc nâng cao chất lượng dịch vụ và chăm sóc học viên.
+Sự phát triển của trí tuệ nhân tạo đã mở ra nhiều cơ hội mới trong việc nâng cao chất lượng dịch vụ đào tạo. Các trợ lý ảo và chatbot thông minh có khả năng tương tác với người dùng thông qua ngôn ngữ tự nhiên, hỗ trợ giải đáp các câu hỏi thường gặp và cung cấp thông tin nhanh chóng mà không cần sự can thiệp trực tiếp của con người.
+Việc kết hợp hệ thống quản lý khóa học với trợ lý ảo không chỉ giúp nâng cao hiệu quả quản lý mà còn cải thiện trải nghiệm của học viên trong quá trình sử dụng hệ thống. Đây được xem là xu hướng phù hợp với quá trình chuyển đổi số trong giáo dục và là cơ sở để thực hiện đề tài xây dựng hệ thống quản lý các khóa học có tích hợp trợ lý ảo cho trung tâm ngoại ngữ.
+1.2Tổng quan về hệ thống quản lý khóa học cho trung tâm ngoại ngữ
+1.2.1Khái niệm hệ thống quản lý khóa học 
+Công nghệ thông tin phát triển đã tạo ra nhiều thay đổi trong lĩnh vực giáo dục và đào tạo. Phương pháp quản lý truyền thống dựa trên hồ sơ giấy hoặc các bảng tính rời rạc khá mất thời gian, nhiều đơn vị đào tạo đã chuyển sang sử dụng các hệ thống phần mềm nhằm nâng cao hiệu quả quản lý và chất lượng phục vụ học viên.
+Hệ thống quản lý khóa học là một giải pháp phần mềm được xây dựng nhằm hỗ trợ việc tổ chức, quản lý và theo dõi các hoạt động liên quan đến quá trình đào tạo. Hệ thống cho phép lưu trữ và xử lý tập trung các dữ liệu như thông tin học viên, giảng viên, khóa học, lịch học, học phí và kết quả học tập. Thông qua hệ thống, người quản lý dễ dàng theo dõi tình hình hoạt động của trung tâm, học viên có thể tiếp cận thông tin của mình nhanh chóng và thuận tiện.
+Đối với trung tâm ngoại ngữ, hệ thống quản lý khóa học không chỉ đóng vai trò là công cụ quản lý dữ liệu mà còn là cầu nối giữa trung tâm với học viện và giảng viên. Việc ứng dụng công nghệ hệ thống giúp giảm bớt các công việc thủ công, nâng cao tính chính xát của dữ liệu và tạo nền tảng cho quá trình chuyển đổi số trong hoạt động đào tạo.
+1.2.2Mô hình hoạt động của hệ thống
+Hệ thống hệ thống quản lý các khóa học có tích hợp trợ lý ảo cho trung tâm 
+ngoại ngữ được xây dựng nhằm hỗ trợ quản lý và đào tạo trên một nền tảng thống nhất. Trong quá trình vận hành, người dùng có thể truy cập hệ thống thông qua giao diện web để thcujw hiện các chức năng phù hợp với quyền hạn được cấp. 
+Khi người dùng gửi yêu cầu đến hệ thống, dữ liệu sẽ được tiếp nhận và xử lý thông qua các chức năng nghiệp vụ tương ứng. Sau khi hoàn tất quá trình xử lý, kết quả sẽ được lưu trữ vào cơ sở dữ liệu và hiển thị lại cho người dùng. Cớ chế này giúp đảm bảo dữ liệu được quanr lý tập trung , hạn chế tình trạng thất lạc hoặc sai lệch thông tin trong quá trình vận hành.
+Đối với học viên, hệ thống giúp tra cứu thông tin khóa học, đăng ký tham gia các lớp học và tra cứu những câu hỏi khi cần. Đối vói giảng viên, hệ thống hỗ trợ quẩn lý lớp học và cập nhật thông tin liên quan đến quá trình giảng dạy. Đối với quản trị viên, hệ thống cho phép quản lý toàn bộ dữ liệu và hoạt động của trung tâm.
+Bên cạnh các chức năng quản lý truyền thống, hệ thống còn tích hợp trợ lý ảo AI nhằm hỗ trợ người dùng trong việc tra cứu thông tin và giải đáp các câu hỏi thường gặp. Điều này giúp nâng cao khả năng tương tác giữa người dùng với hệ thống và giảm khối lượng công việc cho đội ngũ quản lý.
+1.2.3Các đối tượng sử dụng hệ thống
+Để đáp ứng nhu cầu quản lý và đào tạo tại trung tâm ngoại ngữ, hệ thống được xây dựng cho nhiều nhóm người dùng khác nhau. Mỗi nhóm người dùng được phân quyền sử dụng các chức năng phù hợp với vai trò của mình.
+Quản trị viên là người có quyền cao nhất trong hệ thống. Đối tượng này chịu trách nhiệm quản lý toàn bộ hoạt động của hệ thống và theo dõi tình hình hoạt động của trung tâm. Ngoài ra quản trị viên còn có quyền cập nhật dữ liệu và xử lý các vấn đề phát sinh trong quá trình sử dụng hệ thống.
+Giảng viên là người trực tiếp tham gia hoạt động giảng dạy tại trung tâm và thông qua hệ thống giảng viên có thể theo dõi danh sách học viên, cập nhật kết quả học tập.
+Học viên là người sử dụng chính của hệ thống. Học viên có thể đăng ký khóa học, theo dõi kết quả học tập, sử dụng trợ lý ảo để giải đáp các thắc mắc liên quan đến quá trình học tập.
+Việc phân chia các nhóm người dùng giúp hệ thống hoạt động hiệu quả, đồng thời đảm bảo tính bảo mật và kiểm soát dữ liệu trong quá trình sử dụng.
+1.2.4Các chức năng chính của hệ thống
+Quản lý tài khoản, cho phép người dùng đăng nhập, đăng xuất. Hệ thống thực hiện phân quyền truy cập dựa trên vai trò của từng nhóm người dùng nhằm đảm bảo tính bảo mật.
+Quản lý học viên, hỗ trợ lưu trữ thông tin học viên. Hệ thống cho phép theo dõi quá trình đăng ký khóa học, kết quả học tập của học viên.
+Quản lý giảng viên, hỗ trợ quản lý hồ sơ giảng viên, chuyên môn giảng dạy và lịch phân công giảng dạy, chức năng này giúp trung tâm dễ dàng quản lý ngồn lực đào tạo.
+Quản lý khóa học, cho phép tạo mới,chỉnh sửa và quản lý các khóa học. Các thông tin như tên khóa học, ngày bắt đầu và ngày kết thúc đào tạo, học phí, tên giáo viên dạy, và số lượng học viên được quản lý tập trung trên hệ thống.
+Quản lý đăng ký khóa học, học viên có thể thực hiện đăng ký khóa học trực tuyến. Hệ thống hỗ trợ lưu trữ thông tin đăng ký và theo dõi danh sách học viên tham gia từng khóa học.
+Trợ lý ảo AI, đây là chức năng đặc trưng của đề tài. Trợ lý ảo hỗ trợ học viên tra cứu thông tin khóa học, học phí, và giải đáp các câu hỏi thường gặp. Chức năng này giúp giảm tải công việc cho nhân viên tư vấn và nâng cao trải nghiệm người dùng khi sử dụng hệ thống.
+1.2.5Vai trò của hệ thống trong hoạt động đào tạo
+Trong bối cảnh công nghệ đang được đẩy mạnh trong lĩnh vực giáo dục, việc ứng dụng hệ thống quản lý khóa học có tích hợp trợ lý ảo mang lại nhiều lợi ích cho các trung tâm ngoại ngữ.
+Đối với công tác quản lý, hệ thống giúp tập trung dữ liệu, giảm thiểu các thao tác thủ công và nâng cao độ chính xát trong quá trình xử lý thông tin. Nhà quản lý có thể dễ dàng quan sát và theo dõi tình hình hoạt động của trung tâm ngoại ngữ, thống kê số lượng học viên và đánh giá hiệu quả của các khóa học.
+Đối với giảng viên, thống quản lý các khóa học có tích hợp trợ lý ảo cho trung tâm ngoại ngữ tạo điều kiện thuận lợi cho việc quản lý lớp học và theo dõi quá trình học tập của học viên. Các thông tin cần thiết có thể được truy cập nhanh chóng và chính xác, góp phần nâng cao hiệu quả giảng dạy.
+Đối với học viên, hệ thống giúp tìm kiếm thông tin dễ dàng , giảm thời gian thực hiện các thủ tục đăng ký và hỗ trợ theo dõi tiến độ học tập. Việc tích hợp trợ lý ảo AI giúp học viên nhận được sự hỗ trợ nhanh chóng mà không bị giới hạn bởi thời gian làm việc của trung tâm.
+Nhờ những lợi ích đó, hệ thống quản lý khóa học có tích hợp trợ lý ảo là một giải pháp phù hợp nhằm nâng cao hiệu quả quản lý, chất lượng đào tạo và trải nghiệm học tập tại các trung tâm ngoại ngữ hiện nay.
+
+
+1.3Các công nghệ sử dụng
+1.3.1Khái niệm trợ lý ảo và chatbot AI
+Trợ lý ảo là một hệ thống phần mềm có khả năng tiếp nhận yêu cầu của người dùng, phân tích nội dung câu hỏi và đưa ra phản hồi phù hợp dựa trên dữ liệu hoặc các mô hình trí tuệ nhân tạo. Khác với các chatbot truyền thống chỉ trả lời theo các kịch bản được lập trình sẵn, trợ lý ảo sử dụng các mô hình ngôn ngữ hiện đại để hiểu ngữ cảnh của câu hỏi và tạo ra câu trả lời linh hoạt, tự nhiên hơn.
+Chatbot AI là một thành phần quan trọng của trợ lý ảo. Hệ thống này có thể hỗ trợ người dùng thực hiện nhiều tác vụ như giải đáp thắc mắc, tìm kiếm thông tin, hướng dẫn sử dụng dịch vụ hoặc hỗ trợ ra quyết định. Nhờ khả năng hoạt động liên tục và phản hồi nhanh chóng, chatbot AI đang dần trở thành công cụ hỗ trợ hiệu quả trong nhiều hệ thống thông tin.
+Việc trợ lý ảo được tích hợp vào hệ thống quản lý khóa học nhằm hỗ trợ học viên tra cứu thông tin về khóa học, học phí và các quy định của trung tâm góp phần nâng cao chất lượng dịch vụ và trỉa nghiệm của người dùng.
+1.3.2Nguyên lý hoạt động của chatbot AI
+Chatbot AI hoạt động dựa trên quá trình tiếp nhận, phân tích và xử lý thông tin từ người dùng để tạo ra phản hồi phù hợp. Khi người dùng nhập câu hỏi, hệ thống sẽ tiếp nhận dữ liệu và thực hiện phân tích nội dung nhằm xát định mục đích của câu hỏi.
+Sau khi xát định được yêu cầu, chatbot sẽ truy xuất dữ liệu cần thiết hoặc sử dụng mô hình trí tuệ nhân tạo để đưa ra câu trả lời phù hợp với ngữ cảnh. Cuối cùng, kết quả sẽ được trả về giao diện trò chuyện.
+Đối với các hệ thống hiện đại, chatbot AI thường được xây dựng dựa trên các mô hình ngôn ngữ lớn cho phép hiểu ngôn ngữ tự nhiên tạo ra phản hồi có tính linh hoạt cao. Điều này giúp cải thiện đáng kể chất lượng giao tiếp giữa người dùng và hệ thống so với các chatbot truyền thống.
+1.3.3Ứng dụng của AI trong giáo dục
+Sự phát triển của trí tuệ nhân tạo tạo ra nhiều thay đổi tích cực trong lĩnh vực giáo dục. AI không chỉ hỗ trợ công tác quản lý mà còn góp phần nâng cao hiệu quả giảng dạy và học tập thông qua các giải pháp thông minh.
+Trong hoạt động đào tạo, AI được ứng dụng để xây dựng các hệ thống học tập trực tuyến, tự động chấm điểm, gợi ý lộ trình học tập, phân tích kết quả học tập và hỗ trợ cá nhân nội dung đào tạo. Những ứng dụng này giúp người học tiếp cận kiến thức một cách thuận tiện hơn và tạo điều kiện cho giảng viên theo dõi quá trình học tập một cách hiệu quả.
+Đối với các trung tâm ngoại ngữ, AI còn được sử dụng để hỗ trợ tư vấn tuyển sinh, giải đáp các câu hỏi thường gặp, hướng dẫn đăng ký khóa học và hỗ trợ học viên trong quá trình sử dụng hệ thống. Việc ứng dụng AI giúp giảm tải khối lượng công việc cho nhân viên tư vấn, đồng thời nâng cao khả năng phục vụ học viên mọi lúc, mọi nơi.
+Nhờ những ưu điểm  về khả năng xử lý thông tin nhanh, hoạt động liên tục và hỗ trợ giao tiếp bằng ngôn ngữ tự nhiên, AI đang trở thành một trong những xu hướng quan trọng trong giáo dục.
+1.3.4Vai trò của trợ lý ảo trong trung tâm ngoại ngữ
+Trong hoạt động của trung tâm ngoại ngữ, học viên thường xuyên có nhu cầu tìm hiểu thông tin về khóa học, học phí, lịch học, chương trình đào tạo hoặc các quy định của trung tâm. Nếu toàn bộ quá trình hỗ trợ đều do nhân viên thực hiện thì sẽ làm tăng khối lượng công việc, đặc biệt trong các giai đoạn tuyển sinh hoặc khai giảng khóa học mới. Việc tích hợp trợ lý ảo vào hệ thống quản lý khóa học giúp tự động hóa một phần quá trình hỗ trợ người dùng. Thông qua giao diện trò chuyện, học viên có thể đặt câu hỏi bằng ngôn ngữ tự nhiên và nhận được phản hồi nhanh chóng mà không cần chờ nhân viên tư vấn. Điều này giúp tiết kiệm thời gian, nâng cao chất lượng dịch vụ và cải thiện trải nghiệm của người học.
+Từ những lợi ích đó có thể thấy việc tích hợp trợ lý ảo vào hệ thống quản lý khóa học không chỉ đáp ứng nhu cầu hỗ trợ người học mà còn góp phần nâng cao hiệu quả quản lý và thúc đẩy quá trình chuyển đổi số tại các trung tâm ngoại ngữ.
+Chương 2: Phân tích và thiết kế hệ thống
+2.1 Khảo sát yêu cầu
+2.1.1 Khảo sát hiện trạng
+Khảo sát hiện trạng là bước đầu trong quá trình phân tích và thiết kế hệ thống. Mục đích của bước này là để tìm hiểu cách thức quản lý hiện tại của trung tâm ngoại ngữ, xát định những hạn chế đang tồn tại và làm cơ sở để xây dựng một hệ thống phù hợp.
+Qua quá trình khảo sát, hoạt động của trung tâm ngoại ngữ chủ yếu tập trung vào các nghiệp vụ như quản lý học viên, quản lý giảng viên, quản lý khóa học, lịch học, theo dõi quá trình học tập và hỗ trợ tư vấn cho học viên. Đầy là những công việc diễn ra thường xuyên và có mối liên kết chặt chẽ với nhau trong toàn bộ quá trình đào tạo.
+Ở nhiều trung tâm có quy mô nhỏ và vừa, dữ liệu vẫn được lưu trữ bằng hồ sơ giấy hoặc các tệp Excel. Cách quản lý này tuy đơn giản và dễ triển khai nhưng dần có nhiều hạn chế khi số lượng học viên và khóa học ngày càng tăng. Việc cập nhật thông tin mất nhiều thời gian, dữ liệu dễ bị trùng lặp, khó kiểm soát tính chính xác và việc tìm kiếm thông tin cũng không thuận tiện.
+Các thông tin như lịch khai giảng, học phí, nội dung khóa học hoặc điều kiện đăng ký thường được học viên hỏi lặp lại nhiều lần qua điện thoại, mạng xã hội hoặc trực tiếp tại trung tâm. Nhân viên tư vấn phải dành khá nhiều thời gian để trả lời các câu hỏi có nội dung tương tự nhau, đặc biệt trong các đợt tuyển sinh hoặc khai giảng khóa học mới. Việc tổng hợp báo cáo về số lượng học viên, số lượng khóa học đang mở hoặc tình hình đăng ký thường được thực hiện thủ công. Điều này không chỉ làm tăng khối lượng công việc mà còn dễ phát sinh sai sót trong quá trình thống kê và đối chiếu dữ liệu.
+Những vấn đề trên cho thấy việc xây dựng hệ thống quản lý các khóa học có tích hợp trợ lý ảo cho trung tâm ngoại ngữ là cần thiết nhằm tập trung hóa dữ liệu, hỗ trợ quản lý các nghiệp vụ đào tạo và giảm bớt các thao tác thủ công. Đồng thời, việc tích hợp trợ lý ảo AI vào hệ thống sẽ góp phần hỗ trợ học viên tra cứu thông tin nhanh chóng, giảm áp lực cho nhân viên tư vấn và nâng cao chất lượng dịch vụ của trung tâm.
+
+
+2.1.2 Yêu cầu chức năng
+a. Quản lý tài khoản và xát thực người dùng
+Hệ thống cho phép người dùng đăng nhập vào tài khoản đã được cấp. Sau khi xác thực thành công, mỗi người dùng sẽ được phân quyền truy cập theo vai trò tương ứng như quản trị viên, giảng viên hoặc học viên. Việc phân quyền giúp đảm bảo tính bảo mật và hạn chế truy cập trái phép vào các chức năng quan trọng.
+b. Quản lý học viên
+Hệ thống quản lý thông tin học viên xem học viên nào đã đăng ký và vào lớp học. Toàn bộ dữ liệu của học viên được lưu trữ tập trung giúp việc quản lý trở nên tuận tiện hơn.
+c. Quản lý giảng viên
+Cho phép quản lý thông tin giảng viên, chuyên môn giảng dạy và các lớp học được phân công. Chức năng này giúp trung tâm thuận tiện trong việc bố trí lịch giảng dạy và theo dõi hoạt động của đội ngũ giảng viên.
+d. Quản lý khóa học
+Quản trị viên có thể tạo mới, chỉnh sửa hoặc cập nhật thông tin khóa học. Mỗi khóa học bao gồm các thông tin như tên khóa học, thời lượng, học phí, mô tả, lịch khai giảng và số lượng học viên tối đa.
+e. Đăng ký khóa học
+Học viên có thể xem danh sách các khóa học đang mở và thực hiện đăng ký trực tuyến. Sau khi đăng ký thành công, thông tin sẽ được lưu vào hệ thống để phục vụ công tác quản lý và theo dõi.
+f. Trợ lý ảo AI
+Hệ thống tích hợp trợ lý ảo sử dụng mô hình AI nhằm hỗ trợ học viên giải đáp các câu hỏi liên quan đến khóa học, học phí, lịch học, quy định của trung tâm hoặc hướng dẫn sử dụng hệ thống. Người dùng có thể tương tác với trợ lý ảo thông qua giao diện trò chuyện, giúp việc tiếp cận thông tin trở nên nhanh chóng và thuận tiện hơn.
+2.1.3 Yêu cầu phi chức năng
+a. Hiệu năng
+Hệ thống cần xử lý nhanh các thao tác phổ biến như đăng nhập, tìm kiếm dữ liệu, đăng ký khóa học và truy xuất thông tin. Thời gian phản hồi cần được duy trì ở mức hợp lý để không làm gián đoạn quá trình sử dụng.
+
+b. Bảo mật
+Mỗi người dùng phải được xác thực trước khi sử dụng hệ thống. Dữ liệu được phân quyền theo từng vai trò nhằm đảm bảo chỉ những người có quyền mới được phép truy cập hoặc chỉnh sửa thông tin liên quan.
+c. Khả năng mở rộng
+Hệ thống cần được xây dựng theo hướng có thể bổ sung thêm các chức năng mới hoặc mở rộng quy mô dữ liệu trong tương lai mà không ảnh hưởng đến hoạt động của các chức năng hiện có.
+2.2 phân tích nghiệp vụ 
+Phân tích nghiệp vụ giúp xác định rõ các công việc mà từng đối tượng sử dụng sẽ thực hiện, đồng thời làm cơ sở cho việc xây dựng sơ đồ UML và thiết kế hệ thống ở các phần tiếp theo.
+Đối với hệ thống quản lý các khóa học có tích hợp trợ lý ảo, các nghiệp vụ được xây dựng dựa trên quy trình hoạt động thực tế của một trung tâm ngoại ngữ. Mỗi nghiệp vụ phản ánh một nhóm chức năng cụ thể và có sự tham gia của các tác nhân khác nhau như quản trị viên, giảng viên và học viên.
+2.2.1 Phân tích nghiệp vụ quản lý người dùng
+Quản lý người dùng là nghiệp vụ đầu tiên và cũng là nền tảng của toàn bộ hệ thống. Mọi đối tượng muốn sử dụng hệ thống đều phải được cấp tài khoản, đăng ký và đăng nhập trước khi thực hiện các chức năng khác.
+Sau khi đăng nhập thành công, hệ thống sẽ kiểm tra vai trò của người dùng để cấp quyền truy cập tương ứng. Quản trị viên có toàn quyền quản lý dữ liệu, giảng viên được sử dụng các chức năng liên quan đến giảng dạy, trong khi học viên chỉ được phép thao tác trên các chức năng phục vụ quá trình học tập của mình.
+Việc phân quyền ngay từ đầu giúp đảm bảo tính bảo mật, đồng thời hạn chế việc truy cập trái phép hoặc chỉnh sửa dữ liệu ngoài phạm vi cho phép.
+2.2.2 Phân tích nghiệp vụ quản lý khóa học
+Khóa học là đối tượng trung tâm của hệ thống. Mọi hoạt động như đăng ký học, phân công giảng viên, xếp lịch học hay theo dõi kết quả đều được xây dựng xoay quanh thông tin của từng khóa học.
+Quản trị viên có thể tạo mới, chỉnh sửa hoặc cập nhật thông tin khóa học khi có sự thay đổi. Mỗi khóa học bao gồm các thông tin như tên khóa học, học phí, thời lượng và số lớp đang mở.
+Khi khóa học được tạo, hệ thống sẽ cho phép học viên xem thông tin chi tiết và thực hiện đăng ký trực tuyến. Sau khi đăng ký thành công, dữ liệu sẽ được lưu vào cơ sở dữ liệu để phục vụ công tác quản lý và thống kê. 
+2.2.3 Phân tích nghiệp vụ quản lý học viên
+Trong quá trình hoạt động, trung tâm cần quản lý đầy đủ thông tin của học viên từ khi đăng ký cho đến khi hoàn thành khóa học.
+Hệ thống cho phép lưu trữ các thông tin cá nhân của học viên, kết quả học tập. Khi có sự thay đổi về thông tin, quản trị viên có thể cập nhật trực tiếp trên hệ thống mà không cần chỉnh sửa nhiều nguồn dữ liệu khác nhau như trước đây.
+
+Việc quản lý tập trung giúp giảm thiểu tình trạng trùng lặp dữ liệu, đồng thời tạo điều kiện thuận lợi cho việc tra cứu và thống kê khi cần thiết.
+2.2.4 Phân tích nghiệp vụ quản lý giảng viên
+Giảng viên là đối tượng trực tiếp tham gia giảng dạy nên cần được quản lý đầy đủ các thông tin liên quan đến chuyên môn và lịch giảng dạy.
+Thông qua hệ thống, quản trị viên có thể phân công giảng viên cho từng khóa học, theo dõi lịch dạy và quản lý danh sách lớp phụ trách. Đối với giảng viên, hệ thống hỗ trợ xem thông tin lớp học, danh sách học viên và lịch giảng dạy của mình.
+Việc quản lý trên hệ thống giúp hạn chế nhầm lẫn trong quá trình phân công và tạo điều kiện thuận lợi cho việc điều chỉnh lịch học khi cần thiết.
+2.2.5 Phân tích nghiệp vụ trợ lý ảo AI
+Trong quá trình tìm hiểu thông tin, học viên thường đặt ra nhiều câu hỏi liên quan đến khóa học, học phí, thời gian học, hoặc cách sử dụng hệ thống. Nếu tất cả các câu hỏi đều do nhân viên tư vấn trả lời thì sẽ tốn nhiều thời gian và khó đáp ứng khi số lượng học viên tăng lên. Để giải quyết vấn đề đó, hệ thống tích hợp trợ lý ảo sử dụng Gemini API. Người dùng chỉ cần nhập câu hỏi thông qua giao diện trò chuyện, hệ thống sẽ gửi yêu cầu đến dịch vụ AI để xử lý và trả về câu trả lời phù hợp.
+2.2.6 Xác định các tác nhân của hệ thống
+Dựa trên các nghiệp vụ đã phân tích, hệ thống xác định ba tác nhân chính gồm: quản trị viên, giảng viên và học viên. Mỗi tác nhân có vai trò và quyền hạn khác nhau trong quá trình sử dụng hệ thống. Việc xát định rõ ràng các tác nhân giúp xây dựng các chức năng phù hợp với từng nhóm người dùng, đồng thời là cơ sở để xây dựng sơ đồ Use Case.
+2.2.7 Biểu đồ Use Case tổng thể
+Khi hoàn thành quá trình phân tích các nghiệp vụ chính của hệ thống, bước tiếp theo là xây dựng biểu đồ Use Case tổng thể nhằm mô tả mối quan hệ giữa các tác nhân và những chức năng mà hệ thống cung cấp. Đây là một trong những sơ đồ quan trọng trong UML giúp mô hình hóa yêu cầu chức năng dưới góc nhìn của người sử dụng thay vì đi sâu vào cách thức cài đặt.
+Khác với các sơ đồ mô tả cấu trúc hoặc thuật toán, biểu đồ Use Case tập trung trả lời câu hỏi: người dùng sẽ sử dụng hệ thống để làm gì. Nhờ đó, người đọc có thể nhanh chóng hình dung được phạm vi của hệ thống, các nhóm người dùng tham gia cũng như những chức năng mà từng nhóm được phép thực hiện. Đây cũng là cơ sở để đối chiếu giữa yêu cầu ban đầu và các chức năng được xây dựng trong quá trình phát triển hệ thống.
+Đối với đề tài này, hệ thống được xác định có ba tác nhân chính gồm Quản trị viên, giảng viên và học viên. Mỗi tác nhân đảm nhận một vai trò khác nhau trong quá trình vận hành của trung tâm ngoại ngữ nên quyền truy cập và các chức năng được sử dụng cũng có sự khác biệt.
+Quản trị viên là người chịu trách nhiệm quản lý toàn bộ hoạt động của hệ thống. Ngoài chức năng đăng nhập, quản trị viên có thể quản lý thông tin học viên, giảng viên, khóa học, lớp học, thời gian bắt đầu và kết thúc khóa học, phân quyền người dùng. Đây là nhóm người dùng có phạm vi thao tác rộng nhất vì cần đảm bảo hệ thống luôn được cập nhật và vận hành ổn định.
+Giảng viên chủ yếu sử dụng hệ thống để phục vụ công tác giảng dạy. Sau khi đăng nhập, giảng viên có thể xem danh sách lớp học được phân công, xem thông tin học viên và cập nhật kết quả học tập hoặc nhận xét nếu được phân quyền. Những chức năng này giúp giảm đáng kể việc quản lý bằng hồ sơ giấy và tạo sự thuận tiện trong quá trình theo dõi từng lớp học.
+Đối với học viên, hệ thống cung cấp các chức năng phục vụ trực tiếp cho quá trình học tập như xem thông tin khóa học, đăng ký khóa học, xem kết quả học tập và trao đổi với trợ lý ảo AI. Việc tích hợp trợ lý ảo giúp học viên có thể chủ động tìm kiếm thông tin bất cứ lúc nào mà không cần chờ nhân viên tư vấn phản hồi, từ đó nâng cao trải nghiệm sử dụng hệ thống.
+Thông qua biểu đồ Use Case tổng thể, có thể thấy mỗi tác nhân chỉ được phép sử dụng các chức năng phù hợp với vai trò của mình. Cách tổ chức này không chỉ giúp hệ thống dễ quản lý hơn mà còn góp phần đảm bảo tính bảo mật, hạn chế các thao tác ngoài phạm vi quyền hạn được cấp.
+Biểu đồ Use Case tổng thể của hệ thống được trình bày ở Hình dưới đây:
+
+Biểu đồ Use Case
+2.2.8 Đặc tả các Use Case
+2.2.8.1 Xem khóa học
+Thuộc tính	Nội dung
+Tên Use Case	Xem khóa học
+Mục đích	Cho phép khách xem danh sách các khóa học mà trung tâm đang mở.
+Tác nhân	Khách
+Điều kiện tiên quyết	Người dùng truy cập vào hệ thống.
+Luồng xử lý chính	Khách truy cập trang danh sách khóa học.
+Hệ thống lấy dữ liệu từ cơ sở dữ liệu.
+Hiển thị danh sách khóa học cùng thông tin chi tiết như tên khóa học, học phí, thời lượng, lịch khai giảng và mô tả.
+Luồng thay thế	Nếu chưa có khóa học đang mở, hệ thống hiển thị thông báo phù hợp.
+Kết quả	Khách xem được thông tin các khóa học.
+
+Use Case Xem khóa học là chức năng đầu tiên mà người dùng có thể tiếp cận khi truy cập vào hệ thống. Chức năng này được xây dựng nhằm giúp khách dễ dàng tìm hiểu thông tin về các khóa học mà trung tâm đang đào tạo trước khi quyết định đăng ký tài khoản hoặc đăng ký học. Các thông tin được hiển thị bao gồm tên khóa học, thời lượng, học phí, số lớp đang mở và một số nội dung giới thiệu liên quan.
+Việc cho phép khách xem trước thông tin khóa học giúp tăng tính minh bạch và tạo sự thuận tiện trong quá trình tìm hiểu. Người dùng có thể chủ động so sánh các khóa học phù hợp với nhu cầu của mình mà không cần liên hệ trực tiếp với trung tâm để được tư vấn. Đây cũng là bước đầu tiên giúp thu hút người dùng mới tiếp cận hệ thống.
+2.2.8.2 Đăng ký tài khoản
+Thuộc tính	Nội dung
+Tên Use Case	Đăng ký tài khoản
+Mục đích	Tạo tài khoản mới cho người dùng.
+Tác nhân	Khách
+Điều kiện tiên quyết	Chưa có tài khoản trong hệ thống.
+Luồng xử lý chính	Người dùng chọn chức năng đăng ký.
+Nhập họ tên, email, số điện thoại, mật khẩu.
+Hệ thống kiểm tra dữ liệu.
+Lưu tài khoản vào cơ sở dữ liệu.
+Thông báo đăng ký thành công.
+Luồng thay thế	Email đã tồn tại hoặc dữ liệu không hợp lệ.
+Kết quả	Tài khoản mới được tạo.
+Use Case đăng ký tài khoản sau khi đã tìm hiểu thông tin khóa học, người dùng có thể thực hiện chức năng đăng ký tài khoản để trở thành thành viên của hệ thống. Việc đăng ký tài khoản giúp hệ thống lưu trữ thông tin cá nhân của người dùng, đồng thời tạo điều kiện để sử dụng các chức năng chỉ dành cho học viên như đăng ký khóa học, theo dõi lịch học hoặc trao đổi với chatbot AI.
+Trong quá trình đăng ký, hệ thống sẽ kiểm tra tính hợp lệ của các thông tin được nhập nhằm hạn chế dữ liệu trùng lặp hoặc sai định dạng. Sau khi đăng ký thành công, tài khoản sẽ được lưu vào cơ sở dữ liệu và người dùng có thể sử dụng thông tin vừa tạo để đăng nhập vào hệ thống.
+2.2.8.3 Đăng nhập
+Thuộc tính	Nội dung
+Tên Use Case	Đăng nhập
+Mục đích	Xác thực người dùng trước khi sử dụng hệ thống.
+Tác nhân	Học viên, Giáo viên, Quản trị viên
+Điều kiện tiên quyết	Đã có tài khoản hợp lệ.
+Luồng xử lý chính	Người dùng nhập email và mật khẩu.
+Hệ thống kiểm tra thông tin đăng nhập.
+Nếu hợp lệ, chuyển đến giao diện tương ứng với quyền của người dùng.
+Luồng thay thế	Sai tài khoản hoặc mật khẩu.
+Kết quả	Người dùng đăng nhập thành công.
+
+Use Case đăng nhập là chức năng bắt buộc đối với tất cả các nhóm người dùng trước khi sử dụng hệ thống. Sau khi người dùng nhập thông tin tài khoản, hệ thống sẽ tiến hành kiểm tra dữ liệu và xác định quyền truy cập tương ứng với từng vai trò như học viên, giáo viên hoặc quản trị viên.
+Việc xác thực người dùng không chỉ giúp đảm bảo tính bảo mật của hệ thống mà còn hỗ trợ phân quyền chính xác cho từng đối tượng sử dụng. Nhờ đó, mỗi người dùng chỉ có thể truy cập và thao tác trên những chức năng được cấp quyền, hạn chế các rủi ro liên quan đến việc truy cập trái phép hoặc chỉnh sửa dữ liệu ngoài phạm vi cho phép.
+
+
+2.2.8.4 Đăng ký khóa học
+Thuộc tính	Nội dung
+Tên Use Case	Đăng ký khóa học
+Mục đích	Cho phép học viên đăng ký tham gia khóa học.
+Tác nhân	Học viên
+Điều kiện tiên quyết	Đã đăng nhập.
+Luồng xử lý chính	Học viên chọn khóa học.
+Nhấn nút đăng ký.
+Hệ thống kiểm tra điều kiện đăng ký.
+Lưu thông tin đăng ký.
+Thông báo thành công.
+Luồng thay thế	Khóa học đã đủ số lượng hoặc học viên đã đăng ký trước đó.
+Kết quả	Học viên được thêm vào danh sách đăng ký.
+
+Use Case đăng ký khóa học sau khi  đăng nhập thành công, học viên có thể lựa chọn và đăng ký tham gia các khóa học phù hợp với nhu cầu của mình. Hệ thống sẽ tiếp nhận yêu cầu đăng ký, kiểm tra các điều kiện cần thiết như số lượng học viên của lớp hoặc trạng thái đăng ký trước đó trước khi lưu thông tin vào cơ sở dữ liệu.
+Việc thực hiện đăng ký trực tuyến giúp học viên chủ động hơn trong quá trình lựa chọn khóa học mà không cần thực hiện các thủ tục thủ công. Đồng thời, trung tâm cũng dễ dàng quản lý danh sách học viên của từng khóa học.
+2.2.8.5 Quản lý lớp học
+Thuộc tính	Nội dung
+Tên Use Case	Quản lý lớp học
+Mục đích	Quản lý danh sách lớp học trong hệ thống.
+Tác nhân	Học viên
+Điều kiện tiên quyết	Đã đăng nhập.
+Luồng xử lý chính	Xem danh sách lớp học, xem thông tin lớp, theo dõi thời gian bắt đầu,kết thúc và tình trạng lớp.
+Luồng thay thế	Không có lớp học phù hợp.
+Kết quả	Thông tin lớp học được hiển thị.
+Use Case quản lý lớp học học hỗ trợ người dùng theo dõi các thông tin liên quan đến lớp học đang tham gia. Thông qua chức năng này, học viên có thể xem lịch học, giảng viên phụ trách và các thông tin cần thiết khác trong suốt quá trình học tập.
+Việc tập trung toàn bộ thông tin lớp học trên cùng một hệ thống giúp giảm thời gian tìm kiếm thông tin và hạn chế việc trao đổi qua nhiều kênh khác nhau. Điều này góp phần nâng cao trải nghiệm sử dụng và giúp học viên dễ dàng theo dõi tiến độ học tập của mình.
+2.2.8.6 Chat với Chatbot AI
+Thuộc tính	Nội dung
+Tên Use Case	Chat với Chatbot AI
+Mục đích	Hỗ trợ học viên tra cứu thông tin bằng ngôn ngữ tự nhiên.
+Tác nhân	Học viên
+Điều kiện tiên quyết	Đã đăng nhập.
+Luồng xử lý chính	Học viên nhập câu hỏi.
+Hệ thống tiếp nhận nội dung.
+So khớp với dữ liệu FAQ.
+Nếu tìm thấy câu trả lời phù hợp thì trả kết quả.
+Nếu không tìm thấy, hệ thống gửi câu hỏi đến Gemini API.
+Nhận phản hồi từ Gemini.
+Hiển thị kết quả cho học viên.
+Luồng thay thế	Gemini API không phản hồi hoặc xảy ra lỗi kết nối.
+Kết quả	Học viên nhận được câu trả lời phù hợp.
+
+Use Case Chat với Chatbot AI thay vì chỉ cung cấp các chức năng quản lý thông thường, hệ thống còn tích hợp trợ lý ảo AI nhằm hỗ trợ người dùng tra cứu thông tin một cách nhanh chóng thông qua hình thức trò chuyện.
+Khi học viên gửi câu hỏi, hệ thống sẽ ưu tiên tìm kiếm câu trả lời trong cơ sở dữ liệu FAQ đã được xây dựng trước. Nếu tìm thấy nội dung phù hợp, hệ thống sẽ phản hồi ngay cho người dùng. 
+
+Trong trường hợp chưa có dữ liệu tương ứng hoặc mức độ phù hợp không cao, yêu cầu sẽ được chuyển đến Gemini AI để xử lý và sinh câu trả lời. Cách tiếp cận này vừa tận dụng được dữ liệu nội bộ của trung tâm, vừa khai thác khả năng xử lý ngôn ngữ tự nhiên của mô hình AI nhằm nâng cao chất lượng hỗ trợ người dùng.
+2.2.8.7 Quản lý lớp dạy
+Thuộc tính	Nội dung
+Tên Use Case	Quản lý lớp dạy
+Mục đích	Theo dõi các lớp được phân công giảng dạy.
+Tác nhân	Giáo viên
+Điều kiện tiên quyết	Đăng nhập thành công.
+Luồng xử lý chính	Xem danh sách lớp, xem học viên, theo dõi lịch học và cập nhật thông tin liên quan.
+Luồng thay thế	Không có lớp được phân công.
+Kết quả	Giáo viên quản lý được lớp phụ trách.
+
+Use Case quản lý lớp dạy giúp theo dõi các lớp được phân công giảng dạy cũng như danh sách học viên của từng lớp. Thông qua hệ thống, giáo viên có thể nắm bắt lịch giảng dạy và các thông tin cần thiết để phục vụ cho quá trình giảng dạy mà không cần sử dụng nhiều công cụ quản lý riêng biệt.
+2.2.8.8 Chấm điểm
+Thuộc tính	Nội dung
+Tên Use Case	Chấm điểm
+Mục đích	Cập nhật kết quả học tập của học viên.
+Tác nhân	Giáo viên
+Điều kiện tiên quyết	Đã đăng nhập và được phân công lớp học.
+Luồng xử lý chính	Chọn bài kiểm tra vầ chấm ngây vị trí của sinh viên cần chấm và lưu kết quả.
+Luồng thay thế	Dữ liệu nhập không hợp lệ.
+Kết quả	Điểm của học viên được cập nhật.
+
+Use Case chấm điểm được xây dựng nhằm hỗ trợ giáo viên cập nhật kết quả học tập của học viên ngay trên hệ thống. Sau khi điểm số được lưu, học viên có thể theo dõi kết quả của mình mà không cần chờ tổng hợp hoặc thông báo trực tiếp từ giáo viên.
+Việc quản lý điểm số trên hệ thống giúp đảm bảo tính chính xác của dữ liệu, đồng thời tạo điều kiện thuận lợi cho công tác thống kê, đánh giá kết quả học tập và theo dõi tiến độ của từng học viên.
+2.2.8.9 Quản lý hệ thống
+Thuộc tính	Nội dung
+Tên Use Case	Quản lý hệ thống.
+Mục đích	Quản lý dữ liệu và cấu hình của hệ thống.
+Tác nhân	Quản trị viên
+Điều kiện tiên quyết	Đăng nhập với quyền quản trị.
+Luồng xử lý chính	Quản lý người dùng, khóa học, giảng viên, học viên, phân quyền và các chức năng quản trị khác.
+Luồng thay thế	Không có.
+Kết quả	Hệ thống được cập nhật theo yêu cầu quản trị.
+
+Use Case quản lý hệ thống là chức năng dành riêng cho quản trị viên với phạm vi thao tác rộng nhất trong toàn bộ hệ thống. Thông qua chức năng này, quản trị viên có thể quản lý người dùng, khóa học, dữ liệu hệ thống và thực hiện các công việc liên quan đến quá trình vận hành của trung tâm.
+Việc tập trung các chức năng quản trị vào một nhóm người dùng duy nhất giúp hệ thống dễ dàng kiểm soát quyền truy cập, đồng thời đảm bảo các dữ liệu quan trọng chỉ được chỉnh sửa bởi những người có thẩm quyền.
+2.2.8.10 Quản lý FAQ
+Thuộc tính	Nội dung
+Tên Use Case	Quản lý FAQ Chatbot
+Mục đích	Quản lý danh sách câu hỏi và câu trả lời mẫu của chatbot.
+Tác nhân	Quản trị viên
+Điều kiện tiên quyết	Đăng nhập với quyền quản trị.
+Luồng xử lý chính	Thêm mới, chỉnh sửa, xóa hoặc cập nhật các câu hỏi và câu trả lời trong cơ sở dữ liệu FAQ.
+Luồng thay thế	Dữ liệu không hợp lệ.
+Kết quả	FAQ được cập nhật và sử dụng cho chatbot.
+
+Use Case quản lý FAQ Chatbot, để chatbot có thể phản hồi nhanh các câu hỏi phổ biến, hệ thống xây dựng chức năng quản lý FAQ nhằm lưu trữ các cặp câu hỏi và câu trả lời thường gặp. Quản trị viên có thể chủ động bổ sung, chỉnh sửa hoặc cập nhật dữ liệu FAQ theo tình hình thực tế của trung tâm.
+Việc duy trì một cơ sở dữ liệu FAQ đầy đủ giúp giảm số lượng yêu cầu phải gửi đến Gemini AI, từ đó tăng tốc độ phản hồi, tiết kiệm chi phí sử dụng dịch vụ AI và đảm bảo nội dung trả lời luôn thống nhất với các thông tin chính thức của trung tâm.
+2.3 Thiết kế hệ thống
+Sau khi hoàn thành quá trình khảo sát yêu cầu và phân tích nghiệp vụ, bước tiếp theo là tiến hành thiết kế hệ thống. Giai đoạn này đóng vai trò kết nối giữa phần phân tích và quá trình triển khai thực tế, giúp chuyển các yêu cầu đã xác định thành mô hình cụ thể để lập trình. Nếu như ở phần phân tích, trọng tâm là xác định hệ thống cần thực hiện những chức năng gì thì ở giai đoạn thiết kế, trọng tâm sẽ là xác định cách thức để các chức năng đó được xây dựng và phối hợp với nhau.
+Đối với các hệ thống quản lý, thiết kế không chỉ là xây dựng giao diện hay cơ sở dữ liệu mà còn phải xác định rõ mối quan hệ giữa các thành phần trong toàn bộ hệ thống. Một bản thiết kế hợp lý sẽ giúp việc lập trình trở nên thuận lợi hơn, giảm sự phụ thuộc giữa các chức năng, đồng thời tạo điều kiện cho việc mở rộng và bảo trì sau này. 
+Trong đề tài xây dựng hệ thống quản lý các khóa học có tích hợp trợ lý ảo cho trung tâm ngoại ngữ, hệ thống được phát triển dưới dạng ứng dụng web nhằm giúp người dùng có thể truy cập trên nhiều thiết bị khác nhau thông qua trình duyệt mà không cần cài đặt phần mềm riêng. Toàn bộ nghiệp vụ được xử lý tại máy chủ bằng Laravel Framework kết hợp với ngôn ngữ lập trình PHP. Dữ liệu được lưu trữ tập trung trên hệ quản trị cơ sở dữ liệu MySQL nhằm đảm bảo tính thống nhất, thuận tiện cho việc tra cứu cũng như cập nhật thông tin.
+Điểm nổi bật của hệ thống là việc tích hợp trợ lý ảo AI nhằm hỗ trợ học viên trong quá trình tìm kiếm thông tin. Thay vì chỉ cung cấp các chức năng quản lý truyền thống, hệ thống còn cho phép người dùng đặt câu hỏi bằng ngôn ngữ tự nhiên. Để nâng cao tốc độ phản hồi cũng như tối ưu chi phí sử dụng dịch vụ AI, hệ thống sẽ ưu tiên tra cứu dữ liệu trong bộ câu hỏi thường gặp (FAQ). Chỉ khi không tìm thấy câu trả lời phù hợp, yêu cầu mới được gửi đến mô hình Gemini AI để xử lý. Giải pháp này vừa tận dụng được nguồn dữ liệu nội bộ của trung tâm, vừa phát huy khả năng xử lý ngôn ngữ tự nhiên của trí tuệ nhân tạo.
+2.3.1 Kiến trúc hệ thống
+Kiến trúc tổng thể của hệ thống thể hiện cách các thành phần chính phối hợp với nhau trong quá trình xử lý dữ liệu và cung cấp dịch vụ cho người dùng. Việc xây dựng kiến trúc ngay từ đầu giúp xác định rõ vai trò của từng thành phần, đồng thời tạo ra một mô hình phát triển thống nhất trong suốt quá trình xây dựng hệ thống. Thông qua kiến trúc tổng thể, người đọc có thể hình dung được luồng dữ liệu từ khi người dùng gửi yêu cầu cho đến khi kết quả được trả về trên giao diện.
+Hệ thống được xây dựng theo mô hình Client-Server. Trong mô hình này, người dùng chỉ cần sử dụng trình duyệt web trên máy tính hoặc điện thoại có kết nối Internet để truy cập hệ thống. Mọi yêu cầu phát sinh từ phía người dùng như đăng nhập, đăng ký khóa học, quản lý lớp học hay trò chuyện với chatbot đều được gửi đến máy chủ để xử lý. Sau khi hoàn thành quá trình xử lý, máy chủ sẽ trả kết quả về giao diện dưới dạng trang web hoặc dữ liệu tương ứng.
+
+Kiến trúc hệ thống
+a.Người dùng
+Người dùng là thành phần tương tác trực tiếp với hệ thống, bao gồm học viên (Student), giáo viên (Teacher) và quản trị viên (Admin). Mỗi đối tượng được cấp quyền truy cập và sử dụng các chức năng khác nhau tùy theo vai trò của mình. Học viên có thể đăng ký khóa học, xem lịch học, tra cứu điểm và sử dụng trợ lý AI; giáo viên thực hiện quản lý lớp học, điểm danh và nhập điểm; trong khi quản trị viên chịu trách nhiệm quản lý toàn bộ dữ liệu và các chức năng của hệ thống. Mọi thao tác của người dùng đều được thực hiện thông qua trình duyệt web và được gửi đến hệ thống để xử lý.
+
+
+b.Browser
+Browser là thành phần trung gian giúp người dùng truy cập và tương tác với hệ thống thông qua giao diện website. Trong hệ thống này, người dùng có thể sử dụng các trình duyệt phổ biến như Google Chrome, Microsoft Edge hoặc Firefox để thực hiện các thao tác như đăng nhập, đăng ký khóa học, xem thông tin khóa học, tra cứu điểm và sử dụng trợ lý AI. Mỗi thao tác của người dùng trên giao diện sẽ được trình duyệt gửi đến Web Server dưới dạng các yêu cầu (HTTP Request). Sau khi hệ thống xử lý hoàn tất, kết quả sẽ được Web Server trả về Browser để hiển thị cho người dùng.
+c.Web Server
+Web Server là thành phần chịu trách nhiệm tiếp nhận và xử lý các yêu cầu được gửi từ trình duyệt của người dùng. Trong hệ thống này, Web Server được triển khai bằng Apache kết hợp với PHP thông qua môi trường XAMPP. Khi người dùng thực hiện một thao tác trên giao diện, chẳng hạn như đăng nhập, đăng ký khóa học hoặc gửi câu hỏi đến trợ lý AI, yêu cầu sẽ được chuyển đến Web Server. Tại đây, Apache tiếp nhận yêu cầu và thực thi mã nguồn PHP, sau đó chuyển yêu cầu đến Controller để xử lý nghiệp vụ. Sau khi Controller hoàn tất việc xử lý và trả về kết quả, Web Server sẽ gửi phản hồi đến trình duyệt để hiển thị cho người dùng.
+d.Controller
+Controller là thành phần trung tâm trong mô hình MVC, chịu trách nhiệm điều phối toàn bộ quá trình xử lý của hệ thống. Khi nhận được yêu cầu từ Web Server, Controller sẽ kiểm tra dữ liệu đầu vào, xác định chức năng mà người dùng muốn thực hiện và quyết định phương thức xử lý phù hợp. Nếu yêu cầu liên quan đến dữ liệu, Controller sẽ gọi Model để truy xuất hoặc cập nhật cơ sở dữ liệu. Đối với các yêu cầu sử dụng trợ lý AI, Controller sẽ gửi nội dung đến Gemini API để xử lý. Sau khi nhận được kết quả, Controller sẽ trả phản hồi về trình duyệt để hiển thị cho người dùng.
+e.Model
+Model là thành phần chịu trách nhiệm quản lý và xử lý dữ liệu của hệ thống. Thành phần này thực hiện các thao tác truy vấn, thêm mới, cập nhật và xóa dữ liệu trong cơ sở dữ liệu MySQL. Mỗi đối tượng dữ liệu trong hệ thống thường được quản lý bởi một Model riêng, chẳng hạn như UserModel, CourseModel hoặc TeacherModel. Model chỉ tập trung vào việc xử lý dữ liệu và không tham gia vào việc hiển thị giao diện cho người dùng.
+f.MySQL Database
+MySQL là hệ quản trị cơ sở dữ liệu được sử dụng để lưu trữ toàn bộ dữ liệu của hệ thống. Dữ liệu bao gồm thông tin người dùng, khóa học, lớp học, giáo viên, học viên, điểm số, điểm danh và các dữ liệu khác phục vụ hoạt động của trung tâm. Khi Controller yêu cầu truy xuất hoặc cập nhật dữ liệu, Model sẽ thực hiện các câu lệnh SQL trên cơ sở dữ liệu MySQL và trả kết quả về Controller để tiếp tục xử lý.
+g.Gemini AI API
+Gemini AI API là dịch vụ trí tuệ nhân tạo được tích hợp vào hệ thống để hỗ trợ chức năng chatbot. Khi người dùng gửi câu hỏi, Controller sẽ tiếp nhận nội dung và gửi yêu cầu đến Gemini AI API để xử lý. Sau khi phân tích câu hỏi, Gemini AI API sẽ tạo câu trả lời phù hợp và gửi kết quả về hệ thống. Controller sau đó sẽ nhận kết quả và trả về trình duyệt để hiển thị cho người dùng. Việc tích hợp Gemini AI API giúp chatbot có thể trả lời các câu hỏi linh hoạt, hỗ trợ tư vấn khóa học và giải đáp những thắc mắc của học viên một cách nhanh chóng.
+2.3.2 Thiết kế theo mô hình MVC
+Trong quá trình phát triển các ứng dụng web, việc lựa chọn một mô hình kiến trúc phù hợp có vai trò quan trọng đối với chất lượng của hệ thống. Một mô hình tốt không chỉ giúp tổ chức mã nguồn một cách khoa học mà còn tạo điều kiện thuận lợi cho việc mở rộng, bảo trì và nâng cấp phần mềm trong tương lai. Vì vây hệ thống của tôi muốn được xây dựng trên nền tảng Laravel Framework, sử dụng mô hình MVC làm kiến trúc chính để tổ chức toàn bộ mã nguồn.
+Mô hình MVC là mô hình phân chia ứng dụng thành ba thành phần chính gồm Model, View và Controller. Mỗi thành phần đảm nhận một nhiệm vụ riêng biệt nhưng có mối liên kết chặt chẽ với nhau trong quá trình xử lý yêu cầu từ người dùng. Việc phân chia này giúp hạn chế sự phụ thuộc giữa các thành phần, làm cho chương trình dễ quản lý hơn và giảm thiểu ảnh hưởng khi cần chỉnh sửa hoặc bổ sung chức năng mới.
+
+Mô hình MVC trong Laravel
+2.3.2.1 Route
+Là thành phần đầu tiên tiếp nhận các yêu cầu được gửi từ người dùng khi thao tác trên hệ thống. Khi người dùng truy cập vào một trang hoặc thực hiện một chức năng như đăng nhập, đăng ký khóa học, xem thông tin lớp học hay gửi câu hỏi đến chatbot, yêu cầu sẽ được chuyển đến Route để xác định đường dẫn xử lý phù hợp. Có thể hiểu Route giống như một bộ phận điều hướng, chịu trách nhiệm phân phối yêu cầu đến đúng Controller tương ứng, từ đó đảm bảo mỗi chức năng trong hệ thống đều được xử lý theo đúng quy trình đã thiết kế.
+Đối với hệ thống quản lý các khóa học có tích hợp trợ lý ảo cho trung tâm ngoại ngữ, Route được sử dụng để quản lý toàn bộ các chức năng của website. Mỗi nhóm người dùng như khách, học viên, giáo viên và quản trị viên đều có những quyền truy cập và chức năng khác nhau, vì vậy Route sẽ xác định đúng chức năng mà từng đối tượng được phép sử dụng. Chẳng hạn, khách có thể xem danh sách khóa học và đăng ký tài khoản, học viên có thể đăng nhập, đăng ký khóa học hoặc sử dụng chatbot AI, giáo viên có quyền quản lý lớp học và nhập điểm, trong khi quản trị viên được phép quản lý tài khoản, khóa học, FAQ và các chức năng của toàn bộ hệ thống.
+2.3.2.2 Controller
+Controller được xem là thành phần trung tâm trong mô hình MVC vì đây là nơi tiếp nhận và xử lý hầu hết các yêu cầu từ người dùng. Sau khi Route xác định được chức năng cần thực hiện, yêu cầu sẽ được chuyển đến Controller để xử lý. Tại đây, hệ thống sẽ kiểm tra dữ liệu đầu vào, xác định nghiệp vụ cần thực hiện, sau đó quyết định có cần truy xuất dữ liệu trong cơ sở dữ liệu hay gửi yêu cầu đến các dịch vụ bên ngoài hay không. Sau khi hoàn thành việc xử lý, Controller sẽ chuyển kết quả đến giao diện để hiển thị cho người dùng.
+Trong hệ thống quản lý các khóa học của trung tâm ngoại ngữ, mỗi nhóm chức năng đều được xây dựng với Controller riêng nhằm giúp mã nguồn được tổ chức rõ ràng và thuận tiện trong quá trình phát triển. Chẳng hạn, các chức năng quản lý tài khoản sẽ được xử lý bởi Controller tương ứng, trong khi việc quản lý khóa học, lớp học, học viên hay giáo viên cũng có các Controller riêng để đảm nhiệm. Đối với chức năng trợ lý ảo, Controller đóng vai trò đặc biệt quan trọng vì đây là nơi tiếp nhận câu hỏi của người dùng, kiểm tra dữ liệu trong hệ thống và kết nối với Gemini AI khi cần thiết. Sau khi nhận được phản hồi, Controller sẽ xử lý nội dung và gửi kết quả đến giao diện để người dùng theo dõi.
+2.3.2.3 Model
+Model là thành phần chịu trách nhiệm làm việc với cơ sở dữ liệu của hệ thống. Mọi thao tác liên quan đến việc lưu trữ, truy xuất, cập nhật hoặc xóa dữ liệu đều được thực hiện thông qua Model.
+Trong đề tài này, dữ liệu của hệ thống tôi chọn lưu trữ bằng MySQL. Các bảng như người dùng, khóa học, lớp học, học viên, giáo viên, đăng ký khóa học, FAQ hay lịch sử trò chuyện đều được quản lý thông qua các Model tương ứng. Khi Controller cần lấy danh sách khóa học, kiểm tra thông tin học viên hoặc lưu kết quả trò chuyện với chatbot, yêu cầu sẽ được gửi đến Model để xử lý. Sau khi hoàn thành việc truy xuất hoặc cập nhật dữ liệu, Model sẽ trả kết quả về cho Controller để tiếp tục các bước xử lý tiếp theo.
+2.3.2.4 View 
+View là thành phần đảm nhiệm việc hiển thị dữ liệu và tạo giao diện để người dùng tương tác với hệ thống. Đây là phần mà người dùng nhìn thấy trực tiếp khi truy cập vào website, bao gồm các trang hiển thị thông tin, biểu mẫu nhập dữ liệu, danh sách khóa học cũng như các chức năng quản lý của từng nhóm người dùng. Trong Laravel, View được xây dựng bằng Blade Template, giúp việc thiết kế giao diện trở nên thuận tiện và dễ dàng tái sử dụng các thành phần giống nhau.
+Đối với hệ thống quản lý các khóa học có tích hợp trợ lý ảo cho trung tâm ngoại ngữ, giao diện được thiết kế phù hợp với từng đối tượng sử dụng. Khách truy cập có thể xem thông tin trung tâm và các khóa học đang mở. Học viên có thể đăng nhập, đăng ký khóa học, theo dõi kết quả học tập và sử dụng trợ lý ảo để tra cứu thông tin. Giáo viên có giao diện quản lý lớp học và cập nhật kết quả học tập của học viên, trong khi quản trị viên được cung cấp đầy đủ các chức năng quản lý dữ liệu của toàn bộ hệ thống.
+2.3.2.5 Quy trình hoạt động của mô hình MVC
+Quá trình xử lý của hệ thống được thực hiện theo một trình tự thống nhất từ khi người dùng gửi yêu cầu cho đến khi kết quả được hiển thị trên giao diện. Khi người dùng thực hiện một thao tác như đăng nhập, đăng ký khóa học hoặc gửi câu hỏi cho trợ lý ảo, yêu cầu sẽ được chuyển đến Route để xác định chức năng cần xử lý. Sau đó, Route sẽ chuyển yêu cầu đến Controller tương ứng. Tại đây, Controller tiến hành kiểm tra dữ liệu đầu vào, xác định nghiệp vụ cần thực hiện và gọi Model để truy xuất hoặc cập nhật dữ liệu trong cơ sở dữ liệu MySQL.
+Đối với các chức năng thông thường như quản lý khóa học hoặc quản lý học viên, dữ liệu sau khi được xử lý sẽ được trả về từ Model đến Controller. Riêng đối với chức năng trợ lý ảo, nếu hệ thống không tìm thấy câu trả lời phù hợp trong dữ liệu FAQ thì Controller sẽ gửi câu hỏi đến Gemini AI để nhận phản hồi. Sau khi có kết quả, Controller sẽ tổng hợp dữ liệu và chuyển đến View để hiển thị trên giao diện cho người dùng.
+Toàn bộ quy trình trên được thực hiện theo mô hình MVC nên mỗi thành phần chỉ đảm nhận đúng nhiệm vụ của mình. Nhờ đó, hệ thống được tổ chức một cách rõ ràng, các chức năng hoạt động độc lập nhưng vẫn phối hợp chặt chẽ với nhau.
+2.3.3 Biểu đồ tuần tự
+Biểu đồ tuần tự được sử dụng để mô tả chi tiết cách các đối tượng trong hệ thống tương tác với nhau theo thứ tự thời gian khi thực hiện một chức năng cụ thể. Thông qua biểu đồ này, có thể thấy rõ luồng xử lý từ lúc người dùng gửi yêu cầu cho đến khi hệ thống trả kết quả, đồng thời làm rõ vai trò của từng thành phần trong kiến trúc MVC như Route, Controller, Model và cơ sở dữ liệu.
+Trong hệ thống quản lý các khóa học có tích hợp trợ lý ảo, biểu đồ tuần tự được xây dựng nhằm mô tả các chức năng quan trọng như đăng nhập, đăng ký khóa học và chat với chatbot AI. Đây là những chức năng có quy trình xử lý nhiều bước và liên quan đến nhiều thành phần trong hệ thống.
+2.3.3.1 Biểu đồ tuần tự chức năng đăng nhập
+Khi người dùng thực hiện đăng nhập vào hệ thống, thông tin tài khoản sẽ được nhập trên giao diện và gửi đến hệ thống để xử lý. Yêu cầu đầu tiên được tiếp nhận bởi Route, sau đó được chuyển đến Controller để xử lý nghiệp vụ đăng nhập. Tại Controller, hệ thống sẽ tiến hành kiểm tra thông tin người dùng thông qua Model bằng cách truy xuất dữ liệu trong cơ sở dữ liệu. Nếu thông tin đăng nhập hợp lệ, hệ thống sẽ xác định vai trò của người dùng và chuyển đến giao diện tương ứng như học viên, giảng viên hoặc quản trị viên. Trong trường hợp thông tin không chính xác, hệ thống sẽ trả về thông báo lỗi để người dùng nhập lại.
+Chương 3: Xây dựng và đánh giá hệ thống
+3.1 Môi trường phát triển
+3.2 Cài đặt hệ thống
+3.3 Các chức năng chính
+3.4 Kiểm thử hệ thống
+3.5 Đánh giá kết quả
+3.6 Hướng phát triển
+
+			
+...........................................................................................................................
+.......................................................................................................
+............................................................................
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GVHD: ThS Nguyễn văn A			           SVTH: Trần Thị B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+               (Mẫu)
+PHỤ LỤC
+                                    (Trang Phụ lục kèm theo)  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+(Mẫu)
+DANH MỤC TÀI LIỆU THAM KHẢO
+Tiếng Việt
+1.Quách Ngọc Ân (1992), “Nhìn lại hai năm phát triển lúa lai”, Di truyền học ứng dụng, 98(1), tr. 10 – 16.
+2.Bộ Nông nghiệp và PTNT (1996), Báo cáo tổng kết 5 năm (1992 – 1996) Phát triển lúa lai, Hà Nội.    
+3.Nguyễn Hữu Đống, Đào Thanh Bằng (1997), Đột biến – Cơ sở lý luận và ứng dụng, Nxb Nông nghiệp, Hà Nội.
+
+Tiếng Anh
+5.Anderson J. E. (1985), The Relative Inefficiency of Quota, The Cheese Case, American Economic Review, 75(1), PP. 178 – 90.
+6.Boulding K. E. (1955), Economic Analysis, Hamish Hamilton, London.
+7.Central Statistical Oraganisation (1995), Statistical Year Book, Beijing.
+8.FAO (1971), Agricultural Commodity Projections (1970 – 1980), Vol. II. Rome 
+
+Ghi chú:
+-Danh mục tài liệu tham khảo xếp thứ tự abc theo họ tên tác giả, sau đó đến tên tài liệu, nơi và năm phát hành: 
+Tác giả là người nước ngoài: xếp thứ tự ABC theo họ tác giả.
+Tác giả là người Việt Nam: xếp thứ tự ABC theo tên tác giả.  
+Tài liệu không có tên tác giả thì xếp theo thứ tự ABC theo từ đầu của tên cơ quan ban hành báo cáo hay ấn phẩm.
+Tài liệu tham khảo là sách, đồ án tốt nghiệp đại học, luận án, báo cáo phải ghi đầy đủ thông tin sau: 
+Tên tác giả hoặc cơ quan ban hành (năm xuất bản), tên sách, đồ án tốt nghiệp đại học, luận án, báo cáo (in nghiêng, dấu phẩy cuối tên), nhà xuất bản, nơi xuất bản. 
+Tài liệu tham khảo là bài báo trong tạp chí, bài trong một cuốn sách… phải ghi đầy đủ các thông tin sau: 
+Tên tác giả (năm công bố), “Tên bài báo”, Tạp chí hoặc tên sách, tập, (số), các số trang.
+
+-Danh mục tài liệu tham khảo xếp cuối cùng, sau các trang phụ lục
+
+
+
+
+
+
+
+
